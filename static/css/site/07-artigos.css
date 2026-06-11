@@ -1,0 +1,144 @@
+.acao-principal-equipe,
+.acao-secundaria-equipe {
+    display:inline-flex;
+    justify-content:center;
+    border-radius:999px;
+    padding:.75rem 1rem;
+    font-weight:900;
+    font-size:.86rem;
+}
+.acao-principal-equipe { background:var(--color-primary); color:#fff; box-shadow:0 14px 35px rgba(214,0,0,.18); }
+.acao-secundaria-equipe { background:#111; color:#fff; }
+.cartao-medico-premium { position:relative; border-radius:32px; overflow:hidden; background:#fff; }
+.linha-cartao-medico { position:absolute; inset:0 auto 0 0; width:8px; background:linear-gradient(180deg, var(--color-primary), var(--color-primary-dark)); }
+.avatar-medico {
+    width: 84px;
+    height: 84px;
+    border-radius: 28px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    font-weight: 900;
+    font-size: 1.5rem;
+    box-shadow: 0 18px 45px rgba(17,17,17,.16);
+}
+.cartao-medico-premium:nth-child(3n+1) .avatar-medico { background: linear-gradient(135deg, #111, #3b1a1a); color: #fff; }
+.cartao-medico-premium:nth-child(3n+2) .avatar-medico { background: linear-gradient(135deg, #0c4a6e, #164e63); color: #fff; }
+.cartao-medico-premium:nth-child(3n+3) .avatar-medico { background: linear-gradient(135deg, #3b1a3b, #581c87); color: #fff; }
+.selo-crm {
+    display:inline-flex;
+    border-radius:999px;
+    padding:6px 10px;
+    background:#f6f2ec;
+    border:1px solid rgba(17,17,17,.06);
+    color:#555;
+    font-size:.7rem;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+}
+.caixa-laudo {
+    position:relative;
+    border-radius:22px;
+    background:linear-gradient(180deg,#fff,#faf8f5);
+    border:1px solid rgba(17,17,17,.06);
+    padding:18px;
+}
+.caixa-laudo::before { content:''; position:absolute; left:0; top:18px; bottom:18px; width:3px; background:var(--color-primary); border-radius:4px; }
+.cartao-destaque-artigos {
+    min-width:210px;
+    background:linear-gradient(135deg,#fff,#fff1f1);
+}
+.cartao-artigo-destaque {
+    display:grid;
+    grid-template-columns:.9fr 1.1fr;
+    color:inherit;
+    text-decoration:none;
+    overflow:hidden;
+    border-radius:34px;
+    background:#fff;
+    border:1px solid rgba(17,17,17,.06);
+    box-shadow:var(--shadow-soft);
+    margin-bottom:1.5rem;
+}
+.visual-artigo-destaque {
+    min-height:280px;
+    position:relative;
+    display:grid;
+    place-items:center;
+    color:var(--color-primary);
+    background:
+        radial-gradient(circle at 20% 20%, rgba(214,0,0,.13), transparent 26%),
+        linear-gradient(135deg,#111,#3b0808);
+}
+.visual-artigo-destaque span {
+    position:absolute;
+    left:1.25rem;
+    top:1.25rem;
+    border-radius:999px;
+    padding:.5rem .75rem;
+    background:#fff;
+    color:var(--color-primary);
+    font-size:.7rem;
+    font-weight:900;
+    text-transform:uppercase;
+}
+.visual-artigo-destaque svg { width:min(76%, 360px); color:#fff; filter:drop-shadow(0 16px 28px rgba(214,0,0,.18)); }
+.texto-artigo-destaque,
+.corpo-artigo-moderno {
+    padding:1.5rem;
+    display:grid;
+    align-content:center;
+    gap:.8rem;
+}
+.meta-cartao-artigo { display:flex; align-items:center; gap:.75rem; flex-wrap:wrap; }
+.meta-cartao-artigo span {
+    border-radius:999px;
+    padding:.45rem .7rem;
+    background:#fff1f1;
+    color:var(--color-primary);
+    font-size:.68rem;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+}
+.meta-cartao-artigo small { color:#94a3b8; font-size:.75rem; font-weight:800; }
+.texto-artigo-destaque h2,
+.corpo-artigo-moderno h2 { color:#111; font-weight:900; line-height:1.08; }
+.texto-artigo-destaque h2 { font-size:2.3rem; }
+.corpo-artigo-moderno h2 { font-size:1.25rem; }
+.texto-artigo-destaque p,
+.corpo-artigo-moderno p { color:#667085; line-height:1.6; }
+.grade-artigos-modernos {
+    display:grid;
+    grid-template-columns:repeat(3, minmax(0,1fr));
+    gap:1.25rem;
+}
+.cartao-artigo-moderno {
+    display:block;
+    color:inherit;
+    text-decoration:none;
+    overflow:hidden;
+    border-radius:28px;
+    background:#fff;
+    border:1px solid rgba(17,17,17,.06);
+    box-shadow:0 16px 45px rgba(17,17,17,.06);
+    transition:transform .25s ease, box-shadow .25s ease;
+}
+.cartao-artigo-moderno:hover { transform:translateY(-4px); box-shadow:var(--shadow-premium); }
+.topo-artigo-moderno {
+    min-height:118px;
+    display:grid;
+    place-items:center;
+}
+.topo-artigo-moderno span {
+    width:64px;
+    height:64px;
+    display:grid;
+    place-items:center;
+    border-radius:22px;
+    background:rgba(255,255,255,.82);
+    color:#111;
+    font-weight:900;
+    text-transform:uppercase;
+}

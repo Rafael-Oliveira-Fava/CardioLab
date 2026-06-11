@@ -1,0 +1,47 @@
+{% extends "estrutura_base.html" %}
+{% block title %}Equipe Médica - CardioLab{% endblock %}
+{% block conteudo %}
+<section class="pagina-equipe py-20 md:py-28 bg-cream relative overflow-hidden">
+    <div class="absolute inset-0 grade-destaque opacity-60"></div>
+    <div class="max-w-7xl mx-auto px-4 relative z-10">
+        <div class="painel-destaque-equipe revelar-rolagem">
+            <div>
+                <p class="chamada-secao">Equipe médica</p>
+                <h1 class="font-display text-5xl md:text-6xl text-dark mb-5 leading-none">Especialistas para cada etapa do seu cuidado.</h1>
+                <p class="text-gray-600 text-lg leading-relaxed max-w-2xl">Conheça os médicos da CardioLab por perfil, área de atuação e disponibilidade para consultas, exames e acompanhamento contínuo.</p>
+            </div>
+            <div class="estatisticas-equipe">
+                <div><strong>{{ medicos|length }}</strong><span>médicos ativos</span></div>
+                <div><strong>24h</strong><span>portal do paciente</span></div>
+                <div><strong>15+</strong><span>anos de experiência</span></div>
+            </div>
+        </div>
+        <div class="grade-equipe">
+            {% for medico in medicos %}
+            {% set indice_avatar_medico = ((loop.index0 % 4) + 1) %}
+            {% set foto_medico = url_for('static', filename=medico.arquivo_foto_publica) if medico.arquivo_foto_publica else (medico.foto_perfil or url_for('static', filename='assets/avatars/medico-' ~ indice_avatar_medico ~ '.svg')) %}
+            <article class="cartao-medico-equipe revelar-rolagem" style="transition-delay:{{ loop.index0 * 0.08 }}s">
+                <div class="envoltorio-foto-medico-equipe">
+                    <img class="foto-medico-equipe" src="{{ foto_medico }}" alt="Foto de {{ medico.nome }}">
+                    <span>{{ medico.especialidade }}</span>
+                </div>
+                <div class="corpo-medico-equipe">
+                    <div class="meta-medico-equipe">
+                        <span>{{ medico.crm }}</span>
+                        {% if medico.rqe %}<span>{{ medico.rqe }}</span>{% endif %}
+                    </div>
+                    <h2>{{ medico.nome }}</h2>
+                    <p>{{ medico.biografia }}</p>
+                    <div class="acoes-medico-equipe">
+                        <a href="{{ url_for('publico.agendar', medico_id=medico.id) }}" class="acao-principal-equipe">Agendar</a>
+                        <a href="mailto:{{ medico.email }}" class="acao-secundaria-equipe">Contato</a>
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+

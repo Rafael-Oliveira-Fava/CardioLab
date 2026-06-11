@@ -1,0 +1,183 @@
+.mini-vital.perigo { background:#fff1f2; border-color:rgba(220,38,38,.18); }
+.mini-vital span { display:block; color:#64748b; font-size:.72rem; font-weight:900; text-transform:uppercase; }
+.mini-vital strong { display:block; color:#111; font-size:1.05rem; margin:.12rem 0 .2rem; }
+.mini-vital canvas {
+    display:block !important;
+    width:100% !important;
+    height:30px !important;
+    max-height:30px !important;
+}
+.linha-tempo-atividade {
+    position:relative;
+    display:grid;
+    gap:.8rem;
+    padding:.35rem 0 .1rem;
+}
+.linha-tempo-atividade::before {
+    content:"";
+    position:absolute;
+    left:20px;
+    top:.85rem;
+    bottom:.85rem;
+    width:2px;
+    border-radius:999px;
+    background:linear-gradient(180deg, rgba(214,0,0,.28), rgba(29,78,216,.22), rgba(22,163,74,.22));
+}
+.evento-atividade {
+    position:relative;
+    display:grid;
+    grid-template-columns:42px minmax(0,1fr);
+    gap:.9rem;
+    align-items:start;
+    padding:.85rem 1rem .9rem .45rem;
+    border:1px solid rgba(15,23,42,.08);
+    border-radius:16px;
+    background:linear-gradient(135deg, #fff 0%, #fff8f8 100%);
+    box-shadow:0 12px 30px rgba(15,23,42,.05);
+    transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.evento-atividade:hover {
+    transform:translateY(-1px);
+    border-color:rgba(214,0,0,.22);
+    box-shadow:0 16px 34px rgba(15,23,42,.08);
+}
+.marcador-atividade {
+    position:relative;
+    z-index:1;
+    display:grid;
+    place-items:center;
+    width:40px;
+    height:40px;
+    border-radius:999px;
+    color:#fff;
+    background:var(--color-primary);
+    border:3px solid #fff;
+    box-shadow:0 8px 18px rgba(214,0,0,.2);
+    font-size:.78rem;
+    font-weight:950;
+    text-transform:uppercase;
+}
+.texto-atividade {
+    min-width:0;
+    display:grid;
+    gap:.28rem;
+}
+.meta-atividade {
+    display:flex;
+    justify-content:space-between;
+    gap:.8rem;
+    align-items:center;
+}
+.meta-atividade span {
+    color:var(--color-primary);
+    font-size:.66rem;
+    font-weight:950;
+    text-transform:uppercase;
+    letter-spacing:.11em;
+}
+.meta-atividade small {
+    flex:0 0 auto;
+    border-radius:999px;
+    padding:.22rem .55rem;
+    background:#f8fafc;
+    color:#475569;
+    font-size:.7rem;
+    font-weight:900;
+    border:1px solid rgba(15,23,42,.06);
+}
+.texto-atividade strong {
+    color:#111827;
+    font-size:1rem;
+    line-height:1.25;
+}
+.texto-atividade em {
+    width:max-content;
+    max-width:100%;
+    border-radius:999px;
+    padding:.18rem .48rem;
+    background:rgba(214,0,0,.08);
+    color:#9f1239;
+    font-size:.66rem;
+    font-style:normal;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+}
+.atividade-exame {
+    background:linear-gradient(135deg, #fff 0%, #f7faff 100%);
+}
+.atividade-exame .marcador-atividade {
+    background:#1d4ed8;
+    box-shadow:0 8px 18px rgba(29,78,216,.22);
+}
+.atividade-exame .meta-atividade span { color:#1d4ed8; }
+.atividade-exame .texto-atividade em {
+    background:rgba(29,78,216,.09);
+    color:#1d4ed8;
+}
+.atividade-saude {
+    background:linear-gradient(135deg, #fff 0%, #f6fff9 100%);
+}
+.atividade-saude .marcador-atividade {
+    background:#15803d;
+    box-shadow:0 8px 18px rgba(21,128,61,.22);
+}
+.atividade-saude .meta-atividade span { color:#15803d; }
+.atividade-saude .texto-atividade em {
+    background:rgba(21,128,61,.09);
+    color:#166534;
+}
+.atividade-historico {
+    background:linear-gradient(135deg, #fff 0%, #f8fafc 100%);
+}
+.atividade-historico .marcador-atividade {
+    background:#64748b;
+    box-shadow:0 8px 18px rgba(100,116,139,.2);
+}
+.atividade-historico .meta-atividade span { color:#64748b; }
+.atividade-historico .texto-atividade em {
+    background:rgba(100,116,139,.11);
+    color:#475569;
+}
+.atividade-vazia {
+    background:#f8fafc;
+    box-shadow:none;
+}
+.atividade-vazia .marcador-atividade {
+    background:#94a3b8;
+    box-shadow:none;
+}
+.grade-exames-rapidos {
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0,1fr));
+    gap:.85rem;
+}
+.cartao-exame-rapido {
+    position:relative;
+    min-height:105px;
+    text-align:left;
+    border-radius:20px;
+    padding:1rem;
+    background:#faf8f5;
+    border:1px solid rgba(17,17,17,.06);
+    transition:transform .2s ease, border-color .2s ease;
+}
+.cartao-exame-rapido:hover { transform:translateY(-2px); border-color:rgba(214,0,0,.22); }
+.cartao-exame-rapido strong { display:block; color:#111; padding-right:3.2rem; }
+.cartao-exame-rapido small { color:#64748b; font-weight:800; }
+.selo-exame-novo {
+    position:absolute;
+    top:.75rem;
+    right:.75rem;
+    border-radius:999px;
+    padding:.25rem .55rem;
+    background:#dcfce7;
+    color:#166534;
+    font-size:.62rem;
+    font-weight:900;
+}
+.calendario-horarios {
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(76px,1fr));
+    gap:.55rem;
+}

@@ -1,0 +1,181 @@
+.principal-carteirinha {
+    margin-top:2.2rem;
+}
+.principal-carteirinha p {
+    margin:0 0 .25rem;
+    color:#fecaca;
+    font-size:.7rem;
+    font-weight:900;
+    letter-spacing:.24em;
+}
+.principal-carteirinha h3 {
+    max-width:520px;
+    color:#fff;
+    font-size:clamp(1.45rem, 3vw, 2.45rem);
+    line-height:1.02;
+    font-weight:900;
+}
+.chip-carteirinha {
+    width:56px;
+    height:42px;
+    flex:0 0 auto;
+    border-radius:10px;
+    background:
+        linear-gradient(90deg, rgba(255,255,255,.22), transparent 48%, rgba(255,255,255,.18)),
+        linear-gradient(135deg, #f8d889, #b98b35);
+    border:1px solid rgba(255,255,255,.32);
+    box-shadow:0 14px 28px rgba(0,0,0,.20);
+}
+.numero-carteirinha {
+    margin-top:1.6rem;
+}
+.numero-carteirinha small,
+.rodape-carteirinha small {
+    display:block;
+    color:rgba(255,255,255,.58);
+    font-size:.68rem;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:.10em;
+}
+.numero-carteirinha strong {
+    display:block;
+    margin-top:.18rem;
+    color:#fff;
+    font-size:clamp(1rem, 2vw, 1.42rem);
+    letter-spacing:.14em;
+    overflow-wrap:anywhere;
+}
+.rodape-carteirinha {
+    margin-top:1.7rem;
+    align-items:flex-end;
+    border-top:1px solid rgba(255,255,255,.18);
+    padding-top:1rem;
+}
+.rodape-carteirinha span {
+    display:block;
+    color:#fff;
+    font-size:.86rem;
+    font-weight:900;
+    letter-spacing:0;
+    text-transform:none;
+}
+.qr-carteirinha {
+    width:54px;
+    height:54px;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:5px;
+    flex:0 0 auto;
+    padding:6px;
+    border-radius:8px;
+    background:#fff;
+}
+.qr-carteirinha span {
+    border-radius:2px;
+    background:#111827;
+}
+.qr-carteirinha span:nth-child(2),
+.qr-carteirinha span:nth-child(3) {
+    background:#d60000;
+}
+.grade-beneficios-carteirinha {
+    gap:.85rem;
+}
+.grade-beneficios-carteirinha div {
+    min-height:116px;
+    display:grid;
+    align-content:center;
+    background:#fbfcfe;
+    border:1px solid rgba(15,23,42,.08);
+    box-shadow:0 8px 24px rgba(15,23,42,.04);
+}
+.grade-beneficios-carteirinha strong {
+    color:#111827;
+    font-size:2rem;
+}
+.cartao-plano-carteirinha {
+    position:relative;
+    gap:.85rem;
+    padding:1rem;
+    background:#fff;
+    border:1px solid rgba(15,23,42,.10);
+    box-shadow:0 8px 22px rgba(15,23,42,.04);
+}
+.cartao-plano-carteirinha.destaque {
+    border-color:rgba(214,0,0,.36);
+    box-shadow:0 12px 30px rgba(214,0,0,.10);
+}
+.cartao-plano-carteirinha strong {
+    padding-right:3.2rem;
+}
+.cartao-plano-carteirinha > div > span {
+    margin-top:.15rem;
+    color:#d60000;
+    font-size:.9rem;
+}
+.selo-plano {
+    position:absolute;
+    top:.85rem;
+    right:.85rem;
+    border-radius:999px;
+    padding:.22rem .55rem;
+    background:#111827;
+    color:#fff !important;
+    font-size:.62rem !important;
+    font-weight:900;
+    letter-spacing:.04em;
+}
+.cartao-plano-carteirinha .acao-pequena {
+    justify-self:start;
+    border-radius:8px;
+}
+.chip-membro {
+    min-height:22px;
+    border-radius:999px;
+    padding:.22rem .55rem;
+    font-size:.66rem;
+}
+.cartao-central-notificacoes {
+    border-left:0;
+    border-top:4px solid #1d4ed8;
+}
+.cartao-notificacao.detalhado {
+    position:relative;
+    min-height:86px;
+    overflow:hidden;
+    background:linear-gradient(180deg, #fff, #fbfcfe);
+    border:1px solid rgba(15,23,42,.08);
+}
+.cartao-notificacao.detalhado::before {
+    content:'';
+    position:absolute;
+    inset:0 auto 0 0;
+    width:4px;
+    background:var(--notification-accent, #1d4ed8);
+}
+.cartao-notificacao.informacao { --notification-accent:#1d4ed8; }
+.cartao-notificacao.sucesso { --notification-accent:#15803d; }
+.cartao-notificacao.alerta { --notification-accent:#d97706; }
+.cartao-notificacao.perigo { --notification-accent:#dc2626; }
+.cartao-notificacao.detalhado .icone-notificacao {
+    width:34px;
+    height:34px;
+    display:grid;
+    place-items:center;
+    border-radius:10px;
+    background:color-mix(in srgb, var(--notification-accent) 12%, white);
+}
+.cartao-notificacao.detalhado .icone-notificacao::after {
+    content:'';
+    width:10px;
+    height:10px;
+    border-radius:999px;
+    background:var(--notification-accent);
+}
+.linha-titulo-notificacao {
+    align-items:flex-start;
+}
+.linha-acoes-notificacao {
+    padding-top:.15rem;
+}

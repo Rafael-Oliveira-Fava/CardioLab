@@ -1,0 +1,79 @@
+.selo-seguranca:hover {
+    border-color: rgba(214,0,0,.18);
+    transform: translateY(-2px);
+}
+.cartao-demo-login {
+    background: linear-gradient(135deg, rgba(255,255,255,.92), rgba(255,255,255,.80));
+    border: 1px solid rgba(17,17,17,.06);
+    border-radius: 22px;
+    padding: 1.2rem 1rem;
+    color: #667085;
+    text-align: center;
+    font-size: .78rem;
+    box-shadow: 0 16px 55px rgba(17,17,17,.06);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    position: relative;
+    overflow: hidden;
+}
+.cartao-demo-login::before {
+    content: 'ðŸ§ª';
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    font-size: 2.5rem;
+    opacity: .12;
+}
+.cartao-demo-login p:first-child {
+    font-size: .82rem;
+    margin-bottom: .4rem;
+}
+.acento-batimento-login {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    z-index: 5;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgba(214,0,0,.85);
+    display: grid;
+    place-items: center;
+    box-shadow: 0 12px 35px rgba(214,0,0,.35);
+    animation: batimento-coracao 1.15s ease-in-out infinite;
+}
+.acento-batimento-login svg {
+    width: 26px;
+    height: 26px;
+    color: #fff;
+}
+.selo-confianca-login {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    z-index: 5;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0,0,0,.50);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 999px;
+    padding: 10px 18px;
+    color: #fff;
+    font-weight: 900;
+    font-size: .78rem;
+    letter-spacing: .02em;
+}
+.selo-confianca-login .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #22c55e;
+    animation: ponto-batimento 1.2s ease-in-out infinite;
+}
+.botao-envio-login {
+    position: relative;
+    overflow: hidden;
+}

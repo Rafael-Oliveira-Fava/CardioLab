@@ -1,0 +1,185 @@
+.pagina-painel {
+    background:
+        radial-gradient(circle at 0% 8%, rgba(214,0,0,.07), transparent 28%),
+        linear-gradient(180deg, #F8F5EF, #fff 52%, #F8F5EF);
+}
+.destaque-painel {
+    position: relative;
+    overflow: hidden;
+    border-radius: 34px;
+    padding: 34px;
+    background:
+        radial-gradient(circle at 88% 20%, rgba(214,0,0,.44), transparent 30%),
+        linear-gradient(135deg, #161313, #090909 62%, #310707);
+    box-shadow: 0 24px 80px rgba(17,17,17,.14);
+}
+.destaque-painel::before {
+    content:'';
+    position:absolute;
+    inset:0;
+    background-image: url("data:image/svg+xml,%3Csvg width='900' height='180' viewBox='0 0 900 180' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 92H150L168 92L182 48L196 135L215 20L236 155L254 92H395L413 92L427 58L443 124L464 39L485 92H900' stroke='%23D60000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: repeat-x;
+    background-size: 900px 180px;
+    opacity:.22;
+}
+.acao-painel {
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:.55rem;
+    border-radius:999px;
+    padding:.9rem 1.25rem;
+    font-weight:800;
+    transition:transform .2s ease, background .2s ease;
+}
+.acao-painel svg {
+    width:18px;
+    height:18px;
+    fill:none;
+    stroke:currentColor;
+    stroke-width:2.2;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+.acao-painel:hover { transform: translateY(-2px); }
+.acao-painel.primario { background:var(--color-primary); color:#fff; box-shadow:0 18px 55px rgba(214,0,0,.26); }
+.acao-painel.secundario { background:rgba(255,255,255,.12); color:#fff; border:1px solid rgba(255,255,255,.16); }
+.estrutura-painel {
+    overflow:hidden;
+    border-radius:28px;
+    background:linear-gradient(135deg,#242321,#151513);
+    border:1px solid rgba(255,255,255,.14);
+    box-shadow:0 24px 80px rgba(17,17,17,.14);
+    color:#fff;
+}
+.cabecalho-estrutura-painel {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:1rem;
+    padding:1.5rem;
+}
+.pessoa-painel {
+    display:flex;
+    align-items:center;
+    gap:1rem;
+    min-width:0;
+}
+.pessoa-painel h1 {
+    color:#fff;
+    font-size:1.25rem;
+    font-weight:800;
+    line-height:1.1;
+}
+.pessoa-painel p:not(.perfil-painel) {
+    color:rgba(255,255,255,.62);
+    font-size:.86rem;
+    margin-top:.2rem;
+}
+.perfil-painel {
+    color:rgba(255,255,255,.74);
+    font-size:.68rem;
+    font-weight:800;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    margin-bottom:.3rem;
+}
+.acoes-estrutura-painel {
+    display:flex;
+    flex-wrap:wrap;
+    gap:.75rem;
+    justify-content:flex-end;
+}
+.abas-painel {
+    display:flex;
+    gap:.25rem;
+    overflow-x:auto;
+    padding:0 1.1rem;
+    border-top:1px solid rgba(255,255,255,.10);
+    border-bottom:1px solid rgba(255,255,255,.10);
+    background:rgba(255,255,255,.04);
+}
+.abas-painel a,
+.abas-painel button {
+    min-height:48px;
+    display:inline-flex;
+    align-items:center;
+    gap:.45rem;
+    padding:0 .9rem;
+    background:transparent;
+    color:rgba(255,255,255,.62);
+    font-size:.78rem;
+    font-weight:800;
+    white-space:nowrap;
+    border-bottom:2px solid transparent;
+    cursor:pointer;
+}
+.abas-painel a.ativo,
+.abas-painel a:hover,
+.abas-painel button.ativo,
+.abas-painel button:hover {
+    color:#fff;
+    border-bottom-color:var(--color-primary);
+}
+.abas-painel svg {
+    width:15px;
+    height:15px;
+    fill:none;
+    stroke:currentColor;
+    stroke-width:2;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+.abas-painel span {
+    min-width:18px;
+    height:18px;
+    display:inline-grid;
+    place-items:center;
+    border-radius:999px;
+    background:var(--color-primary);
+    color:#fff;
+    font-size:.65rem;
+}
+.painel-aba[hidden] {
+    display:none !important;
+}
+.painel-aba {
+    animation: fadeTabPanel .22s ease-out;
+}
+@keyframes fadeTabPanel {
+    from { opacity:0; transform:translateY(8px); }
+    to { opacity:1; transform:translateY(0); }
+}
+.pilha-abas-painel {
+    display:grid;
+    gap:1.5rem;
+}
+.grade-painel {
+    display:grid;
+    grid-template-columns:minmax(0, 1fr) 360px;
+    gap:1.5rem;
+    align-items:start;
+}
+.grade-painel.unico {
+    grid-template-columns:1fr;
+}
+.area-principal-painel,
+.lateral-painel {
+    display:grid;
+    gap:1.5rem;
+}
+.estatisticas-gerais {
+    padding:0;
+}
+.estatisticas-gerais .cartao-estatistica-medico {
+    background:#242321;
+    border-color:rgba(255,255,255,.08);
+}
+.grade-vitais.compacto {
+    grid-template-columns:repeat(2, minmax(0,1fr));
+}
+.grade-formulario-risco {
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0,1fr));
+    gap:.9rem;
+}

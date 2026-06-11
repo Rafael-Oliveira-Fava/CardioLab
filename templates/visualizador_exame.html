@@ -1,0 +1,95 @@
+{% extends "estrutura_base.html" %}
+{% block title %}Visualização de Exame - CardioLab{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/painel.css', v=versao_estatica) }}">{% endblock %}
+{% block conteudo %}
+<section class="pagina-painel pagina-visualizador-exame min-h-screen py-8 md:py-12">
+    <div class="max-w-6xl mx-auto px-4">
+        <div class="estrutura-painel estrutura-visualizador-exame mb-6">
+            <div class="cabecalho-estrutura-painel">
+                <div class="pessoa-painel">
+                    <span class="marca-visualizador-exame" aria-hidden="true">
+                        <svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v5l-5 8a4 4 0 003.4 6h7.2A4 4 0 0019 16l-5-8V3"/><path d="M8 15h8"/></svg>
+                    </span>
+                    <div>
+                        <p class="perfil-painel">Resultado de exame</p>
+                        <h1>{{ exame.titulo }}</h1>
+                        <p>{{ exame.nome_servico or 'Exame cardiológico' }}{% if exame.nome_medico %} · {{ exame.nome_medico }}{% endif %}</p>
+                    </div>
+                </div>
+                <div class="acoes-estrutura-painel">
+                    <a href="{{ url_for('paciente.painel', aba='exames') }}" class="acao-painel secundario">Voltar ao painel</a>
+                    {% if exame.tipo_resultado == 'pdf' %}
+                    <a href="{{ url_for('paciente.baixar_exame_marca_dagua', exame_id=exame.id) }}" class="acao-painel primario">Baixar PDF</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="grade-painel">
+            <div class="area-principal-painel">
+                <section class="cartao-painel cartao-visualizador-exame">
+                    <div class="cabecalho-cartao">
+                        <div>
+                            <p class="chamada-cartao">{{ visualizacao.situacao == 'disponivel' and 'Arquivo localizado' or 'Simulação' }}</p>
+                            <h2>{{ visualizacao.titulo }}</h2>
+                        </div>
+                        <span class="selo-situacao {{ visualizacao.situacao == 'disponivel' and 'confirmado' or 'pendente' }}">
+                            {{ visualizacao.situacao == 'disponivel' and 'Disponível' or 'Em manutenção' }}
+                        </span>
+                    </div>
+                    {% if visualizacao.modo == 'pdf' %}
+                    <embed src="{{ exame.arquivo_url }}" type="application/pdf" class="previa-real-exame">
+                    {% elif visualizacao.modo == 'imagem' %}
+                    <img src="{{ exame.arquivo_url }}" alt="{{ exame.titulo }}" class="previa-real-exame">
+                    {% else %}
+                    <div class="visualizador-manutencao-exame">
+                        <div class="monitor-simulado-exame" aria-hidden="true">
+                            <div class="cabecalho-monitor-exame">
+                                <span>Visualizador CardioLab</span>
+                                <strong>Prévia</strong>
+                            </div>
+                            <svg viewBox="0 0 520 160" preserveAspectRatio="none">
+                                <polyline points="0,92 70,92 86,92 100,48 114,130 132,24 152,142 170,92 245,92 262,92 278,58 294,118 314,42 336,92 520,92" />
+                            </svg>
+                            <div class="grade-monitor-exame">
+                                <div><span>FC</span><strong>72 bpm</strong></div>
+                                <div><span>PA</span><strong>120/80</strong></div>
+                                <div><span>SpO2</span><strong>98%</strong></div>
+                            </div>
+                        </div>
+                        <div class="texto-manutencao-exame">
+                            <p class="chamada-cartao">Área em implantação</p>
+                            <h2>{{ visualizacao.mensagem }}</h2>
+                            <p>O exame está registrado no portal e a tela acima representa a futura pré-visualização clínica. O download protegido continua disponível quando houver PDF anexado.</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                </section>
+            </div>
+            <aside class="lateral-painel">
+                <section class="cartao-painel">
+                    <div class="cabecalho-cartao compacto">
+                        <div>
+                            <p class="chamada-cartao">Dados do exame</p>
+                            <h2>Resumo</h2>
+                        </div>
+                    </div>
+                    <div class="linha-perfil"><span>Paciente</span><strong>{{ exame.nome_paciente }}</strong></div>
+                    <div class="linha-perfil"><span>Serviço</span><strong>{{ exame.nome_servico or '-' }}</strong></div>
+                    <div class="linha-perfil"><span>Médico</span><strong>{{ exame.nome_medico or '-' }}</strong></div>
+                    <div class="linha-perfil"><span>Tipo</span><strong>{{ exame.tipo_resultado|upper }}</strong></div>
+                    <div class="linha-perfil"><span>Registro</span><strong>{{ exame.criado_em|data_hora_curta if exame.criado_em else '-' }}</strong></div>
+                </section>
+                <section class="cartao-painel">
+                    <div class="cabecalho-cartao compacto">
+                        <div>
+                            <p class="chamada-cartao">Situação</p>
+                            <h2>Portal de exames</h2>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-500 leading-relaxed">{{ visualizacao.mensagem }}</p>
+                </section>
+            </aside>
+        </div>
+    </div>
+</section>
+{% endblock %}

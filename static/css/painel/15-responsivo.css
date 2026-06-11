@@ -1,0 +1,135 @@
+html.tema-escuro .cartao-notificacao.detalhado {
+    background:linear-gradient(180deg, #171B22, #141922) !important;
+}
+html.tema-escuro .cartao-notificacao.detalhado .icone-notificacao {
+    background:rgba(255,255,255,.08);
+}
+html.tema-escuro .linha-titulo-notificacao p,
+html.tema-escuro .mensagem-notificacao {
+    color:#E5EAF2;
+}
+html.tema-escuro .botao-ler-notificacao,
+html.tema-escuro .acao-pequena.sutil,
+html.tema-escuro .erro-formulario-inline {
+    background:#111827;
+    color:#E5EAF2;
+    border-color:rgba(255,255,255,.12);
+}
+html.tema-escuro .erro-formulario-inline {
+    color:#FCA5A5;
+}
+html.tema-escuro .texto-manutencao-exame {
+    background:#111827;
+    border-color:rgba(255,255,255,.10);
+}
+html.tema-escuro .texto-manutencao-exame h2 {
+    color:#F8FAFC;
+}
+html.tema-escuro .texto-manutencao-exame p:last-child {
+    color:#AEB9C7;
+}
+html.tema-escuro .previa-real-exame {
+    background:#111827;
+    border-color:rgba(255,255,255,.10);
+}
+@media (max-width: 768px) {
+    .destaque-painel { padding:22px; border-radius:14px; }
+    .cartao-painel { padding:18px; border-radius:12px; }
+    .estrutura-painel { border-radius:14px; }
+    .cabecalho-estrutura-painel,
+    .alerta-critico { align-items:flex-start; flex-direction:column; }
+    .acoes-estrutura-painel { width:100%; justify-content:stretch; }
+    .acoes-estrutura-painel .acao-painel { flex:1; }
+    .grade-estatisticas-painel { grid-template-columns:repeat(2, minmax(0,1fr)); }
+    .grade-painel { grid-template-columns:1fr; }
+    .grade-formulario-risco { grid-template-columns:1fr; }
+    .grade-lista-pacientes { grid-template-columns:1fr; }
+    .linha-consulta-medico { grid-template-columns:56px auto minmax(0,1fr); }
+    .linha-consulta-medico .selo-situacao,
+    .acoes-icones-consulta { grid-column:1 / -1; justify-self:start; }
+    .resumo-prontuario-paciente { grid-template-columns:1fr; }
+    .grade-beneficios-carteirinha { grid-template-columns:repeat(2, minmax(0,1fr)); }
+    .carteirinha-digital {
+        min-height:380px;
+        aspect-ratio:auto;
+        border-radius:14px;
+    }
+    .topo-carteirinha,
+    .principal-carteirinha,
+    .rodape-carteirinha {
+        align-items:flex-start;
+    }
+    .principal-carteirinha {
+        margin-top:1.6rem;
+    }
+    .principal-carteirinha h3 {
+        font-size:1.65rem;
+    }
+    .chip-carteirinha {
+        width:46px;
+        height:34px;
+    }
+    .rodape-carteirinha { flex-direction:column; }
+    .qr-carteirinha { width:48px; height:48px; }
+    .selo-plano {
+        position:static;
+        width:max-content;
+    }
+    .cartao-plano-carteirinha strong {
+        padding-right:0;
+    }
+    .cabecalho-central-notificacoes,
+    .linha-titulo-notificacao {
+        align-items:flex-start;
+        flex-direction:column;
+    }
+    .evento-atividade {
+        grid-template-columns:36px minmax(0,1fr);
+        gap:.68rem;
+        padding:.72rem .72rem .76rem .35rem;
+    }
+    .marcador-atividade {
+        width:34px;
+        height:34px;
+        border-width:3px;
+    }
+    .linha-tempo-atividade::before {
+        left:17px;
+    }
+    .meta-atividade {
+        align-items:flex-start;
+        flex-direction:column;
+        gap:.08rem;
+    }
+    .acoes-central-notificacoes {
+        width:100%;
+        justify-content:space-between;
+    }
+    .formulario-remarcacao {
+        grid-template-columns:1fr;
+    }
+    .cartao-consulta,
+    .cartao-exame { align-items:flex-start; flex-direction:column; }
+    .visualizador-manutencao-exame {
+        grid-template-columns:1fr;
+    }
+    .monitor-simulado-exame {
+        min-height:320px;
+    }
+    .grade-monitor-exame {
+        flex-direction:column;
+        align-items:stretch;
+    }
+}
+@media (max-width: 1024px) {
+    .grade-comando-paciente { grid-template-columns:1fr; }
+    .grade-painel { grid-template-columns:1fr; }
+    .grade-vitais { grid-template-columns:repeat(2, minmax(0,1fr)); }
+    .quadro-moderno-medico { grid-template-columns:1fr; }
+    .planejador-consulta { grid-template-columns:1fr; }
+    .lateral-planejador { position:static; }
+    .grade-escolha-medico { grid-template-columns:1fr; }
+    .grade-calendario-consulta { grid-template-columns:repeat(3, minmax(0,1fr)); }
+    .visualizador-manutencao-exame { grid-template-columns:1fr; }
+}
+

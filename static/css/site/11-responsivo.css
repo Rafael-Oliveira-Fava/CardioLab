@@ -1,0 +1,96 @@
+html.tema-escuro .acoes-suporte-duvidas a:hover {
+    background:#FEE2E2;
+    color:#9E0000;
+}
+body.alto-contraste { background: #000 !important; color: #fff !important; }
+body.alto-contraste * { border-color: #fff !important; }
+body.alto-contraste .bg-white,
+body.alto-contraste .bg-gray-50,
+body.alto-contraste .bg-gray-100,
+body.alto-contraste .bg-cream,
+body.alto-contraste .cartao-servico-premium,
+body.alto-contraste .cartao-painel,
+body.alto-contraste .estrutura-autenticacao {
+    background: #111 !important;
+    color: #fff !important;
+}
+body.alto-contraste a { color: #ffcc00 !important; }
+body.alto-contraste .text-gray-400,
+body.alto-contraste .text-gray-500,
+body.alto-contraste .text-gray-600 { color: #ccc !important; }
+.conteudo-artigo p { margin-bottom: 0.5rem; }
+.conteudo-artigo strong { color: var(--color-black); }
+@media (max-width: 768px) {
+    .pagina-duvidas {
+        min-height:auto;
+        align-items:flex-start;
+        padding:3rem 0;
+    }
+    .estrutura-duvidas {
+        grid-template-columns:1fr;
+        gap:1.4rem;
+    }
+    .introducao-duvidas h1 {
+        font-size:2.35rem;
+    }
+    .cartao-suporte-duvidas {
+        border-radius:14px;
+    }
+    .alternar-duvida {
+        min-height:64px;
+        padding:1rem;
+        font-size:.94rem;
+    }
+    .resposta-duvida {
+        padding:0 1rem 1rem;
+    }
+    .painel-destaque-equipe,
+    .painel-destaque-artigos,
+    .cartao-artigo-destaque {
+        grid-template-columns:1fr;
+    }
+    .estatisticas-equipe,
+    .grade-artigos-modernos,
+    .grade-artigos-relacionados {
+        grid-template-columns:1fr;
+    }
+    .grade-equipe {
+        grid-template-columns:1fr;
+    }
+    .cartao-medico-equipe {
+        grid-template-columns:1fr;
+    }
+    .envoltorio-foto-medico-equipe {
+        height:240px;
+    }
+    .texto-artigo-destaque h2 {
+        font-size:1.8rem;
+    }
+    .contador { font-size: 2rem !important; }
+    .container-video-destaque { min-height: 420px; border-radius: 30px; }
+    .painel-exame { left: 7%; right: 7%; width: auto; }
+    .cartao-prova-destaque { padding: 12px; }
+    .container-mapa-real { height: 380px; border-radius: 30px; }
+    .container-video-coracao-3d { border-radius: 30px; }
+    .icone-artigo { width: 56px; height: 56px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .grade-destaque,
+    .fundo-ecg,
+    .container-video-coracao-3d::after,
+    .icone-artigo {
+        animation: none !important;
+    }
+    .revelar-rolagem {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+    .container-video-destaque {
+        transform: none !important;
+    }
+    html {
+        scroll-behavior: auto !important;
+    }
+}
+

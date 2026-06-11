@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="Paciente CardioLab">
+  <rect width="160" height="160" rx="34" fill="#f5f3ff"/>
+  <circle cx="80" cy="68" r="33" fill="#c98b68"/>
+  <path d="M48 60c8-25 27-36 53-27 12 6 18 17 15 33-20-12-45-16-68-6z" fill="#111827"/>
+  <circle cx="68" cy="73" r="3" fill="#111827"/><circle cx="92" cy="73" r="3" fill="#111827"/>
+  <path d="M68 91c9 6 16 6 25 0" fill="none" stroke="#7f1d1d" stroke-width="4" stroke-linecap="round"/>
+  <path d="M35 146c5-29 24-47 45-47s40 18 45 47" fill="#7c3aed"/>
+  <path d="M57 111h46" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+</svg>

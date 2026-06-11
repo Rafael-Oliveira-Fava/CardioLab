@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="Medica CardioLab">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fce7f3"/><stop offset="1" stop-color="#fee2e2"/></linearGradient>
+  </defs>
+  <rect width="160" height="160" rx="34" fill="url(#bg)"/>
+  <path d="M45 75c0-31 15-49 35-49s35 18 35 49c0 31-14 45-35 45S45 106 45 75z" fill="#1f2937"/>
+  <circle cx="80" cy="70" r="31" fill="#efc0a5"/>
+  <path d="M50 63c10-22 32-31 58-10-8-24-52-32-58 10z" fill="#111827"/>
+  <circle cx="68" cy="74" r="3" fill="#111827"/><circle cx="92" cy="74" r="3" fill="#111827"/>
+  <path d="M68 92c9 7 16 7 25 0" fill="none" stroke="#be123c" stroke-width="4" stroke-linecap="round"/>
+  <path d="M34 146c5-30 24-48 46-48s41 18 46 48" fill="#fff"/>
+  <path d="M61 107l19 19 19-19" fill="none" stroke="#d60000" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

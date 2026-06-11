@@ -1,0 +1,185 @@
+.acao-pequena,
+.botao-ler-notificacao,
+.selo-cancelar {
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:34px;
+    border-radius:8px;
+    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease;
+}
+.acao-pequena:hover,
+.botao-ler-notificacao:hover,
+.selo-cancelar:hover {
+    transform:translateY(-1px);
+}
+.acao-pequena.primario:hover {
+    box-shadow:0 10px 24px rgba(214,0,0,.18);
+}
+.acao-pequena.escuro:hover {
+    background:#1f2937;
+}
+.formulario-remarcacao {
+    margin-top:.75rem;
+    border-radius:12px;
+    background:#f8fbff;
+}
+.formulario-remarcacao:not(.hidden) {
+    animation:fadeTabPanel .18s ease-out;
+}
+.erro-formulario-inline {
+    border-radius:8px;
+    padding:.65rem .75rem;
+    background:#fef2f2;
+    border:1px solid rgba(185,28,28,.16);
+}
+.cartao-consulta:has(.formulario-remarcacao:not(.hidden)) {
+    border-color:rgba(29,78,216,.24);
+    box-shadow:0 12px 30px rgba(29,78,216,.08);
+}
+html.tema-escuro .pagina-painel {
+    background:
+        radial-gradient(circle at 0% 8%, rgba(214,0,0,.14), transparent 30%),
+        linear-gradient(180deg, #0E1117, #121720 52%, #0E1117) !important;
+}
+html.tema-escuro .cartao-painel,
+html.tema-escuro .cartao-prioridade,
+html.tema-escuro .cartao-perfil,
+html.tema-escuro .estrutura-planejador-consulta,
+html.tema-escuro .painel-prontuario,
+html.tema-escuro .cartao-plano-carteirinha,
+html.tema-escuro .cartao-notificacao,
+html.tema-escuro .cartao-consulta,
+html.tema-escuro .cartao-exame,
+html.tema-escuro .cartao-metrica-saude,
+html.tema-escuro .cartao-carteirinha-mini,
+html.tema-escuro .mini-vital,
+html.tema-escuro .evento-atividade,
+html.tema-escuro .cartao-exame-rapido,
+html.tema-escuro .resumo-prontuario-paciente,
+html.tema-escuro .formulario-remarcacao,
+html.tema-escuro .carteirinha-inline,
+html.tema-escuro .bloco-prontuario {
+    background:#171B22 !important;
+    color:#EEF2F7;
+    border-color:rgba(255,255,255,.10) !important;
+    box-shadow:0 18px 58px rgba(0,0,0,.28);
+}
+html.tema-escuro .cartao-painel .text-dark,
+html.tema-escuro .cartao-painel strong,
+html.tema-escuro .cartao-painel h2,
+html.tema-escuro .cartao-painel h3,
+html.tema-escuro .principal-consulta-medico strong,
+html.tema-escuro .grade-beneficios-carteirinha strong,
+html.tema-escuro .cartao-plano-carteirinha strong,
+html.tema-escuro .cartao-perfil h3 {
+    color:#F8FAFC !important;
+}
+html.tema-escuro .cartao-painel .text-gray-400,
+html.tema-escuro .cartao-painel .text-gray-500,
+html.tema-escuro .cartao-painel .text-gray-600,
+html.tema-escuro .principal-consulta-medico span,
+html.tema-escuro .linha-tempo-atividade small,
+html.tema-escuro .meta-atividade small,
+html.tema-escuro .cartao-plano-carteirinha > div > span {
+    color:#AEB9C7 !important;
+}
+html.tema-escuro .linha-tempo-atividade::before {
+    background:linear-gradient(180deg, rgba(248,113,113,.34), rgba(96,165,250,.25), rgba(74,222,128,.22));
+}
+html.tema-escuro .evento-atividade {
+    background:linear-gradient(135deg, #171B22 0%, #1C1720 100%) !important;
+}
+html.tema-escuro .evento-atividade:hover {
+    border-color:rgba(248,113,113,.28) !important;
+    box-shadow:0 16px 34px rgba(0,0,0,.22);
+}
+html.tema-escuro .marcador-atividade {
+    border-color:#171B22;
+}
+html.tema-escuro .texto-atividade em {
+    background:rgba(248,113,113,.12);
+    color:#FCA5A5;
+}
+html.tema-escuro .atividade-exame {
+    background:linear-gradient(135deg, #171B22 0%, #111D2F 100%) !important;
+}
+html.tema-escuro .atividade-exame .texto-atividade em {
+    background:rgba(96,165,250,.14);
+    color:#93C5FD;
+}
+html.tema-escuro .atividade-saude {
+    background:linear-gradient(135deg, #171B22 0%, #102219 100%) !important;
+}
+html.tema-escuro .atividade-saude .texto-atividade em {
+    background:rgba(74,222,128,.12);
+    color:#86EFAC;
+}
+html.tema-escuro .atividade-historico,
+html.tema-escuro .atividade-vazia {
+    background:linear-gradient(135deg, #171B22 0%, #121821 100%) !important;
+}
+html.tema-escuro .atividade-historico .texto-atividade em,
+html.tema-escuro .atividade-vazia .texto-atividade em {
+    background:rgba(148,163,184,.12);
+    color:#CBD5E1;
+}
+html.tema-escuro .campo-painel,
+html.tema-escuro .principal-planejador select,
+html.tema-escuro .principal-planejador input,
+html.tema-escuro .formulario-remarcacao input {
+    background:#111827 !important;
+    color:#F8FAFC !important;
+    border-color:rgba(255,255,255,.14) !important;
+}
+html.tema-escuro .tabela-painel {
+    background:#171B22;
+    color:#EEF2F7;
+}
+html.tema-escuro .tabela-painel th {
+    background:#111827 !important;
+    color:#CBD5E1 !important;
+}
+html.tema-escuro .tabela-painel td,
+html.tema-escuro .tabela-painel tr {
+    border-color:rgba(255,255,255,.08) !important;
+}
+html.tema-escuro .cartao-estatistica-medico,
+html.tema-escuro .estatisticas-gerais .cartao-estatistica-medico,
+html.tema-escuro .grade-metricas-medico div,
+html.tema-escuro .linha-checagem-risco,
+html.tema-escuro .linha-detalhe,
+html.tema-escuro .checagem-teleconsulta {
+    background:#111827 !important;
+    border-color:rgba(255,255,255,.10) !important;
+}
+html.tema-escuro .cartao-escolha-medico,
+html.tema-escuro .botao-dia-calendario,
+html.tema-escuro .botao-horario {
+    background:#151A22 !important;
+    color:#E5EAF2;
+    border-color:rgba(255,255,255,.10) !important;
+}
+html.tema-escuro .cartao-escolha-medico.selecionado,
+html.tema-escuro .botao-dia-calendario.selecionado,
+html.tema-escuro .botao-horario.selecionado {
+    border-color:rgba(214,0,0,.72) !important;
+    box-shadow:0 0 0 3px rgba(214,0,0,.16);
+}
+html.tema-escuro .botao-horario.ocupado,
+html.tema-escuro .botao-dia-calendario.lotado {
+    background:#101319 !important;
+    color:#64748B !important;
+}
+html.tema-escuro .lateral-planejador,
+html.tema-escuro .perfil-medico-selecionado {
+    background:#111827 !important;
+    border-color:rgba(255,255,255,.10) !important;
+}
+html.tema-escuro .estado-vazio-notificacao,
+html.tema-escuro .estado-vazio,
+html.tema-escuro .carregando-calendario {
+    background:#111827 !important;
+    color:#AEB9C7 !important;
+    border-color:rgba(255,255,255,.10) !important;
+}

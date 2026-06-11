@@ -1,0 +1,77 @@
+{% extends "estrutura_base.html" %}
+{% block title %}Serviços - CardioLab{% endblock %}
+{% block conteudo %}
+<section class="py-24 md:py-32 bg-cream relative overflow-hidden">
+    <div class="absolute inset-0 grade-destaque opacity-60"></div>
+    <div class="max-w-7xl mx-auto px-4 relative z-10">
+        <div class="max-w-3xl mb-16 revelar-rolagem">
+            <p class="chamada-secao">Serviços</p>
+            <h1 class="font-display text-5xl md:text-6xl text-dark mb-5 leading-none">Nossos exames e consultas</h1>
+            <p class="text-gray-600 text-lg leading-relaxed">Oferecemos uma gama completa de exames e procedimentos cardiológicos com tecnologia de ponta, preparo orientado e indicação personalizada para cada paciente.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for servico in servicos %}
+            {% set nome_servico = servico.nome|lower %}
+            <div class="cartao-detalhe-servico group revelar-rolagem" style="transition-delay:{{ loop.index0 * 0.06 }}s">
+                <div class="linha-superior-detalhe-servico"></div>
+                <div class="p-8">
+                    <div class="icone-servico-premium {% if 'eletro' in nome_servico or 'ecg' in nome_servico %}icone-ecg{% elif 'eco' in nome_servico %}icone-ecocardiograma{% elif 'holter' in nome_servico %}icone-holter{% elif 'mapa' in nome_servico or 'pressão' in nome_servico %}icone-pressao{% elif 'ergométrico' in nome_servico %}icone-esforco{% elif 'doppler' in nome_servico %}icone-doppler{% elif 'tele' in nome_servico %}icone-teleconsulta{% else %}icone-consulta{% endif %}">
+                        {% if 'eletro' in nome_servico or 'ecg' in nome_servico %}
+                        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 25h9l4-12 7 25 6-18 4 5h10" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        {% elif 'eco' in nome_servico %}
+                        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3"><circle cx="20" cy="24" r="8"/><path d="M32 14c5 5 5 15 0 20M38 9c8 8 8 22 0 30" stroke-linecap="round"/></svg>
+                        {% elif 'holter' in nome_servico %}
+                        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3"><rect x="14" y="8" width="20" height="32" rx="5"/><path d="M19 18h10M19 25h5M24 8V3M24 45v-5" stroke-linecap="round"/></svg>
+                        {% elif 'mapa' in nome_servico or 'pressão' in nome_servico %}
+                        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3"><rect x="9" y="14" width="16" height="22" rx="4"/><path d="M25 20h7a7 7 0 010 14h-3M33 18v18" stroke-linecap="round"/></svg>
+                        {% elif 'ergométrico' in nome_servico %}
+                        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3"><path d="M28 12a4 4 0 11-8 0 4 4 0 018 0zM24 19l-6 8 8 4 5 10M20 32l-7 8M27 24l8 3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        {% elif 'doppler' in nome_servico %}
+                        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3"><path d="M8 28c8-16 24 16 32 0M8 18c8 16 24-16 32 0" stroke-linecap="round"/><circle cx="24" cy="24" r="4"/></svg>
+                        {% elif 'tele' in nome_servico %}
+                        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3"><rect x="8" y="12" width="32" height="24" rx="4"/><path d="M18 38h12M24 32v6M18 24h12" stroke-linecap="round"/></svg>
+                        {% else %}
+                        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3"><path d="M24 8v32M8 24h32" stroke-linecap="round"/><rect x="10" y="10" width="28" height="28" rx="8"/></svg>
+                        {% endif %}
+                    </div>
+                    <h3 class="text-2xl font-extrabold text-dark mb-3 mt-6 group-hover:text-primary transition">{{ servico.nome }}</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed mb-6">{{ servico.descricao }}</p>
+                    <div class="space-y-3 mb-7">
+                        {% if servico.preparo %}
+                        <div class="linha-detalhe">
+                            <span class="icone-linha-detalhe" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5h8M8 9h8M8 13h5"/><rect x="5" y="3" width="14" height="18" rx="3"/></svg></span>
+                            <div><p>Preparo</p><small>{{ servico.preparo }}</small></div>
+                        </div>
+                        {% endif %}
+                        <div class="linha-detalhe">
+                            <span class="icone-linha-detalhe" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="7"/><path d="M9 2h6M12 13V9m0 4 3 2"/></svg></span>
+                            <div>
+                                <p>Duração média</p>
+                                <small>
+                                    {% if servico.duracao_minutos >= 60 %}
+                                        {{ servico.duracao_minutos // 60 }}h{% if servico.duracao_minutos % 60 %} {{ servico.duracao_minutos % 60 }}min{% endif %}
+                                    {% else %}
+                                        {{ servico.duracao_minutos }} minutos
+                                    {% endif %}
+                                </small>
+                            </div>
+                        </div>
+                        {% if servico.indicacao %}
+                        <div class="linha-detalhe">
+                            <span class="icone-linha-detalhe" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3m10-10h-3M5 12H2"/></svg></span>
+                            <div><p>Indicação</p><small>{{ servico.indicacao }}</small></div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <a href="{{ url_for('publico.agendar', servico_id=servico.id) }}" class="block text-center py-3.5 bg-dark text-white rounded-full font-extrabold hover:bg-primary transition shadow-lg shadow-black/10">
+                        Agendar
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+

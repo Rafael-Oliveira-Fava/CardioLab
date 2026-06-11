@@ -1,0 +1,186 @@
+.botao-horario {
+    border-radius:14px;
+    padding:.6rem .5rem;
+    font-size:.78rem;
+    font-weight:900;
+    background:#dcfce7;
+    color:#166534;
+    border:1px solid rgba(22,101,52,.12);
+}
+.botao-horario.ocupado { background:#f1f5f9; color:#94a3b8; cursor:not-allowed; }
+.botao-horario.passado {
+    background:#f8fafc;
+    color:#cbd5e1;
+    text-decoration:line-through;
+}
+.sugestao-inteligente {
+    margin-top:.6rem;
+    border-radius:14px;
+    padding:.75rem;
+    background:#eff6ff;
+    color:#1d4ed8;
+    font-size:.8rem;
+    font-weight:800;
+}
+.estrutura-planejador-consulta {
+    width:min(1120px, 96vw);
+    max-height:92vh;
+    overflow-y:auto;
+    border-radius:32px;
+    padding:28px;
+    background:#fff;
+    border:1px solid rgba(17,17,17,.06);
+    box-shadow:0 30px 90px rgba(0,0,0,.28);
+}
+.fechar-consulta {
+    width:44px;
+    height:44px;
+    border-radius:16px;
+    display:grid;
+    place-items:center;
+    background:#f8fafc;
+    color:#94a3b8;
+    font-size:2rem;
+    line-height:1;
+}
+.planejador-consulta {
+    display:grid;
+    grid-template-columns:1fr 320px;
+    gap:1.5rem;
+}
+.principal-planejador {
+    display:grid;
+    gap:1.35rem;
+}
+.cabecalho-planejador {
+    display:flex;
+    align-items:center;
+    gap:.8rem;
+    margin-bottom:.75rem;
+}
+.cabecalho-planejador > span {
+    width:34px;
+    height:34px;
+    border-radius:12px;
+    display:grid;
+    place-items:center;
+    background:#fff2f2;
+    color:var(--color-primary);
+    font-weight:900;
+}
+.cabecalho-planejador strong { display:block; color:#111; font-weight:900; }
+.cabecalho-planejador small { display:block; color:#94a3b8; font-size:.75rem; font-weight:800; }
+.grade-escolha-medico {
+    display:grid;
+    grid-template-columns:repeat(3, minmax(0,1fr));
+    gap:.85rem;
+}
+.cartao-escolha-medico {
+    min-height:168px;
+    display:grid;
+    justify-items:start;
+    gap:.25rem;
+    text-align:left;
+    border-radius:22px;
+    padding:1rem;
+    background:#faf8f5;
+    border:1px solid rgba(17,17,17,.06);
+    transition:transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+.cartao-escolha-medico:hover,
+.cartao-escolha-medico.selecionado {
+    transform:translateY(-2px);
+    border-color:rgba(214,0,0,.32);
+    box-shadow:0 16px 42px rgba(214,0,0,.10);
+}
+.cartao-escolha-medico strong { color:#111; font-size:.95rem; }
+.cartao-escolha-medico small { color:#667085; font-weight:800; }
+.cartao-escolha-medico em { color:#9ca3af; font-size:.7rem; font-style:normal; font-weight:900; }
+.foto-medico {
+    width:64px;
+    height:64px;
+    border-radius:22px;
+    object-fit:cover;
+    background:#fff;
+    box-shadow:0 14px 35px rgba(17,17,17,.16);
+}
+.foto-medico-selecionado {
+    width:92px;
+    height:92px;
+    border-radius:28px;
+    margin-bottom:.75rem;
+}
+.face-tone-0 { background:linear-gradient(135deg,#111827,#ef4444); }
+.face-tone-1 { background:linear-gradient(135deg,#0f766e,#14b8a6); }
+.face-tone-2 { background:linear-gradient(135deg,#1d4ed8,#60a5fa); }
+.face-tone-3 { background:linear-gradient(135deg,#7c2d12,#fb923c); }
+.face-tone-4 { background:linear-gradient(135deg,#4338ca,#a78bfa); }
+.grade-calendario-consulta {
+    display:grid;
+    grid-template-columns:repeat(7, minmax(0,1fr));
+    gap:.55rem;
+}
+.botao-dia-calendario {
+    min-height:84px;
+    border-radius:18px;
+    padding:.7rem .4rem;
+    display:grid;
+    place-items:center;
+    gap:.1rem;
+    border:1px solid rgba(17,17,17,.06);
+    transition:transform .18s ease, box-shadow .18s ease;
+}
+.botao-dia-calendario span { color:#64748b; font-size:.68rem; font-weight:900; text-transform:uppercase; }
+.botao-dia-calendario strong { color:#111; font-size:.92rem; }
+.botao-dia-calendario small { font-size:.65rem; font-weight:900; }
+.botao-dia-calendario.disponivel { background:#ecfdf3; color:#166534; }
+.botao-dia-calendario.disponivel small { color:#166534; }
+.botao-dia-calendario.lotado { background:#fff1f2; color:#991b1b; }
+.botao-dia-calendario.lotado small { color:#991b1b; }
+.botao-dia-calendario.selecionado {
+    transform:translateY(-2px);
+    box-shadow:0 14px 35px rgba(17,17,17,.12);
+    outline:3px solid rgba(214,0,0,.18);
+}
+.carregando-calendario {
+    grid-column:1/-1;
+    border-radius:16px;
+    padding:1rem;
+    background:#f8fafc;
+    color:#64748b;
+    font-weight:800;
+    text-align:center;
+}
+.botao-horario.selecionado {
+    background:#111;
+    color:#fff;
+}
+.lateral-planejador {
+    position:sticky;
+    top:0;
+    align-self:start;
+    display:grid;
+    gap:1rem;
+    border-radius:26px;
+    padding:1rem;
+    background:#faf8f5;
+    border:1px solid rgba(17,17,17,.06);
+}
+.perfil-medico-selecionado {
+    border-radius:22px;
+    padding:1.1rem;
+    background:#fff;
+    border:1px solid rgba(17,17,17,.06);
+}
+.perfil-medico-selecionado h3 {
+    color:#111;
+    font-weight:900;
+    font-size:1.25rem;
+    margin-top:.75rem;
+}
+.perfil-medico-selecionado strong {
+    display:block;
+    color:var(--color-primary);
+    font-size:.78rem;
+    margin:.35rem 0;
+}

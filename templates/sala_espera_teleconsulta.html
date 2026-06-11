@@ -1,0 +1,38 @@
+{% extends "estrutura_base.html" %}
+{% block title %}Teleconsulta - CardioLab{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/painel.css', v=versao_estatica) }}">{% endblock %}
+{% block conteudo %}
+<section class="pagina-painel min-h-screen py-10">
+    <div class="max-w-4xl mx-auto px-4">
+        <div class="cartao-painel">
+            <div class="cabecalho-cartao">
+                <div>
+                    <p class="chamada-cartao">Sala de espera virtual</p>
+                    <h1 class="font-display text-4xl text-dark">{{ consulta.nome_servico }}</h1>
+                    <p class="text-gray-500">{{ consulta.nome_medico }} · {{ consulta.data_consulta|data_br }} {{ consulta.horario_consulta|horario }}</p>
+                </div>
+                <span id="situacao-medico" class="selo-situacao pendente">Conectando</span>
+            </div>
+            <div class="grid md:grid-cols-3 gap-3 mb-6">
+                <label class="checagem-teleconsulta"><input type="checkbox"> Câmera testada</label>
+                <label class="checagem-teleconsulta"><input type="checkbox"> Microfone testado</label>
+                <label class="checagem-teleconsulta"><input type="checkbox"> Exames em mãos</label>
+            </div>
+            <a href="{{ consulta.url_sala }}" target="_blank" class="acao-painel primario">Entrar no Jitsi Meet</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+{% block extra_js %}
+<script>
+const badge = document.getElementById('situacao-medico');
+const stream = new EventSource("{{ url_for('paciente.fluxo_situacao_teleconsulta', consulta_id=consulta.id) }}");
+stream.addEventListener('situacao-medico', (event) => {
+    const payload = JSON.parse(event.data);
+    badge.textContent = payload.situacao;
+    badge.className = payload.situacao === 'disponivel' ?'selo-situacao confirmado' : 'selo-situacao pendente';
+});
+</script>
+{% endblock %}
+
+

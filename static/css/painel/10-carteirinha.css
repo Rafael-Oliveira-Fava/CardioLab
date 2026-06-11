@@ -1,0 +1,184 @@
+.situacao-agendada { background:#f6f0df; color:#8a5a00; }
+.situacao-confirmada { background:#e7f4ec; color:#166534; }
+.situacao-em_atendimento { background:#e9f0fb; color:#1d4ed8; }
+.situacao-finalizada { background:#e8f5e9; color:#1f7a34; }
+.situacao-cancelada { background:#fbe7e7; color:#991b1b; }
+.situacao-faltou { background:#f3f4f6; color:#4b5563; }
+.pagina-painel {
+    background:
+        linear-gradient(180deg, #f6f8fb 0%, #ffffff 46%, #f3f6fa 100%);
+}
+.estrutura-painel {
+    border-radius:14px;
+    background:linear-gradient(135deg,#191a1f,#2b1b1d 72%,#3f0d12);
+}
+.cartao-painel,
+.cartao-estatistica-medico,
+.alerta-critico,
+.mini-vital,
+.evento-atividade,
+.cartao-exame-rapido,
+.estrutura-planejador-consulta,
+.lateral-planejador,
+.perfil-medico-selecionado,
+.caixa-resumo-consulta,
+.botao-dia-calendario,
+.cartao-escolha-medico,
+.linha-consulta-medico,
+.grade-metricas-medico div,
+.cartao-notificacao,
+.cartao-consulta,
+.cartao-exame,
+.estado-vazio,
+.cartao-grafico,
+.linha-perfil,
+.bloco-prontuario,
+.resumo-prontuario-paciente div,
+.cartao-lista-paciente,
+.cartao-plano-carteirinha,
+.carteirinha-digital,
+.grade-beneficios-carteirinha div,
+.cartao-carteirinha-mini,
+.carteirinha-inline {
+    border-radius:8px;
+}
+.cartao-painel {
+    border-color:rgba(15,23,42,.08);
+    box-shadow:0 12px 32px rgba(15,23,42,.07);
+}
+.cartao-estatistica-medico {
+    background:#1f2937;
+}
+.cartao-resumo-carteirinha {
+    border-top:4px solid #1d4ed8;
+}
+.cartao-carteirinha-mini {
+    display:grid;
+    gap:.25rem;
+    padding:1rem;
+    color:#fff;
+    background:linear-gradient(135deg,#111827,#1d4ed8);
+    border:1px solid rgba(255,255,255,.12);
+}
+.cartao-carteirinha-mini span,
+.cartao-carteirinha-mini small {
+    color:rgba(255,255,255,.72);
+    font-size:.72rem;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+}
+.cartao-carteirinha-mini strong {
+    font-size:1.05rem;
+    letter-spacing:.04em;
+}
+.carteirinha-digital {
+    min-height:230px;
+    display:grid;
+    align-content:space-between;
+    gap:1.2rem;
+    padding:1.35rem;
+    color:#fff;
+    background:
+        linear-gradient(135deg, rgba(214,0,0,.92), rgba(17,24,39,.98) 58%, rgba(29,78,216,.88));
+    border:1px solid rgba(255,255,255,.16);
+    box-shadow:0 24px 54px rgba(15,23,42,.20);
+}
+.carteirinha-digital p {
+    font-size:.68rem;
+    font-weight:900;
+    letter-spacing:.22em;
+    color:rgba(255,255,255,.70);
+}
+.carteirinha-digital h3 {
+    color:#fff;
+    font-size:1.55rem;
+    line-height:1.1;
+    font-weight:900;
+    margin-top:.2rem;
+}
+.carteirinha-digital span {
+    color:rgba(255,255,255,.78);
+    font-weight:800;
+}
+.numero-carteirinha {
+    display:grid;
+    gap:.15rem;
+}
+.numero-carteirinha small,
+.rodape-carteirinha span {
+    color:rgba(255,255,255,.68);
+    font-size:.72rem;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+}
+.numero-carteirinha strong {
+    color:#fff;
+    font-size:1.28rem;
+    letter-spacing:.08em;
+}
+.rodape-carteirinha {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:1rem;
+    border-top:1px solid rgba(255,255,255,.16);
+    padding-top:1rem;
+}
+.grade-beneficios-carteirinha {
+    display:grid;
+    grid-template-columns:repeat(4, minmax(0,1fr));
+    gap:.75rem;
+}
+.grade-beneficios-carteirinha div {
+    padding:1rem;
+    background:#f8fafc;
+    border:1px solid rgba(15,23,42,.08);
+}
+.grade-beneficios-carteirinha span,
+.grade-beneficios-carteirinha small {
+    display:block;
+    color:#64748b;
+    font-size:.72rem;
+    font-weight:800;
+}
+.grade-beneficios-carteirinha strong {
+    display:block;
+    color:#111827;
+    font-size:1.7rem;
+    line-height:1;
+    margin:.3rem 0;
+}
+.lista-planos-carteirinha {
+    display:grid;
+    gap:.85rem;
+}
+.cartao-plano-carteirinha {
+    display:grid;
+    gap:.75rem;
+    padding:1rem;
+    background:#f8fafc;
+    border:1px solid rgba(15,23,42,.08);
+}
+.cartao-plano-carteirinha strong,
+.carteirinha-inline strong {
+    display:block;
+    color:#111827;
+    font-weight:900;
+}
+.cartao-plano-carteirinha span,
+.carteirinha-inline span,
+.carteirinha-inline small {
+    display:block;
+    color:#64748b;
+    font-size:.76rem;
+    font-weight:800;
+}
+.cartao-plano-carteirinha ul {
+    display:grid;
+    gap:.35rem;
+    color:#475569;
+    font-size:.82rem;
+    line-height:1.4;
+}

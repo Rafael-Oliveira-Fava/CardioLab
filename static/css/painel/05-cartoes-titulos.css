@@ -1,0 +1,181 @@
+.perfil-medico-selecionado p {
+    color:#667085;
+    font-size:.86rem;
+    line-height:1.5;
+}
+.caixa-resumo-consulta {
+    display:grid;
+    gap:.65rem;
+    border-radius:22px;
+    padding:1rem;
+    background:#fff;
+    border:1px solid rgba(17,17,17,.06);
+}
+.caixa-resumo-consulta div {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:1rem;
+}
+.caixa-resumo-consulta span { color:#94a3b8; font-size:.75rem; font-weight:900; }
+.caixa-resumo-consulta strong { color:#111; font-weight:900; }
+.quadro-moderno-medico {
+    display:grid;
+    grid-template-columns:1.35fr .8fr .75fr;
+    gap:1.5rem;
+}
+.calendario-semana {
+    display:grid;
+    grid-template-columns:repeat(7, minmax(120px,1fr));
+    gap:.75rem;
+    overflow-x:auto;
+    padding-bottom:.25rem;
+}
+.coluna-dia-semana {
+    min-height:220px;
+    border-radius:20px;
+    padding:.75rem;
+    background:#f8fafc;
+    border:1px solid rgba(15,23,42,.06);
+}
+.coluna-dia-semana > strong {
+    display:block;
+    color:#111;
+    font-size:.8rem;
+    margin-bottom:.65rem;
+}
+.horario-calendario {
+    width:100%;
+    display:flex;
+    gap:.55rem;
+    align-items:center;
+    text-align:left;
+    border-radius:14px;
+    padding:.65rem;
+    margin-bottom:.5rem;
+    background:#eff6ff;
+    color:#1d4ed8;
+    border-left:4px solid #2563eb;
+}
+.horario-calendario > div { min-width:0; display:grid; gap:.1rem; }
+.horario-calendario.confirmada { background:#f0fdf4; color:#166534; border-left-color:#16a34a; }
+.horario-calendario.cancelada { background:#fef2f2; color:#991b1b; border-left-color:#dc2626; }
+.horario-calendario span { font-weight:900; }
+.horario-calendario small { font-size:.72rem; }
+.horario-calendario em,
+.item-fila em {
+    justify-self:start;
+    border-radius:999px;
+    padding:.15rem .45rem;
+    background:#fee2e2;
+    color:#991b1b;
+    font-size:.62rem;
+    font-style:normal;
+    font-weight:900;
+}
+.fila-medico {
+    display:grid;
+    gap:.75rem;
+}
+.item-fila {
+    display:grid;
+    grid-template-columns:auto auto 1fr auto;
+    gap:.75rem;
+    align-items:center;
+    text-align:left;
+    border-radius:18px;
+    padding:.9rem;
+    background:#faf8f5;
+    border:1px solid rgba(17,17,17,.06);
+    cursor:grab;
+}
+.item-fila.arrastando { opacity:.5; }
+.item-fila span { font-weight:900; color:var(--color-primary); }
+.item-fila strong { color:#111; }
+.lista-consultas-medico {
+    display:grid;
+    gap:.65rem;
+}
+.linha-consulta-medico {
+    display:grid;
+    grid-template-columns:68px auto minmax(0,1fr) auto auto;
+    align-items:center;
+    gap:.8rem;
+    border-radius:18px;
+    padding:.85rem;
+    background:#faf8f5;
+    border:1px solid rgba(17,17,17,.06);
+    transition:background .2s ease, border-color .2s ease;
+}
+.linha-consulta-medico:hover {
+    background:#fff;
+    border-color:rgba(214,0,0,.14);
+}
+.linha-consulta-medico time {
+    color:#111;
+    font-weight:800;
+}
+.principal-consulta-medico {
+    display:grid;
+    min-width:0;
+    gap:.12rem;
+}
+.principal-consulta-medico strong {
+    color:#111;
+    font-weight:800;
+}
+.principal-consulta-medico span {
+    color:#667085;
+    font-size:.82rem;
+}
+.linha-situacao-em_atendimento {
+    background:#eef4ff;
+    border-color:rgba(37,99,235,.20);
+}
+.linha-situacao-finalizada {
+    background:#f1f8f1;
+}
+.linha-situacao-cancelada,
+.linha-situacao-faltou {
+    opacity:.68;
+}
+.acoes-icones-consulta {
+    display:flex;
+    align-items:center;
+    gap:.35rem;
+}
+.acao-icone {
+    width:32px;
+    height:32px;
+    display:grid;
+    place-items:center;
+    border-radius:999px;
+    background:#fff;
+    color:#334155;
+    border:1px solid rgba(15,23,42,.12);
+    transition:transform .2s ease, color .2s ease, border-color .2s ease;
+}
+.acao-icone:hover {
+    transform:translateY(-1px);
+    color:var(--color-primary);
+    border-color:rgba(214,0,0,.22);
+}
+.acao-icone.perigo {
+    color:#dc2626;
+    border-color:rgba(220,38,38,.20);
+}
+.acao-icone svg {
+    width:16px;
+    height:16px;
+    fill:none;
+    stroke:currentColor;
+    stroke-width:2.4;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+.foto-cabecalho-medico,
+.foto-mini-paciente {
+    object-fit:cover;
+    background:#fff;
+    box-shadow:0 10px 24px rgba(17,17,17,.12);
+}

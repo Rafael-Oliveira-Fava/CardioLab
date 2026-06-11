@@ -1,0 +1,158 @@
+{% extends "estrutura_base.html" %}
+{% block title %}Administração - CardioLab{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/painel.css', v=versao_estatica) }}">{% endblock %}
+{% block conteudo %}
+<div class="pagina-painel min-h-screen bg-cream py-8 md:py-12">
+    <div class="max-w-7xl mx-auto px-4 space-y-8">
+        <section class="destaque-painel">
+            <div class="relative z-10">
+                <p class="text-primary font-black uppercase tracking-[0.22em] text-xs mb-3">Administração</p>
+                <h1 class="font-display text-5xl text-white leading-none">Painel da clínica</h1>
+                <p class="text-white/65 mt-3 text-lg">Operação, usuários, agenda, relatórios e auditoria.</p>
+            </div>
+        </section>
+        <section class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="cartao-painel text-center"><p class="chamada-cartao">Hoje</p><strong class="text-3xl">{{ indicadores.consultas_hoje or 0 }}</strong><span class="block text-sm text-gray-500">consultas</span></div>
+            <div class="cartao-painel text-center"><p class="chamada-cartao">Ocupação</p><strong class="text-3xl">{{ indicadores.taxa_ocupacao or 0 }}%</strong><span class="block text-sm text-gray-500">últimos 30 dias</span></div>
+            <div class="cartao-painel text-center"><p class="chamada-cartao">Receita</p><strong class="text-3xl">R$ {{ indicadores.receita_estimada or 0 }}</strong><span class="block text-sm text-gray-500">estimada</span></div>
+            <div class="cartao-painel text-center"><p class="chamada-cartao">NPS</p><strong class="text-3xl">{{ indicadores.media_nps or 0 }}</strong><span class="block text-sm text-gray-500">média</span></div>
+        </section>
+        <section class="cartao-painel">
+            <div class="cabecalho-cartao">
+                <div><p class="chamada-cartao">Segurança</p><h2>Solicitações de nova senha</h2></div>
+            </div>
+            <div class="overflow-x-auto rounded-2xl border border-black/5">
+                <table class="tabela-painel">
+                    <thead><tr><th>Paciente</th><th>Contato</th><th>Pedido</th><th>Senha temporária</th><th></th></tr></thead>
+                    <tbody>
+                    {% for pedido in solicitacoes_senha %}
+                    <tr>
+                        <td>{{ pedido.nome_usuario }}<br><span class="text-xs text-gray-400">{{ pedido.cpf }}</span></td>
+                        <td>{{ pedido.email }}</td>
+                        <td>{{ pedido.criado_em|data_hora_curta if pedido.criado_em else '-' }}</td>
+                        <td>
+                            <form method="POST" action="{{ url_for('administracao.concluir_solicitacao_senha', solicitacao_id=pedido.id) }}" class="flex flex-wrap gap-2">
+                                <input name="nova_senha" required minlength="6" placeholder="Senha temporária" class="campo-painel">
+                                <button class="acao-pequena primario" type="submit">Redefinir</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form method="POST" action="{{ url_for('administracao.cancelar_solicitacao_senha', solicitacao_id=pedido.id) }}">
+                                <button class="acao-pequena escuro" type="submit">Cancelar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="5">Nenhuma solicitação pendente.</td></tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <section class="cartao-painel">
+            <div class="cabecalho-cartao">
+                <div><p class="chamada-cartao">Usuários</p><h2>Médicos, pacientes e administradores</h2></div>
+            </div>
+            <form method="POST" action="{{ url_for('administracao.criar_usuario') }}" class="grid md:grid-cols-6 gap-3 mb-5">
+                <input name="nome" required placeholder="Nome" class="campo-painel">
+                <input name="email" required type="email" placeholder="E-mail" class="campo-painel">
+                <input name="cpf" required placeholder="CPF válido" class="campo-painel">
+                <select name="perfil" class="campo-painel"><option value="paciente">Paciente</option><option value="medico">Médico</option><option value="administrador">Administração</option></select>
+                <input name="senha" placeholder="Senha inicial" class="campo-painel">
+                <button class="acao-painel primario">Criar</button>
+            </form>
+            <div class="overflow-x-auto rounded-2xl border border-black/5">
+                <table class="tabela-painel">
+                    <thead><tr><th>Nome</th><th>E-mail</th><th>Perfil</th><th>Situação</th><th></th></tr></thead>
+                    <tbody>
+                    {% for usuario in usuarios %}
+                    <tr>
+                        <td>{{ usuario.nome }}</td>
+                        <td>{{ usuario.email }}</td>
+                        <td>{{ usuario.perfil|rotulo_perfil }}</td>
+                        <td>{{ 'Ativo' if usuario.ativo else 'Inativo' }}</td>
+                        <td>
+                            <form method="POST" action="{{ url_for('administracao.alternar_usuario', usuario_id=usuario.id) }}">
+                                <button class="acao-pequena escuro" type="submit">Alternar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <section class="cartao-painel">
+            <div class="cabecalho-cartao">
+                <div><p class="chamada-cartao">CardioLab Care</p><h2>Carteirinhas e convênios</h2></div>
+            </div>
+            <div class="overflow-x-auto rounded-2xl border border-black/5">
+                <table class="tabela-painel">
+                    <thead><tr><th>Paciente</th><th>Plano</th><th>Carteirinha</th><th>Situação</th><th>Validade</th><th></th></tr></thead>
+                    <tbody>
+                    {% for item in carteirinhas %}
+                    <tr>
+                        <td>{{ item.nome_paciente }}<br><span class="text-xs text-gray-400">{{ item.email }}</span></td>
+                        <td>{{ item.nome_plano }}</td>
+                        <td>{{ item.numero_carteirinha }}</td>
+                        <td><span class="chip-membro {{ item.situacao|classe_situacao_carteirinha }}">{{ item.situacao|rotulo_carteirinha }}</span></td>
+                        <td>{{ item.expira_em|data_br if item.expira_em else '-' }}</td>
+                        <td>
+                            <form method="POST" action="{{ url_for('administracao.atualizar_situacao_carteirinha', carteirinha_id=item.id) }}" class="flex gap-2">
+                                <select name="situacao" class="campo-painel">
+                                    <option value="em_analise" {% if item.situacao == 'em_analise' %}selected{% endif %}>Em análise</option>
+                                    <option value="ativa" {% if item.situacao == 'ativa' %}selected{% endif %}>Ativa</option>
+                                    <option value="expirada" {% if item.situacao == 'expirada' %}selected{% endif %}>Expirada</option>
+                                    <option value="cancelada" {% if item.situacao == 'cancelada' %}selected{% endif %}>Cancelada</option>
+                                </select>
+                                <button class="acao-pequena escuro" type="submit">Salvar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="6">Nenhuma carteirinha solicitada.</td></tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <section class="grid lg:grid-cols-2 gap-8">
+            <div class="cartao-painel">
+                <div class="cabecalho-cartao"><div><p class="chamada-cartao">Relatórios</p><h2>Exportar CSV</h2></div></div>
+                <div class="grid grid-cols-2 gap-3">
+                    <a class="acao-pequena primario text-center" href="{{ url_for('administracao.exportar_relatorio', nome_relatorio='consultas') }}">Consultas</a>
+                    <a class="acao-pequena primario text-center" href="{{ url_for('administracao.exportar_relatorio', nome_relatorio='exames') }}">Exames</a>
+                    <a class="acao-pequena primario text-center" href="{{ url_for('administracao.exportar_relatorio', nome_relatorio='pacientes_novos') }}">Pacientes novos</a>
+                    <a class="acao-pequena primario text-center" href="{{ url_for('administracao.exportar_relatorio', nome_relatorio='cancelamentos') }}">Cancelamentos</a>
+                    <a class="acao-pequena primario text-center" href="{{ url_for('administracao.exportar_relatorio', nome_relatorio='convenios') }}">Convênios</a>
+                </div>
+            </div>
+            <form class="cartao-painel" method="POST" action="{{ url_for('administracao.salvar_configuracoes') }}">
+                <div class="cabecalho-cartao"><div><p class="chamada-cartao">Clínica</p><h2>Configurações</h2></div></div>
+                <div class="space-y-3">
+                    <input name="nome_clinica" value="{{ configuracoes.nome_clinica or 'CardioLab' }}" class="campo-painel" placeholder="Nome da clínica">
+                    <input name="whatsapp_clinica" value="{{ configuracoes.whatsapp_clinica or numero_whatsapp }}" class="campo-painel" placeholder="WhatsApp">
+                    <input name="horario_funcionamento" value="{{ configuracoes.horario_funcionamento or 'Seg-Sex 7h às 19h' }}" class="campo-painel" placeholder="Horário de funcionamento">
+                    <input name="logo_clinica" value="{{ configuracoes.logo_clinica or '' }}" class="campo-painel" placeholder="URL/logo">
+                    <button class="acao-painel primario w-full">Salvar configurações</button>
+                </div>
+            </form>
+        </section>
+        <section class="cartao-painel">
+            <div class="cabecalho-cartao"><div><p class="chamada-cartao">Auditoria</p><h2>Logs recentes</h2></div></div>
+            <div class="overflow-x-auto rounded-2xl border border-black/5">
+                <table class="tabela-painel">
+                    <thead><tr><th>Quando</th><th>Usuário</th><th>Ação</th><th>IP</th></tr></thead>
+                    <tbody>
+                    {% for auditoria in auditorias %}
+                    <tr><td>{{ auditoria.criado_em }}</td><td>{{ auditoria.nome_usuario or '-' }}</td><td>{{ auditoria.acao }}</td><td>{{ auditoria.endereco_ip }}</td></tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}
+
+

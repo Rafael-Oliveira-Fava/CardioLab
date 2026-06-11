@@ -1,0 +1,134 @@
+.icone-artigo {
+    position: relative;
+    z-index: 1;
+    width: 72px;
+    height: 72px;
+    animation: respirar 4s ease-in-out infinite;
+}
+.icone-artigo svg {
+    width: 100%;
+    height: 100%;
+}
+.cartao-info-localizacao {
+    display: grid;
+    gap: 4px;
+    background: #fff;
+    border: 1px solid rgba(17,17,17,.06);
+    border-radius: 20px;
+    padding: 18px;
+    box-shadow: 0 12px 35px rgba(17,17,17,.05);
+}
+.cartao-info-localizacao strong { color: var(--color-black); font-weight: 900; }
+.cartao-info-localizacao span { color: #666; font-size: .95rem; }
+.cartao-detalhe-servico { border-radius: 30px; overflow: hidden; background: #fff; }
+.linha-superior-detalhe-servico { height: 6px; background: linear-gradient(90deg, var(--color-primary), var(--color-primary-dark), #111); }
+.linha-detalhe { display:flex; gap:12px; align-items:flex-start; padding:12px; border-radius:16px; background:#fafafa; border:1px solid rgba(17,17,17,.04); }
+.linha-detalhe span { font-size:1.05rem; }
+.icone-linha-detalhe {
+    width:28px;
+    height:28px;
+    display:grid;
+    place-items:center;
+    border-radius:10px;
+    background:#fff1f1;
+    color:var(--color-primary);
+    flex:0 0 auto;
+}
+.icone-linha-detalhe svg {
+    width:16px;
+    height:16px;
+    fill:none;
+    stroke:currentColor;
+    stroke-width:2;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+.linha-detalhe p { font-weight:900; font-size:.78rem; color:#111; margin-bottom:2px; }
+.linha-detalhe small { display:block; color:#666; line-height:1.35; }
+.painel-destaque-equipe,
+.painel-destaque-artigos {
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    gap:2rem;
+    align-items:end;
+    margin-bottom:3rem;
+}
+.estatisticas-equipe {
+    display:grid;
+    grid-template-columns:repeat(3, minmax(110px,1fr));
+    gap:.8rem;
+}
+.estatisticas-equipe div,
+.cartao-destaque-artigos {
+    border-radius:24px;
+    padding:1rem;
+    background:#fff;
+    border:1px solid rgba(17,17,17,.06);
+    box-shadow:0 16px 45px rgba(17,17,17,.06);
+}
+.estatisticas-equipe strong,
+.cartao-destaque-artigos strong { display:block; color:#111; font-size:1.6rem; line-height:1; }
+.estatisticas-equipe span,
+.cartao-destaque-artigos span,
+.cartao-destaque-artigos small { color:#667085; font-size:.72rem; font-weight:900; text-transform:uppercase; letter-spacing:.08em; }
+.grade-equipe {
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0,1fr));
+    gap:1.5rem;
+}
+.cartao-medico-equipe {
+    display:grid;
+    grid-template-columns:220px minmax(0,1fr);
+    min-height:300px;
+    overflow:hidden;
+    border-radius:30px;
+    background:#fff;
+    border:1px solid rgba(17,17,17,.06);
+    box-shadow:var(--shadow-soft);
+    transition:transform .25s ease, box-shadow .25s ease;
+}
+.cartao-medico-equipe:hover { transform:translateY(-4px); box-shadow:var(--shadow-premium); }
+.envoltorio-foto-medico-equipe {
+    position:relative;
+    min-height:100%;
+    background:linear-gradient(135deg,#fff1f1,#f8fafc);
+}
+.foto-medico-equipe {
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+.envoltorio-foto-medico-equipe span {
+    position:absolute;
+    left:1rem;
+    right:1rem;
+    bottom:1rem;
+    border-radius:999px;
+    padding:.55rem .75rem;
+    background:rgba(255,255,255,.9);
+    color:var(--color-primary);
+    font-size:.72rem;
+    font-weight:900;
+    text-align:center;
+    box-shadow:0 10px 30px rgba(17,17,17,.12);
+}
+.corpo-medico-equipe {
+    display:grid;
+    align-content:center;
+    gap:1rem;
+    padding:1.5rem;
+}
+.meta-medico-equipe { display:flex; flex-wrap:wrap; gap:.45rem; }
+.meta-medico-equipe span {
+    border-radius:999px;
+    padding:.4rem .6rem;
+    background:#faf8f5;
+    color:#667085;
+    font-size:.68rem;
+    font-weight:900;
+    text-transform:uppercase;
+}
+.corpo-medico-equipe h2 { color:#111; font-size:1.55rem; font-weight:900; line-height:1.05; }
+.corpo-medico-equipe p { color:#667085; font-size:.9rem; line-height:1.55; }
+.acoes-medico-equipe { display:flex; flex-wrap:wrap; gap:.65rem; }

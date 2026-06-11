@@ -1,0 +1,397 @@
+{% extends "estrutura_base.html" %}
+{% block title %}CardioLab - Cardiologia Avançada{% endblock %}
+{% block conteudo %}
+<section class="destaque-principal relative min-h-[92vh] flex items-center overflow-hidden bg-cream">
+    <div class="absolute inset-0 grade-destaque opacity-70"></div>
+    <div class="absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent">
+    </div>
+    <div
+        class="max-w-7xl mx-auto px-4 py-24 md:py-32 grid lg:grid-cols-[1.02fr_.98fr] gap-12 lg:gap-20 items-center relative z-10">
+        <div class="max-w-2xl">
+            <div
+                class="inline-flex items-center gap-3 bg-white/80 border border-black/5 text-primary px-4 py-2 rounded-full text-sm font-bold mb-8 shadow-sm backdrop-blur">
+                <span class="w-2.5 h-2.5 rounded-full bg-primary ponto-batimento"></span> Centro de cardiologia
+                diagnóstica
+            </div>
+            <h1
+                class="font-display text-5xl md:text-6xl lg:text-7xl text-ink leading-[0.95] tracking-tight mb-7 revelar-rolagem">
+                Precisão clínica para decisões que protegem o seu coração.
+            </h1>
+            <p class="text-lg md:text-xl text-gray-600 mb-9 leading-relaxed max-w-xl revelar-rolagem"
+                style="transition-delay:.1s">
+                Atendimento cardiológico completo, exames avançados e portal digital seguro para acompanhar sua jornada
+                de cuidado com clareza.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 revelar-rolagem" style="transition-delay:.2s">
+                <a href="{{ url_for('publico.agendar') }}"
+                    class="inline-flex items-center justify-center px-8 py-4 bg-primary text-white rounded-full font-extrabold text-base hover:bg-primary-dark transition shadow-glow hover:-translate-y-0.5">
+                    Agendar consulta
+                </a>
+                <a href="{{ url_for('publico.servicos') }}"
+                    class="inline-flex items-center justify-center px-8 py-4 bg-white text-dark border border-black/10 rounded-full font-extrabold text-base hover:border-primary hover:text-primary transition">
+                    Ver exames e serviços
+                </a>
+            </div>
+            <div class="mt-10 grid grid-cols-3 gap-5 max-w-xl revelar-rolagem" style="transition-delay:.3s">
+                <div class="cartao-prova-destaque"><strong>15+</strong><span>anos de experiência</span></div>
+                <div class="cartao-prova-destaque"><strong>24h</strong><span>portal do paciente</span></div>
+                <div class="cartao-prova-destaque"><strong>LGPD</strong><span>dados protegidos</span></div>
+            </div>
+        </div>
+        <div class="relative revelar-rolagem" style="transition-delay:.15s">
+            <div class="container-video-destaque shadow-premium">
+                <img class="video-destaque" src="{{ url_for('static', filename='assets/Clinica.png') }}" alt="Ambiente moderno da clínica CardioLab">
+                <div class="camada-video-destaque"></div>
+                <div class="absolute inset-x-6 top-6 flex items-center justify-between z-10">
+                    <span
+                        class="px-4 py-2 rounded-full bg-white/88 backdrop-blur text-xs uppercase tracking-[0.22em] font-black text-dark">CardioLab
+                        Clínica</span>
+                    <span
+                        class="w-12 h-12 rounded-full bg-primary text-white grid place-items-center shadow-glow icone-batimento">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                    </span>
+                </div>
+                <div class="painel-exame">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-black uppercase tracking-[0.18em] text-gray-400">Batimento
+                            cardíaco</span>
+                        <span
+                            class="text-xs font-bold text-green-700 bg-green-50 px-2 py-1 rounded-full flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Normal
+                        </span>
+                    </div>
+                    <svg viewBox="0 0 420 120" class="w-full h-24 ecg-animado" preserveAspectRatio="none">
+                        <polyline class="linha-ecg-animada" fill="none" stroke="#D60000" stroke-width="4"
+                            stroke-linecap="round" stroke-linejoin="round"
+                            points="0,70 70,70 88,70 98,42 108,96 118,20 130,104 145,70 190,70 205,70 216,48 229,88 242,38 256,70 420,70" />
+                    </svg>
+                    <div class="flex items-center gap-4 mt-2 text-xs text-gray-400">
+                        <span>FC: <strong class="text-dark">72 bpm</strong></span>
+                        <span>PA: <strong class="text-dark">120/80</strong></span>
+                        <span>SpO₂: <strong class="text-dark">98%</strong></span>
+                    </div>
+                </div>
+            </div>
+            <div class="absolute -bottom-8 -left-6 bg-white rounded-3xl p-5 shadow-premium border border-black/5 hidden md:block revelar-rolagem"
+                style="transition-delay:.4s">
+                <p class="text-xs uppercase tracking-[0.18em] text-gray-400 font-black mb-1">Tempo médio</p>
+                <p class="text-3xl font-black text-primary">30 min</p>
+                <p class="text-sm text-gray-500">consulta inicial</p>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="bg-dark text-white py-5 border-y border-white/10">
+    <div class="max-w-7xl mx-auto px-4 flex items-start md:items-center gap-4 text-sm md:text-base">
+        <span
+            class="inline-flex w-10 h-10 rounded-full bg-primary/20 text-primary items-center justify-center shrink-0 font-black">!</span>
+        <p class="text-gray-200"><strong class="text-white">Atenção:</strong> a clínica realiza consultas agendadas. Em
+            caso de dor no peito aguda ou suspeita de infarto, procure o Pronto-Socorro mais próximo ou ligue <strong
+                class="text-white">192 (SAMU)</strong>.</p>
+    </div>
+</div>
+<section class="secao-premium py-24 md:py-32 bg-white relative overflow-hidden">
+    <div class="divisor-secao superior"></div>
+    <div class="max-w-7xl mx-auto px-4 relative z-10">
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16 revelar-rolagem">
+            <div>
+                <p class="chamada-secao">Serviços</p>
+                <h2 class="font-display text-4xl md:text-5xl text-dark mb-4">Exames e consultas especializadas</h2>
+                <p class="text-gray-500 text-lg max-w-2xl">Cada exame conta com preparo, indicação e duração específicos
+                    para garantir precisão no diagnóstico cardiovascular.</p>
+            </div>
+            <a href="{{ url_for('publico.servicos') }}"
+                class="hidden md:inline-flex px-6 py-3 border border-black/10 rounded-full font-bold hover:border-primary hover:text-primary transition">Ver
+                todos</a>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+            {% for servico in servicos %}
+            {% set nome_servico = servico.nome|lower %}
+            <div class="cartao-servico-premium group revelar-rolagem" style="transition-delay:{{ loop.index0 * 0.08 }}s">
+                <div
+                    class="icone-servico-premium {% if 'eletro' in nome_servico or 'ecg' in nome_servico %}icone-ecg{% elif 'eco' in nome_servico %}icone-ecocardiograma{% elif 'holter' in nome_servico %}icone-holter{% elif 'mapa' in nome_servico or 'pressão' in nome_servico %}icone-pressao{% elif 'ergométrico' in nome_servico %}icone-esforco{% else %}icone-consulta{% endif %}">
+                    {% if 'eletro' in nome_servico or 'ecg' in nome_servico %}
+                    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3">
+                        <path d="M4 25h9l4-12 7 25 6-18 4 5h10" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    {% elif 'eco' in nome_servico %}
+                    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3">
+                        <circle cx="20" cy="24" r="8" />
+                        <path d="M32 14c5 5 5 15 0 20M38 9c8 8 8 22 0 30" stroke-linecap="round" />
+                    </svg>
+                    {% elif 'holter' in nome_servico %}
+                    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3">
+                        <rect x="14" y="8" width="20" height="32" rx="5" />
+                        <path d="M19 18h10M19 25h5M24 8V3M24 45v-5" stroke-linecap="round" />
+                    </svg>
+                    {% elif 'mapa' in nome_servico or 'pressão' in nome_servico %}
+                    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3">
+                        <rect x="9" y="14" width="16" height="22" rx="4" />
+                        <path d="M25 20h7a7 7 0 010 14h-3M33 18v18" stroke-linecap="round" />
+                    </svg>
+                    {% elif 'ergométrico' in nome_servico %}
+                    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3">
+                        <path d="M28 12a4 4 0 11-8 0 4 4 0 018 0zM24 19l-6 8 8 4 5 10M20 32l-7 8M27 24l8 3"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    {% else %}
+                    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3">
+                        <path d="M24 8v32M8 24h32" stroke-linecap="round" />
+                        <rect x="10" y="10" width="28" height="28" rx="8" />
+                    </svg>
+                    {% endif %}
+                </div>
+                <div>
+                    <span class="text-xs uppercase tracking-[0.18em] text-gray-400 font-black">{{
+                        servico.duracao_minutos }} min</span>
+                    <h3 class="text-2xl font-extrabold text-dark mt-2 mb-3 group-hover:text-primary transition">{{
+                        servico.nome }}</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed mb-5">{{ servico.descricao[:135] }}{% if
+                        servico.descricao|length > 135 %}...{% endif %}</p>
+                    <span class="inline-flex items-center text-primary font-black text-sm">Saiba mais →</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-10 md:hidden">
+            <a href="{{ url_for('publico.servicos') }}"
+                class="px-8 py-4 bg-primary text-white rounded-full font-bold hover:bg-primary-dark transition shadow-glow">Ver
+                Todos os Serviços</a>
+        </div>
+    </div>
+</section>
+<section class="py-24 md:py-32 bg-cream relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div class="revelar-rolagem">
+            <p class="chamada-secao">Estrutura</p>
+            <h2 class="font-display text-4xl md:text-5xl text-dark mb-5 leading-tight">Ambiente moderno para cuidar do seu coração</h2>
+            <p class="text-gray-600 text-lg leading-relaxed mb-6">
+                A CardioLab combina salas equipadas, fluxo digital e acompanhamento claro para reduzir espera e tornar cada etapa do atendimento mais previsível.
+            </p>
+            <ul class="space-y-4 mb-8">
+                <li class="flex items-start gap-3">
+                    <span
+                        class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5 font-bold text-sm">1</span>
+                    <div><strong class="text-dark">Exames no mesmo fluxo</strong><br><span
+                            class="text-gray-500 text-sm">Equipe e equipamentos preparados para consultas e diagnósticos cardiológicos</span>
+                    </div>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span
+                        class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5 font-bold text-sm">2</span>
+                    <div><strong class="text-dark">Monitoramento contínuo</strong><br><span
+                            class="text-gray-500 text-sm">Acompanhamento dos batimentos e sinais vitais pelo
+                            portal</span></div>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span
+                        class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5 font-bold text-sm">3</span>
+                    <div><strong class="text-dark">Laudos detalhados</strong><br><span
+                            class="text-gray-500 text-sm">Resultados com imagens e gráficos para melhor
+                            compreensão</span></div>
+                </li>
+            </ul>
+            <a href="{{ url_for('publico.servicos') }}"
+                class="inline-flex px-7 py-4 bg-primary text-white rounded-full font-bold hover:bg-primary-dark transition shadow-glow">
+                Conheça nossos exames
+            </a>
+        </div>
+        <div class="revelar-rolagem" style="transition-delay:.15s">
+            <div class="container-video-coracao-3d">
+                <video class="video-coracao-3d" autoplay muted loop playsinline preload="metadata">
+                    <source src="{{ url_for('static', filename='assets/coracao.mp4') }}" type="video/mp4">
+                </video>
+                <div class="camada-coracao-3d"></div>
+                <div class="selo-coracao-3d">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                    </svg>
+                    <span>Estrutura moderna</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="estatisticas-premium relative py-24 md:py-28 bg-dark text-white overflow-hidden">
+    <div class="absolute inset-0 fundo-ecg opacity-15"></div>
+    <div class="max-w-7xl mx-auto px-4 relative z-10">
+        <div class="grid lg:grid-cols-[.8fr_1.2fr] gap-10 items-center">
+            <div class="revelar-rolagem">
+                <p class="chamada-secao text-primary">Resultados</p>
+                <h2 class="font-display text-4xl md:text-5xl leading-tight mb-4">Números que refletem nossa dedicação
+                </h2>
+                <p class="text-gray-400 text-lg">Mais de uma década de experiência em cardiologia, com milhares de
+                    pacientes atendidos e alto índice de satisfação.</p>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="cartao-estatistica-premium revelar-rolagem"><span class="icone-estatistica"><svg viewBox="0 0 24 24"><path d="M16 19a4 4 0 00-8 0"/><circle cx="12" cy="8" r="3"/><path d="M20 19a3 3 0 00-3-3M4 19a3 3 0 013-3"/></svg></span>
+                    <p class="contador" data-alvo="{{ estatisticas.pacientes }}">0</p><small>Pacientes atendidos</small>
+                </div>
+                <div class="cartao-estatistica-premium revelar-rolagem" style="transition-delay:.08s"><span class="icone-estatistica"><svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v5l-5 8a4 4 0 003.4 6h7.2A4 4 0 0019 16l-5-8V3"/><path d="M8 15h8"/></svg></span>
+                    <p class="contador" data-alvo="{{ estatisticas.exames }}">0</p><small>Exames realizados</small>
+                </div>
+                <div class="cartao-estatistica-premium revelar-rolagem" style="transition-delay:.16s"><span class="icone-estatistica"><svg viewBox="0 0 24 24"><path d="M4 20V7l8-4 8 4v13"/><path d="M9 20v-7h6v7M12 7v4M10 9h4"/></svg></span>
+                    <p class="contador" data-alvo="{{ estatisticas.anos }}">0</p><small>Anos de experiência</small>
+                </div>
+                <div class="cartao-estatistica-premium revelar-rolagem" style="transition-delay:.24s"><span class="icone-estatistica"><svg viewBox="0 0 24 24"><path d="M12 3l2.7 5.5 6 .9-4.4 4.3 1 6-5.3-2.8-5.3 2.8 1-6-4.4-4.3 6-.9z"/></svg></span>
+                    <p><span class="contador" data-alvo="{{ estatisticas.satisfacao }}">0</span>%</p>
+                    <small>Satisfação</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="py-24 md:py-32 bg-white relative overflow-hidden">
+    <div class="divisor-secao superior"></div>
+    <div class="max-w-7xl mx-auto px-4 grid lg:grid-cols-[.85fr_1.15fr] gap-10 items-start">
+        <div class="revelar-rolagem">
+            <p class="chamada-secao">Prévia</p>
+            <h2 class="font-display text-4xl md:text-5xl text-dark mb-5">Calcule seu risco cardiovascular em 10 anos.</h2>
+            <p class="text-gray-500 text-lg leading-relaxed">Use uma versão pública do escore de Framingham para ter uma estimativa inicial. O resultado não substitui consulta médica.</p>
+        </div>
+        <form id="formulario-previa-risco" class="painel-previa-risco revelar-rolagem" style="transition-delay:.12s">
+            <div class="grid md:grid-cols-4 gap-3">
+                <label class="rotulo-painel">Sexo<select name="sexo" class="campo-painel grande"><option value="F">Feminino</option><option value="M">Masculino</option></select></label>
+                <label class="rotulo-painel">Idade<input name="idade" type="number" min="30" max="74" value="55" class="campo-painel grande"></label>
+                <label class="rotulo-painel">Colesterol<input name="colesterol_total" type="number" value="200" class="campo-painel grande"></label>
+                <label class="rotulo-painel">HDL<input name="hdl" type="number" value="50" class="campo-painel grande"></label>
+                <label class="rotulo-painel">PAS<input name="pressao_sistolica" type="number" value="130" class="campo-painel grande"></label>
+                <label class="selecao-risco"><input type="checkbox" name="trata_pressao"> Trata pressão</label>
+                <label class="selecao-risco"><input type="checkbox" name="fumante"> Tabagismo</label>
+                <label class="selecao-risco"><input type="checkbox" name="diabetes"> Diabetes</label>
+            </div>
+            <div class="mt-5 flex flex-col md:flex-row md:items-center gap-4">
+                <button type="submit" class="acao-painel primario">Calcular</button>
+                <div id="resultado-previa-risco" class="resultado-previa-risco">Preencha os dados e calcule.</div>
+            </div>
+        </form>
+    </div>
+</section>
+<section class="py-24 md:py-32 bg-cream relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="text-center mb-16 revelar-rolagem">
+            <p class="chamada-secao">Experiência</p>
+            <h2 class="font-display text-4xl md:text-5xl text-dark mb-4">O que dizem nossos pacientes</h2>
+        </div>
+        <div class="carrossel-depoimentos" id="carrossel-depoimentos">
+            {% for avaliacao in avaliacoes %}
+            <div class="cartao-depoimento-premium depoimento-slide revelar-rolagem" style="transition-delay:{{ loop.index0 * 0.08 }}s">
+                {% set indice_avatar_avaliacao = ((loop.index0 % 6) + 1) %}
+                <img class="avatar-depoimento foto-depoimento" src="{{ url_for('static', filename='assets/avatars/paciente-' ~ indice_avatar_avaliacao ~ '.svg') }}" alt="Avatar de {{ avaliacao.nome_paciente }}">
+                <div class="flex gap-1 mb-5" aria-label="{{ avaliacao.nota }} estrelas">
+                    {% for i in range(avaliacao.nota) %}
+                    <span class="text-primary text-lg">★</span>
+                    {% endfor %}
+                </div>
+                <p class="text-gray-600 text-sm mb-6 leading-relaxed italic">"{{ avaliacao.comentario }}"</p>
+                <p class="font-extrabold text-dark text-sm">{{ avaliacao.nome_paciente }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<section class="py-24 md:py-32 bg-white relative overflow-hidden">
+    <div class="divisor-secao superior"></div>
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16 revelar-rolagem">
+            <div>
+                <p class="chamada-secao">Educação</p>
+                <h2 class="font-display text-4xl md:text-5xl text-dark mb-4">Artigos e notícias</h2>
+                <p class="text-gray-500 text-lg">Informação de qualidade para a saúde do seu coração.</p>
+            </div>
+            <a href="{{ url_for('publico.artigos') }}"
+                class="hidden md:inline-flex px-6 py-3 border border-black/10 rounded-full font-bold hover:border-primary hover:text-primary transition">Ver
+                artigos</a>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {% set icones_artigos = [
+            '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path
+                    d="M24 8C18.477 8 14 12.477 14 18c0 3.5 1.8 6.5 4.5 8.3V30a2 2 0 002 2h7a2 2 0 002-2v-3.7C32.2 24.5 34 21.5 34 18c0-5.523-4.477-10-10-10z"
+                    stroke-linecap="round" />
+                <path d="M20 36h8M22 40h4" stroke-linecap="round" />
+            </svg>',
+            '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M4 25h9l4-12 7 25 6-18 4 5h10" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>',
+            '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5">
+                <circle cx="24" cy="18" r="8" />
+                <path d="M10 40c0-7.732 6.268-14 14-14s14 6.268 14 14" stroke-linecap="round" />
+            </svg>'
+            ] %}
+            {% set gradientes_artigos = [
+            'from-blue-50 to-indigo-50',
+            'from-red-50 to-orange-50',
+            'from-emerald-50 to-teal-50'
+            ] %}
+            {% set cores_artigos = ['text-indigo-400', 'text-red-400', 'text-emerald-400'] %}
+            {% for artigo in artigos %}
+            <a href="{{ url_for('publico.artigo', artigo_id=artigo.id, slug=artigo.slug) }}" class="cartao-artigo-premium group revelar-rolagem" style="transition-delay:{{ loop.index0 * 0.1 }}s">
+                <div class="visual-tematico-artigo bg-gradient-to-br {{ gradientes_artigos[loop.index0 % 3] }}">
+                    <div class="icone-artigo {{ cores_artigos[loop.index0 % 3] }}">
+                        {{ icones_artigos[loop.index0 % 3] | safe }}
+                    </div>
+                </div>
+                <div class="p-7">
+                    <span
+                        class="text-xs font-black text-primary bg-red-50 px-3 py-1 rounded-full uppercase tracking-[0.12em]">{{
+                        artigo.categoria }}</span>
+                    <h3 class="text-xl font-extrabold text-dark mt-4 mb-3 group-hover:text-primary transition">{{
+                        artigo.titulo }}</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">{{ artigo.conteudo[:110] }}{% if artigo.conteudo|length >
+                        110 %}...{% endif %}</p>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<section class="secao-chamada-final py-20 md:py-24 text-white overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+        <div>
+            <p class="text-white/70 font-black uppercase tracking-[0.22em] text-xs mb-3">Próximo passo</p>
+            <h2 class="font-display text-4xl md:text-5xl leading-tight">Agende sua avaliação cardiológica.</h2>
+            <p class="text-white/70 text-lg mt-3 max-w-2xl">Escolha consulta, exame ou teleconsulta e receba instruções de preparo pelo portal.</p>
+        </div>
+        <a href="{{ url_for('publico.agendar') }}" class="inline-flex items-center justify-center px-8 py-4 bg-white text-primary rounded-full font-extrabold text-base hover:bg-cream transition shadow-premium">Agendar agora</a>
+    </div>
+</section>
+<section class="py-24 md:py-32 bg-cream relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 grid lg:grid-cols-[.8fr_1.2fr] gap-12 items-center">
+        <div class="revelar-rolagem">
+            <p class="chamada-secao">Localização</p>
+            <h2 class="font-display text-4xl md:text-5xl text-dark mb-5">Chegue com facilidade à CardioLab.</h2>
+            <p class="text-gray-600 text-lg leading-relaxed mb-8">Estamos localizados na Av. Paulista, região central de
+                São Paulo, com fácil acesso por transporte público. Próximo à estação Trianon-Masp.</p>
+            <div class="space-y-4">
+                <div class="cartao-info-localizacao"><strong>Endereço</strong><span>Av. Paulista, 1000 - Bela Vista, São
+                        Paulo/SP</span></div>
+                <div class="cartao-info-localizacao"><strong>Atendimento</strong><span>Segunda a sexta, das 7h às 19h •
+                        Sábado, das 8h às 13h</span></div>
+                <a href="https://www.google.com/maps/search/?api=1&query=Av.+Paulista,+1000,+S%C3%A3o+Paulo"
+                    target="_blank"
+                    class="inline-flex px-7 py-4 bg-dark text-white rounded-full font-bold hover:bg-primary transition">Abrir
+                    no Google Maps</a>
+            </div>
+        </div>
+        <div class="revelar-rolagem" style="transition-delay:.15s">
+            <div class="container-mapa-real shadow-premium">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3657.098!2d-46.6559!3d-23.5651!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce59c8da0aa315%3A0x63b3f5daa1f2f4cd!2sAv.%20Paulista%2C%201000%20-%20Bela%20Vista%2C%20S%C3%A3o%20Paulo%20-%20SP!5e0!3m2!1spt-BR!2sbr!4v1700000000000!5m2!1spt-BR!2sbr"
+                    width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade" title="Localização da CardioLab na Av. Paulista">
+                </iframe>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+
+
+
+

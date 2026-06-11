@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% set descricao_meta = descricao_pagina|default('CardioLab - Clínica de cardiologia premium com diagnóstico avançado, cuidado humano e portal digital seguro.') %}
+    <meta name="description" content="{{ descricao_meta }}">
+    <meta name="robots" content="{{ robos_pagina|default('index,follow') }}">
+    <link rel="canonical" href="{{ request.base_url }}">
+    <meta property="og:site_name" content="CardioLab">
+    <meta property="og:title" content="{{ self.title()|striptags }}">
+    <meta property="og:description" content="{{ descricao_meta }}">
+    <meta property="og:type" content="{{ tipo_pagina|default('website') }}">
+    <meta property="og:url" content="{{ request.base_url }}">
+    <meta property="og:image" content="{{ url_for('static', filename='assets/Clinica.png', _external=True) }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <title>{% block title %}CardioLab - Clínica de Cardiologia{% endblock %}</title>
+    <script>
+        try {
+            const preferenciasCardioLab = JSON.parse(localStorage.getItem('cardiolab-acessibilidade') || '{}');
+            if (preferenciasCardioLab.modoEscuro) document.documentElement.classList.add('tema-escuro');
+        } catch (erro) {
+            document.documentElement.classList.remove('tema-escuro');
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#D60000',
+                        'primary-dark': '#9E0000',
+                        dark: '#111111',
+                        ink: '#191716',
+                        cream: '#F8F5EF',
+                        'warm-gray': '#E8E2D8',
+                        gray: { 50: '#FAFAFA', 100: '#F5F5F5', 400: '#9CA3AF', 500: '#666666', 600: '#4B5563' },
+                        success: '#15803D',
+                        warning: '#F59E0B',
+                        danger: '#DC2626',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['DM Serif Display', 'serif']
+                    },
+                    boxShadow: {
+                        premium: '0 24px 80px rgba(17,17,17,.12)',
+                        glow: '0 18px 60px rgba(214,0,0,.18)'
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/site.css', v=versao_estatica) }}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="font-sans text-dark bg-cream antialiased" {% if usuario_atual %}data-authenticated="1"{% endif %}>
+    {% set endpoint_atual = request.endpoint or '' %}
+    {% set nav_items = [
+        ('publico.inicio', 'Início'),
+        ('publico.servicos', 'Serviços'),
+        ('publico.equipe', 'Equipe'),
+        ('publico.artigos', 'Artigos'),
+        ('publico.duvidas', 'Dúvidas'),
+        ('publico.lgpd', 'LGPD')
+    ] %}
+    {% set legal_endpoints = ['publico.lgpd', 'publico.termos', 'publico.cookies'] %}
+    {% if usuario_atual and usuario_atual.perfil == 'medico' %}
+        {% set painel_endpoint = 'medico.painel' %}
+        {% set painel_label = 'Painel médico' %}
+    {% elif usuario_atual and usuario_atual.perfil == 'administrador' %}
+        {% set painel_endpoint = 'administracao.painel' %}
+        {% set painel_label = 'Administração' %}
+    {% elif usuario_atual %}
+        {% set painel_endpoint = 'paciente.painel' %}
+        {% set painel_label = 'Painel' %}
+    {% endif %}
+    <a href="#main-conteudo" class="link-pular">Pular para o conteúdo principal</a>
+    <header id="cabecalho-principal" class="fixed top-0 left-0 right-0 z-50 border-b border-black/5 bg-white/78 backdrop-blur-xl transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 flex items-center justify-between h-20">
+            <a href="{{ url_for('publico.inicio') }}" class="flex items-center gap-3 group" aria-label="CardioLab - Início">
+                <img src="{{ url_for('static', filename='assets/cardiolab-logo-original (1).png') }}" alt="Logotipo CardioLab" class="h-12 w-auto rounded-xl shadow-md" aria-hidden="true">
+                <span class="leading-none">
+                    <span class="block text-2xl font-black tracking-tight"><span class="text-primary">Cardio</span><span class="text-dark">Lab</span></span>
+                    <span class="hidden sm:block text-[10px] uppercase tracking-[0.28em] text-gray-400 font-bold mt-1">Cardiologia premium</span>
+                </span>
+            </a>
+            <nav class="hidden lg:flex items-center gap-7" aria-label="Navegação principal">
+                {% for nav_endpoint, nav_label in nav_items %}
+                {% set link_ativo = endpoint_atual == nav_endpoint or (nav_endpoint == 'publico.lgpd' and endpoint_atual in legal_endpoints) %}
+                <a href="{{ url_for(nav_endpoint) }}" class="link-navegacao {% if link_ativo %}ativo{% endif %} text-dark hover:text-primary font-semibold transition" {% if link_ativo %}aria-current="page"{% endif %}>{{ nav_label }}</a>
+                {% endfor %}
+                <button type="button" class="botao-tema" data-alternar-tema aria-pressed="false" aria-label="Modo escuro" title="Modo escuro">
+                    <svg class="icone-tema moon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.8A8.5 8.5 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
+                    <svg class="icone-tema sun" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke-width="2"/><path stroke-linecap="round" stroke-width="2" d="M12 2v2m0 16v2m10-10h-2M4 12H2m17.1-7.1-1.4 1.4M6.3 17.7l-1.4 1.4m14.2 0-1.4-1.4M6.3 6.3 4.9 4.9"/></svg>
+                    <span class="somente-leitor" data-rotulo-tema>Modo escuro</span>
+                </button>
+                {% if usuario_atual %}
+                    {% set painel_ativo = endpoint_atual.startswith(usuario_atual.perfil ~ '.') %}
+                    <a href="{{ url_for(painel_endpoint) }}" class="link-navegacao {% if painel_ativo %}ativo{% endif %} text-dark hover:text-primary font-semibold relative" {% if painel_ativo %}aria-current="page"{% endif %}>{{ painel_label }} <span id="selo-notificacao" data-selo-notificacao class="{% if total_notificacoes_nao_lidas == 0 %}hidden {% endif %}selo-notificacao" aria-live="polite" title="Notificações não lidas">{{ total_notificacoes_nao_lidas }}</span></a>
+                    <a href="{{ url_for('autenticacao.sair') }}" class="ml-1 px-5 py-2.5 bg-dark text-white rounded-full font-bold hover:bg-gray-800 transition text-sm shadow-lg shadow-black/10">Sair</a>
+                {% else %}
+                    {% set portal_ativo = endpoint_atual.startswith('autenticacao.') %}
+                    <a href="{{ url_for('autenticacao.entrar') }}" class="ml-1 px-6 py-2.5 bg-primary text-white rounded-full font-bold hover:bg-primary-dark transition text-sm shadow-glow {% if portal_ativo %}ring-2 ring-primary/20{% endif %}" {% if portal_ativo %}aria-current="page"{% endif %}>Portal do Paciente</a>
+                {% endif %}
+            </nav>
+            <button id="botao-menu-mobile" class="lg:hidden p-2 rounded-xl hover:bg-gray-100" aria-label="Abrir menu" aria-controls="menu-mobile" aria-expanded="false">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+        </div>
+        <div id="menu-mobile" class="hidden lg:hidden bg-white/95 backdrop-blur-xl border-t border-black/5 shadow-xl" aria-label="Menu mobile">
+            <div class="p-4 space-y-3">
+                <button type="button" class="botao-tema-mobile" data-alternar-tema aria-pressed="false">
+                    <span class="botao-tema" aria-hidden="true">
+                        <svg class="icone-tema moon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.8A8.5 8.5 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
+                        <svg class="icone-tema sun" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" stroke-width="2"/><path stroke-linecap="round" stroke-width="2" d="M12 2v2m0 16v2m10-10h-2M4 12H2m17.1-7.1-1.4 1.4M6.3 17.7l-1.4 1.4m14.2 0-1.4-1.4M6.3 6.3 4.9 4.9"/></svg>
+                    </span>
+                    <span data-rotulo-tema>Modo escuro</span>
+                </button>
+                {% for nav_endpoint, nav_label in nav_items %}
+                {% set link_ativo = endpoint_atual == nav_endpoint or (nav_endpoint == 'publico.lgpd' and endpoint_atual in legal_endpoints) %}
+                <a href="{{ url_for(nav_endpoint) }}" class="link-navegacao-mobile {% if link_ativo %}ativo{% endif %}" {% if link_ativo %}aria-current="page"{% endif %}>{{ nav_label }}</a>
+                {% endfor %}
+                {% if usuario_atual %}
+                {% set painel_ativo = endpoint_atual.startswith(usuario_atual.perfil ~ '.') %}
+                <a href="{{ url_for(painel_endpoint) }}" class="link-navegacao-mobile {% if painel_ativo %}ativo{% endif %}" {% if painel_ativo %}aria-current="page"{% endif %}>{{ painel_label }} <span data-selo-notificacao class="{% if total_notificacoes_nao_lidas == 0 %}hidden {% endif %}selo-notificacao" aria-live="polite" title="Notificações não lidas">{{ total_notificacoes_nao_lidas }}</span></a>
+                <a href="{{ url_for('autenticacao.sair') }}" class="block py-3 px-4 bg-dark text-white rounded-xl text-center font-semibold">Sair</a>
+                {% else %}
+                <a href="{{ url_for('autenticacao.entrar') }}" class="block py-3 px-4 bg-primary text-white rounded-xl text-center font-semibold">Portal do Paciente</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+    {% with mensagens = get_flashed_messages(with_categories=true) %}
+    {% if mensagens %}
+    <div class="fixed top-24 right-4 z-[100] space-y-2 max-w-sm" id="recipiente-mensagens" aria-live="polite" aria-atomic="true">
+        {% for categoria, mensagem in mensagens %}
+        <div class="mensagem-temporaria flex items-center gap-3 p-4 rounded-xl shadow-xl border-l-4 animar-entrada
+            {% if categoria == 'sucesso' %}bg-green-50 border-green-500 text-green-800
+            {% elif categoria == 'perigo' %}bg-red-50 border-red-500 text-red-800
+            {% elif categoria == 'atencao' %}bg-yellow-50 border-yellow-500 text-yellow-800
+            {% else %}bg-blue-50 border-blue-500 text-blue-800{% endif %}">
+            <span class="text-sm font-medium flex-1">{{ mensagem }}</span>
+            <button type="button" data-fechar-mensagem class="text-lg opacity-50 hover:opacity-100" aria-label="Fechar mensagem">&times;</button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+    <main id="main-conteudo" class="pt-20" tabindex="-1">
+        {% block conteudo %}{% endblock %}
+    </main>
+    {% block footer %}
+    <footer class="relative overflow-hidden bg-dark text-white mt-0">
+        <div class="absolute inset-0 fundo-ecg opacity-10"></div>
+        <div class="relative max-w-7xl mx-auto px-4 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
+                <div>
+                    <h3 class="text-2xl font-black mb-4"><span class="text-primary">Cardio</span>Lab</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Cardiologia avançada com tecnologia de ponta, privacidade de dados e atendimento humanizado.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Links Rápidos</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="{{ url_for('publico.servicos') }}" class="hover:text-primary transition">Serviços</a></li>
+                        <li><a href="{{ url_for('publico.equipe') }}" class="hover:text-primary transition">Equipe</a></li>
+                        <li><a href="{{ url_for('publico.artigos') }}" class="hover:text-primary transition">Artigos</a></li>
+                        <li><a href="{{ url_for('publico.duvidas') }}" class="hover:text-primary transition">Dúvidas</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Jurídico</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="{{ url_for('publico.lgpd') }}" class="hover:text-primary transition">Política de Privacidade</a></li>
+                        <li><a href="{{ url_for('publico.termos') }}" class="hover:text-primary transition">Termos de Uso</a></li>
+                        <li><a href="{{ url_for('publico.cookies') }}" class="hover:text-primary transition">Cookies</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Contato</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="tel:+5511999999999" class="hover:text-primary transition">{{ telefone_clinica_formatado }}</a></li>
+                        <li><a href="mailto:{{ email_clinica }}" class="hover:text-primary transition">{{ email_clinica }}</a></li>
+                        <li><a href="https://www.google.com/maps/search/?api=1&query=Av.+Paulista,+1000,+S%C3%A3o+Paulo" target="_blank" class="hover:text-primary transition">Av. Paulista, 1000 - Bela Vista, São Paulo/SP</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-white/10 mt-10 pt-6 text-center text-xs text-gray-500">
+                &copy; 2026 CardioLab - Todos os direitos reservados.
+            </div>
+        </div>
+    </footer>
+    {% endblock %}
+    <a href="https://wa.me/{{ numero_whatsapp }}?text={{ mensagem_whatsapp }}" target="_blank" id="botao-whatsapp"
+       class="fixed bottom-6 right-6 z-50 bg-green-500 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-2xl hover:bg-green-600 hover:scale-110 transition-all" aria-label="WhatsApp">
+        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.611.611l4.458-1.495A11.932 11.932 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.264 0-4.366-.722-6.073-1.95l-.424-.312-2.647.888.888-2.647-.312-.424A9.935 9.935 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+    </a>
+    <div id="menu-acessibilidade" class="fixed left-0 top-1/2 -translate-y-1/2 z-50">
+        <button id="botao-acessibilidade" class="bg-primary text-white p-3 rounded-r-xl shadow-lg hover:bg-primary-dark transition" aria-label="Acessibilidade" title="Acessibilidade" aria-controls="painel-acessibilidade" aria-expanded="false">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        </button>
+        <div id="painel-acessibilidade" class="hidden bg-white shadow-2xl rounded-r-xl border p-4 space-y-3 w-56">
+            <p class="font-bold text-sm text-dark mb-2">Acessibilidade</p>
+            <button type="button" data-alterar-fonte="1" class="controle-acessibilidade"><span>A+</span>Aumentar fonte</button>
+            <button type="button" data-alterar-fonte="-1" class="controle-acessibilidade"><span>A-</span>Diminuir fonte</button>
+            <button type="button" data-alternar-tema class="controle-acessibilidade" aria-pressed="false"><span class="simbolo-tema" aria-hidden="true">◐</span><span data-rotulo-tema>Modo escuro</span></button>
+            <button type="button" data-alternar-contraste class="controle-acessibilidade"><span>□</span>Alto contraste</button>
+            <button type="button" data-redefinir-acessibilidade class="controle-acessibilidade"><span>↺</span>Redefinir</button>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/portal_publico.js', v=versao_estatica) }}"></script>
+    <script src="{{ url_for('static', filename='js/acessibilidade.js', v=versao_estatica) }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
+
+
+

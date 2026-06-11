@@ -1,0 +1,81 @@
+.autenticacao-premium { padding-top: 4rem; min-height: 100vh; }
+.painel-identidade-login {
+    min-height: calc(100vh - 7rem);
+    position: relative;
+    background: #0a0a0a;
+    border-radius: 2rem;
+}
+.painel-identidade-login::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 2rem;
+    background:
+        radial-gradient(ellipse at 70% 20%, rgba(214,0,0,.28), transparent 50%),
+        radial-gradient(ellipse at 30% 80%, rgba(15,118,110,.18), transparent 40%),
+        linear-gradient(180deg, rgba(0,0,0,.10) 0%, rgba(0,0,0,.55) 50%, rgba(0,0,0,.85) 100%);
+    z-index: 1;
+}
+.painel-identidade-login::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 50%;
+    border-radius: 0 0 2rem 2rem;
+    background: linear-gradient(0deg, rgba(0,0,0,.82), transparent);
+    z-index: 1;
+}
+.foto-clinica-login {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 2rem;
+    filter: saturate(.88) contrast(1.06) brightness(.92);
+}
+.sombra-foto-login {
+    position: absolute;
+    inset: 0;
+    border-radius: 2rem;
+    background: linear-gradient(135deg, rgba(17,17,17,.30), rgba(214,0,0,.06));
+    z-index: 1;
+}
+.grade-rapida-login {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .75rem;
+}
+.grade-rapida-login div {
+    border-radius: 22px;
+    padding: 1.1rem 1rem;
+    background: rgba(255,255,255,.10);
+    border: 1px solid rgba(255,255,255,.14);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    color: #fff;
+    transition: background .3s ease, transform .3s ease;
+}
+.grade-rapida-login div:hover {
+    background: rgba(255,255,255,.18);
+    transform: translateY(-3px);
+}
+.grade-rapida-login strong {
+    display: block;
+    font-size: 1.7rem;
+    line-height: 1;
+    font-weight: 900;
+    background: linear-gradient(135deg, #fff, rgba(255,255,255,.75));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.grade-rapida-login span {
+    color: rgba(255,255,255,.60);
+    font-size: .72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    margin-top: .25rem;
+    display: block;
+}

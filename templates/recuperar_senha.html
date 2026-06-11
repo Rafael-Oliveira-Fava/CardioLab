@@ -1,0 +1,30 @@
+{% extends "estrutura_base.html" %}
+{% block title %}Solicitar nova senha - CardioLab{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/autenticacao.css', v=versao_estatica) }}">{% endblock %}
+{% block footer %}{% endblock %}
+{% block conteudo %}
+<div class="autenticacao-premium min-h-screen bg-cream py-10 px-4 relative overflow-hidden">
+    <div class="absolute inset-0 grade-destaque opacity-70"></div>
+    <div class="max-w-xl mx-auto relative z-10 pt-16">
+        <div class="estrutura-autenticacao bg-white rounded-[2rem] shadow-premium border border-black/5 overflow-hidden">
+            <div class="px-8 pt-8 pb-5 border-b border-black/5">
+                <p class="chamada-secao mb-2">Segurança</p>
+                <h1 class="font-display text-4xl text-dark leading-none">Solicitar nova senha</h1>
+                <p class="text-gray-500 mt-3">Informe seu e-mail ou CPF. A administração vai validar o pedido e criar uma senha temporária para você.</p>
+            </div>
+            <form method="POST" class="p-8 space-y-5">
+                <div>
+                    <label class="rotulo-formulario">E-mail ou CPF</label>
+                    <input type="text" name="identificador" required placeholder="seu@email.com ou 000.000.000-00" class="campo-formulario">
+                </div>
+                <button type="submit" class="w-full py-4 bg-primary text-white rounded-full font-black text-lg hover:bg-primary-dark transition shadow-glow">
+                    Enviar solicitação ao administrador
+                </button>
+                <a href="{{ url_for('autenticacao.entrar') }}" class="block text-center text-sm text-primary font-bold hover:underline">Voltar para o login</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+

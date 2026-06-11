@@ -1,0 +1,134 @@
+html.tema-escuro .text-dark,
+html.tema-escuro .text-ink,
+html.tema-escuro .font-display,
+html.tema-escuro h1,
+html.tema-escuro h2,
+html.tema-escuro h3,
+html.tema-escuro h4,
+html.tema-escuro strong {
+    color:#F8FAFC !important;
+}
+html.tema-escuro .text-gray-400 { color:#94A3B8 !important; }
+html.tema-escuro .text-gray-500,
+html.tema-escuro .text-gray-600,
+html.tema-escuro p,
+html.tema-escuro small {
+    color:#CBD5E1;
+}
+html.tema-escuro .border-black\/5,
+html.tema-escuro .border-black\/10,
+html.tema-escuro .border-gray-100,
+html.tema-escuro .border-gray-200 {
+    border-color:rgba(255,255,255,.10) !important;
+}
+html.tema-escuro #cabecalho-principal,
+html.tema-escuro #cabecalho-principal.cabecalho-rolado,
+html.tema-escuro #menu-mobile,
+html.tema-escuro #painel-acessibilidade {
+    background:rgba(20,24,31,.92) !important;
+    border-color:rgba(255,255,255,.10) !important;
+    box-shadow:0 18px 60px rgba(0,0,0,.34);
+}
+html.tema-escuro .botao-tema {
+    color:#FDE68A;
+    background:#111827;
+    border-color:rgba(255,255,255,.12);
+    box-shadow:0 10px 24px rgba(0,0,0,.22);
+}
+html.tema-escuro .botao-tema-mobile,
+html.tema-escuro .link-navegacao-mobile,
+html.tema-escuro .controle-acessibilidade {
+    color:#E5E7EB;
+    background:transparent;
+}
+html.tema-escuro .botao-tema-mobile {
+    border-color:rgba(255,255,255,.10);
+    background:#171B22;
+}
+html.tema-escuro .link-navegacao-mobile:hover,
+html.tema-escuro .botao-tema-mobile:hover,
+html.tema-escuro .controle-acessibilidade:hover {
+    background:#222A35;
+    color:#FCA5A5;
+}
+html.tema-escuro .link-navegacao-mobile.ativo {
+    background:rgba(214,0,0,.18);
+    color:#FCA5A5;
+}
+html.tema-escuro .controle-acessibilidade span:first-child {
+    background:rgba(214,0,0,.18);
+    color:#FCA5A5;
+}
+html.tema-escuro .grade-destaque {
+    background-image:
+        radial-gradient(circle at 20% 20%, rgba(214,0,0,.22), transparent 28%),
+        radial-gradient(circle at 80% 0%, rgba(255,255,255,.08), transparent 24%),
+        linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
+}
+html.tema-escuro .secao-premium,
+html.tema-escuro .pagina-artigos,
+html.tema-escuro .pagina-artigo,
+html.tema-escuro .pagina-equipe,
+html.tema-escuro .destaque-principal {
+    background:#101319 !important;
+}
+html.tema-escuro input,
+html.tema-escuro select,
+html.tema-escuro textarea,
+html.tema-escuro .campo-painel,
+html.tema-escuro .campo-formulario {
+    background:#111827 !important;
+    color:#F8FAFC !important;
+    border-color:rgba(255,255,255,.14) !important;
+}
+html.tema-escuro input::placeholder,
+html.tema-escuro textarea::placeholder {
+    color:#718096 !important;
+}
+html.tema-escuro .hover\:bg-gray-100:hover,
+html.tema-escuro .hover\:bg-gray-200:hover {
+    background:#222A35 !important;
+}
+html.tema-escuro .mensagem-temporaria {
+    background:#171B22 !important;
+    color:#EEF2F7 !important;
+    border-color:var(--color-primary) !important;
+}
+html.tema-escuro .visual-tematico-artigo,
+html.tema-escuro .topo-artigo-moderno {
+    background:linear-gradient(135deg, #1F2937, #111827) !important;
+}
+html.tema-escuro .pagina-duvidas {
+    background:
+        linear-gradient(135deg, rgba(248,113,113,.08) 0 1px, transparent 1px),
+        linear-gradient(180deg, #101319 0%, #121720 100%) !important;
+    background-size:34px 34px, auto;
+}
+html.tema-escuro .introducao-duvidas > p,
+html.tema-escuro .resposta-duvida p,
+html.tema-escuro .cartao-suporte-duvidas p {
+    color:#CBD5E1;
+}
+html.tema-escuro .cartao-suporte-duvidas,
+html.tema-escuro .item-duvida {
+    background:#171B22 !important;
+    border-color:rgba(255,255,255,.10) !important;
+    box-shadow:0 22px 70px rgba(0,0,0,.34);
+}
+html.tema-escuro .cartao-suporte-duvidas {
+    background:#111827 !important;
+}
+html.tema-escuro .alternar-duvida {
+    color:#F8FAFC;
+}
+html.tema-escuro .alternar-duvida:hover {
+    background:#1F2937;
+}
+html.tema-escuro .resposta-duvida p {
+    border-color:rgba(255,255,255,.10);
+}
+html.tema-escuro .acoes-suporte-duvidas a {
+    background:#F8FAFC;
+    color:#111827;
+}

@@ -1,0 +1,184 @@
+.foto-cabecalho-medico {
+    width:68px;
+    height:68px;
+    border-radius:24px;
+}
+.foto-mini-paciente {
+    width:42px;
+    height:42px;
+    border-radius:14px;
+    flex:0 0 auto;
+}
+.grade-metricas-medico {
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0,1fr));
+    gap:.75rem;
+}
+.grade-metricas-medico div {
+    border-radius:18px;
+    padding:1rem;
+    background:#f8fafc;
+    border:1px solid rgba(15,23,42,.06);
+}
+.grade-metricas-medico strong { display:block; font-size:1.5rem; color:#111; }
+.grade-metricas-medico span { color:#64748b; font-size:.72rem; font-weight:800; }
+.painel-deslizante-prontuario {
+    position:fixed;
+    inset:0;
+    z-index:110;
+    background:rgba(15,23,42,.38);
+    display:flex;
+    justify-content:flex-end;
+}
+.painel-deslizante-prontuario.hidden { display:none; }
+.painel-prontuario {
+    width:min(520px, 100vw);
+    height:100%;
+    overflow-y:auto;
+    background:#fff;
+    padding:2rem;
+    box-shadow:-28px 0 70px rgba(15,23,42,.22);
+}
+.fechar-prontuario {
+    float:right;
+    font-size:2rem;
+    color:#94a3b8;
+}
+.checagem-teleconsulta {
+    display:flex;
+    align-items:center;
+    gap:.65rem;
+    border-radius:18px;
+    padding:1rem;
+    background:#f8fafc;
+    border:1px solid rgba(15,23,42,.06);
+    color:#334155;
+    font-weight:900;
+}
+.checagem-teleconsulta input { accent-color:var(--color-primary); }
+.cartao-prioridade {
+    border-left: 6px solid var(--color-primary);
+    box-shadow: 0 24px 80px rgba(214,0,0,.10);
+}
+.cabecalho-cartao {
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:1rem;
+    margin-bottom:1.35rem;
+}
+.cabecalho-cartao h2 { font-weight:900; font-size:1.35rem; color:#111; }
+.cabecalho-cartao.compacto h2 { font-size:1.1rem; }
+.chamada-cartao {
+    font-size:.68rem;
+    font-weight:900;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--color-primary);
+    margin-bottom:.25rem;
+}
+.icone-cartao {
+    width:44px;
+    height:44px;
+    display:grid;
+    place-items:center;
+    border-radius:16px;
+    background:#fff2f2;
+    flex:0 0 auto;
+    color:var(--color-primary);
+}
+.icone-cartao svg {
+    width:22px;
+    height:22px;
+    fill:none;
+    stroke:currentColor;
+    stroke-width:2.1;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+.cartao-notificacao {
+    display:flex;
+    gap:1rem;
+    align-items:center;
+    padding:1rem;
+    background:#fff;
+    border-radius:18px;
+    border:1px solid rgba(17,17,17,.06);
+    box-shadow:0 10px 30px rgba(17,17,17,.05);
+}
+.cartao-notificacao.perigo { border-left:5px solid #DC2626; background:#fff7f7; }
+.cartao-notificacao.alerta { border-left:5px solid #F59E0B; background:#fffbeb; }
+.cartao-notificacao.sucesso { border-left:5px solid #15803D; background:#f0fdf4; }
+.cartao-notificacao.informacao { border-left:5px solid #2563eb; background:#eff6ff; }
+.icone-notificacao {
+    width:12px;
+    height:12px;
+    border-radius:999px;
+    background:#2563eb;
+    flex:0 0 auto;
+}
+.cartao-notificacao.perigo .icone-notificacao { background:#DC2626; }
+.cartao-notificacao.alerta .icone-notificacao { background:#F59E0B; }
+.cartao-notificacao.sucesso .icone-notificacao { background:#15803D; }
+.cartao-notificacao.compacto {
+    align-items:flex-start;
+    padding:.85rem;
+    box-shadow:none;
+}
+.cartao-central-notificacoes {
+    border-left:4px solid #1d4ed8;
+}
+.cabecalho-central-notificacoes {
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:1rem;
+    margin-bottom:1rem;
+}
+.cabecalho-central-notificacoes h2 {
+    color:#111827;
+    font-size:1.2rem;
+    font-weight:900;
+}
+.acoes-central-notificacoes {
+    display:flex;
+    align-items:center;
+    gap:.65rem;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+}
+.acoes-central-notificacoes > span {
+    min-width:34px;
+    height:34px;
+    display:grid;
+    place-items:center;
+    border-radius:999px;
+    background:#eef2ff;
+    color:#1d4ed8;
+    font-weight:900;
+}
+.lista-notificacoes {
+    display:grid;
+    gap:.75rem;
+}
+.cartao-notificacao.detalhado {
+    align-items:flex-start;
+    box-shadow:none;
+    border-left-width:4px;
+}
+.linha-titulo-notificacao {
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:1rem;
+}
+.linha-titulo-notificacao p {
+    color:#111827;
+    font-weight:900;
+}
+.linha-titulo-notificacao small {
+    flex:0 0 auto;
+    color:#94a3b8;
+    font-size:.72rem;
+    font-weight:800;
+}

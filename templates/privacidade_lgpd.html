@@ -1,0 +1,95 @@
+{% extends "estrutura_base.html" %}
+{% block title %}LGPD - CardioLab{% endblock %}
+{% block conteudo %}
+<section class="py-16 bg-gradient-to-b from-gray-50 to-white">
+    <div class="max-w-4xl mx-auto px-4">
+        <h1 class="text-4xl font-extrabold text-dark mb-10 text-center">LGPD & Políticas</h1>
+        <div class="flex flex-wrap gap-2 mb-10 justify-center">
+            <button class="aba-lgpd px-5 py-2.5 rounded-xl font-semibold text-sm bg-primary text-white" data-aba="privacidade">Privacidade</button>
+            <button class="aba-lgpd px-5 py-2.5 rounded-xl font-semibold text-sm bg-gray-100 text-gray-600 hover:bg-gray-200" data-aba="termos">Termos de Uso</button>
+            <button class="aba-lgpd px-5 py-2.5 rounded-xl font-semibold text-sm bg-gray-100 text-gray-600 hover:bg-gray-200" data-aba="cookies">Cookies</button>
+            <button class="aba-lgpd px-5 py-2.5 rounded-xl font-semibold text-sm bg-gray-100 text-gray-600 hover:bg-gray-200" data-aba="direitos">Seus Direitos</button>
+        </div>
+        <div id="aba-privacidade" class="conteudo-lgpd bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+            <h2 class="text-2xl font-bold text-dark mb-6">Política de Privacidade</h2>
+            <div class="prose text-gray-600 space-y-4 text-sm leading-relaxed">
+                <p>A CardioLab está comprometida com a proteção dos dados pessoais de seus pacientes e usuários, em conformidade com a Lei Geral de Proteção de Dados (LGPD - Lei nº 13.709/2018).</p>
+                <h3 class="text-lg font-semibold text-dark mt-6">1. Dados Coletados</h3>
+                <p>Coletamos os seguintes dados pessoais: nome completo, CPF, e-mail, telefone, data de nascimento, endereço, dados de saúde (histórico médico, exames, sinais vitais) e dados de acesso (IP, logs de auditoria).</p>
+                <h3 class="text-lg font-semibold text-dark mt-6">2. Finalidade do Tratamento</h3>
+                <p>Os dados são utilizados exclusivamente para: prestação de serviços de saúde, agendamento de consultas, emissão de laudos, comunicação com pacientes, melhoria dos serviços e cumprimento de obrigações legais.</p>
+                <h3 class="text-lg font-semibold text-dark mt-6">3. Compartilhamento</h3>
+                <p>Seus dados não são compartilhados com terceiros, exceto quando necessário para prestação de serviços de saúde ou por exigência legal.</p>
+                <h3 class="text-lg font-semibold text-dark mt-6">4. Segurança</h3>
+                <p>Utilizamos criptografia, controle de acesso, logs de auditoria e boas práticas de segurança para proteger seus dados.</p>
+                <h3 class="text-lg font-semibold text-dark mt-6">5. Retenção</h3>
+                <p>Os dados de saúde são mantidos pelo prazo legal de 20 anos conforme exigência do CFM. Demais dados são mantidos enquanto houver finalidade legítima.</p>
+            </div>
+        </div>
+        <div id="aba-termos" class="conteudo-lgpd bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hidden">
+            <h2 class="text-2xl font-bold text-dark mb-6">Termos de Uso</h2>
+            <div class="prose text-gray-600 space-y-4 text-sm leading-relaxed">
+                <p>Ao utilizar a plataforma CardioLab, você concorda com os seguintes termos:</p>
+                <h3 class="text-lg font-semibold text-dark mt-6">1. Uso da Plataforma</h3>
+                <p>A plataforma destina-se exclusivamente ao agendamento de consultas, visualização de exames e acompanhamento de saúde cardiovascular. Não substitui atendimento presencial de emergência.</p>
+                <h3 class="text-lg font-semibold text-dark mt-6">2. Responsabilidades do Usuário</h3>
+                <p>O usuário é responsável pela veracidade dos dados informados, pela segurança de suas credenciais de acesso e pelo uso adequado da plataforma.</p>
+                <h3 class="text-lg font-semibold text-dark mt-6">3. Limitações</h3>
+                <p>A CardioLab não se responsabiliza por decisões médicas tomadas exclusivamente com base em informações da plataforma. Sempre consulte seu médico.</p>
+            </div>
+        </div>
+        <div id="aba-cookies" class="conteudo-lgpd bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hidden">
+            <h2 class="text-2xl font-bold text-dark mb-6">Política de Cookies</h2>
+            <div class="prose text-gray-600 space-y-4 text-sm leading-relaxed">
+                <p>Utilizamos cookies para melhorar sua experiência na plataforma.</p>
+                <h3 class="text-lg font-semibold text-dark mt-6">Tipos de Cookies</h3>
+                <ul class="list-disc list-inside space-y-2">
+                    <li><strong>Essenciais:</strong> Necessários para o funcionamento da plataforma (sessão, autenticação).</li>
+                    <li><strong>Funcionais:</strong> Lembram suas preferências (acessibilidade, idioma).</li>
+                    <li><strong>Analíticos:</strong> Ajudam a entender como você usa a plataforma.</li>
+                </ul>
+                <h3 class="text-lg font-semibold text-dark mt-6">Consentimento</h3>
+                <p>Ao utilizar a plataforma, você consente com o uso de cookies essenciais. Cookies funcionais e analíticos podem ser desativados nas configurações do seu navegador.</p>
+            </div>
+        </div>
+        <div id="aba-direitos" class="conteudo-lgpd bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hidden">
+            <h2 class="text-2xl font-bold text-dark mb-6">Canal do Titular de Dados</h2>
+            <div class="prose text-gray-600 space-y-4 text-sm leading-relaxed">
+                <p>Como titular de dados pessoais, você tem os seguintes direitos garantidos pela LGPD:</p>
+                <ul class="list-disc list-inside space-y-2">
+                    <li>Confirmação da existência de tratamento de dados</li>
+                    <li>Acesso aos dados pessoais</li>
+                    <li>Correção de dados incompletos, inexatos ou desatualizados</li>
+                    <li>Anonimização, bloqueio ou eliminação de dados desnecessários</li>
+                    <li>Portabilidade dos dados</li>
+                    <li>Eliminação dos dados pessoais tratados com consentimento</li>
+                    <li>Informação sobre o compartilhamento de dados</li>
+                    <li>Revogação do consentimento</li>
+                </ul>
+                <h3 class="text-lg font-semibold text-dark mt-6">Solicitação de Correção ou Exclusão</h3>
+                <p>Para exercer seus direitos, entre em contato pelo e-mail <a href="mailto:{{ email_lgpd }}" class="text-primary font-semibold">{{ email_lgpd }}</a> ou pelo telefone <a href="tel:+5511999999999" class="text-primary font-semibold">{{ telefone_clinica_formatado }}</a>.</p>
+                <p>Sua solicitação será respondida em até 15 dias úteis.</p>
+                <div class="mt-6 p-4 bg-yellow-50 rounded-xl border border-yellow-100">
+                    <p class="text-yellow-800 text-sm"><strong>Importante:</strong> Dados de saúde possuem prazo legal de retenção de 20 anos e não podem ser eliminados antes desse período, conforme regulamentação do CFM.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+function mostrarAbaLgpd(aba) {
+    document.querySelectorAll('.conteudo-lgpd').forEach(conteudo => conteudo.classList.add('hidden'));
+    document.querySelectorAll('.aba-lgpd').forEach(botao => { botao.classList.remove('bg-primary','text-white'); botao.classList.add('bg-gray-100','text-gray-600'); });
+    document.getElementById('aba-' + aba).classList.remove('hidden');
+    document.querySelector('[data-aba="' + aba + '"]').classList.add('bg-primary','text-white');
+    document.querySelector('[data-aba="' + aba + '"]').classList.remove('bg-gray-100','text-gray-600');
+}
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.aba-lgpd').forEach((botao) => {
+        botao.addEventListener('click', () => mostrarAbaLgpd(botao.dataset.aba));
+    });
+    mostrarAbaLgpd('{{ aba_ativa|default("privacidade") }}');
+});
+</script>
+{% endblock %}
+

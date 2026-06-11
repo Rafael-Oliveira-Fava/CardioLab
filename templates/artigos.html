@@ -1,0 +1,53 @@
+{% extends "estrutura_base.html" %}
+{% block title %}Artigos - CardioLab{% endblock %}
+{% block conteudo %}
+<section class="pagina-artigos py-20 md:py-28 bg-cream relative overflow-hidden">
+    <div class="absolute inset-0 grade-destaque opacity-60"></div>
+    <div class="max-w-7xl mx-auto px-4 relative z-10">
+        <div class="painel-destaque-artigos revelar-rolagem">
+            <div>
+                <p class="chamada-secao">Artigos</p>
+                <h1 class="font-display text-5xl md:text-6xl text-dark mb-5 leading-none">Leitura rápida para cuidar melhor do coração.</h1>
+                <p class="text-gray-600 text-lg leading-relaxed max-w-2xl">Guias objetivos, prevenção e orientações da equipe CardioLab em uma página mais leve para navegar.</p>
+            </div>
+            <div class="cartao-destaque-artigos">
+                <span>Atualizado</span>
+                <strong>{{ artigos[0].criado_em|data_br if artigos and artigos[0].criado_em else '' }}</strong>
+                <small>{{ artigos|length }} artigos disponíveis</small>
+            </div>
+        </div>
+        {% if artigos %}
+        {% set artigo_destaque = artigos[0] %}
+        <a href="{{ url_for('publico.artigo', artigo_id=artigo_destaque.id, slug=artigo_destaque.slug) }}" class="cartao-artigo-destaque revelar-rolagem" aria-label="Ler artigo: {{ artigo_destaque.titulo }}">
+            <div class="visual-artigo-destaque">
+                <span>{{ artigo_destaque.categoria }}</span>
+                <svg viewBox="0 0 240 120" fill="none" aria-hidden="true">
+                    <path d="M5 62H60L72 28L88 96L104 18L124 62H160L174 42L188 78L204 36L220 62H235" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="texto-artigo-destaque">
+                <div class="meta-cartao-artigo"><span>{{ artigo_destaque.categoria }}</span><small>{{ artigo_destaque.criado_em|data_br if artigo_destaque.criado_em else '' }}</small></div>
+                <h2>{{ artigo_destaque.titulo }}</h2>
+                <p>{{ artigo_destaque.conteudo.split('\n\n')[0] | replace('**', '') | truncate(260) }}</p>
+                <span class="artigo-ler-mais">Ler artigo completo</span>
+            </div>
+        </a>
+        {% endif %}
+        <div class="grade-artigos-modernos">
+            {% for artigo in artigos[1:] %}
+            <a href="{{ url_for('publico.artigo', artigo_id=artigo.id, slug=artigo.slug) }}" class="cartao-artigo-moderno revelar-rolagem" style="transition-delay:{{ loop.index0 * 0.08 }}s" aria-label="Ler artigo: {{ artigo.titulo }}">
+                <div class="topo-artigo-moderno tom-artigo-{{ loop.index0 % 4 }}">
+                    <span>{{ artigo.categoria[:2] }}</span>
+                </div>
+                <div class="corpo-artigo-moderno">
+                    <div class="meta-cartao-artigo"><span>{{ artigo.categoria }}</span><small>{{ artigo.criado_em|data_br if artigo.criado_em else '' }}</small></div>
+                    <h2>{{ artigo.titulo }}</h2>
+                    <p>{{ artigo.conteudo.split('\n\n')[0] | replace('**', '') | truncate(180) }}</p>
+                    <span class="artigo-ler-mais">Ler mais</span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

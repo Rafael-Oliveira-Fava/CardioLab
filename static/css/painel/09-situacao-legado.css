@@ -1,0 +1,184 @@
+.bloco-prontuario p { font-size:.72rem; font-weight:900; letter-spacing:.12em; text-transform:uppercase; color:#9ca3af; margin-bottom:.25rem; }
+.bloco-prontuario span { font-size:.9rem; color:#111; }
+.alerta-risco {
+    border-radius:18px;
+    padding:.9rem 1rem;
+    font-size:.9rem;
+    font-weight:900;
+    border-left:5px solid currentColor;
+}
+.alerta-risco.alto { color:#b91c1c; background:#fee2e2; }
+.alerta-risco.medio { color:#b45309; background:#fef3c7; }
+.alerta-risco.baixo { color:#166534; background:#dcfce7; }
+.rotulo-painel {
+    display:block;
+    font-size:.72rem;
+    font-weight:900;
+    color:#666;
+    margin-bottom:.35rem;
+}
+.campo-painel {
+    width:100%;
+    border:1px solid rgba(17,17,17,.10);
+    border-radius:14px;
+    padding:.72rem .85rem;
+    font-size:.88rem;
+    outline:none;
+    background:#fff;
+}
+.campo-painel.grande { padding:.9rem 1rem; border-radius:16px; }
+.campo-painel:focus { border-color:var(--color-primary); box-shadow:0 0 0 4px rgba(214,0,0,.09); }
+.caixa-vital {
+    border-radius:18px;
+    padding:.9rem;
+    background:#faf8f5;
+    border:1px solid rgba(17,17,17,.05);
+}
+.caixa-vital p { font-size:.72rem; color:#9ca3af; font-weight:800; }
+.caixa-vital strong { display:block; color:#111; font-weight:900; margin-top:.2rem; }
+.cartao-resultado-risco {
+    border-radius:18px;
+    padding:1rem;
+    border:1px solid rgba(17,17,17,.08);
+    background:#f8fafc;
+    color:#334155;
+    text-align:left;
+    font-size:.82rem;
+}
+.cartao-resultado-risco.baixo { background:#f1f8f1; border-color:rgba(21,128,61,.16); color:#166534; }
+.cartao-resultado-risco.medio { background:#fff8e6; border-color:rgba(245,158,11,.20); color:#92400e; }
+.cartao-resultado-risco.alto { background:#fff1f1; border-color:rgba(220,38,38,.20); color:#991b1b; }
+.topo-resultado-risco {
+    display:flex;
+    align-items:baseline;
+    gap:.6rem;
+    margin-bottom:.55rem;
+}
+.topo-resultado-risco strong {
+    font-size:2rem;
+    line-height:1;
+    color:#111;
+}
+.topo-resultado-risco span {
+    font-weight:800;
+    text-transform:capitalize;
+}
+.cartao-resultado-risco small {
+    display:block;
+    margin-top:.55rem;
+    color:inherit;
+    opacity:.72;
+}
+.cartao-resultado-risco ul {
+    margin:.65rem 0 0;
+    padding-left:1rem;
+    display:grid;
+    gap:.25rem;
+}
+.resumo-prontuario-paciente {
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0,1fr));
+    gap:.75rem;
+    margin-bottom:1.2rem;
+}
+.resumo-prontuario-paciente div,
+.lista-mini-pacientes a {
+    border-radius:16px;
+    padding:.85rem;
+    background:#faf8f5;
+    border:1px solid rgba(17,17,17,.05);
+}
+.resumo-prontuario-paciente span {
+    display:block;
+    color:#94a3b8;
+    font-size:.68rem;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+}
+.resumo-prontuario-paciente strong {
+    display:block;
+    color:#111;
+    font-size:.86rem;
+    margin-top:.2rem;
+    overflow-wrap:anywhere;
+}
+.lista-prontuarios {
+    display:grid;
+    gap:.75rem;
+}
+.bloco-prontuario small {
+    display:block;
+    color:#667085;
+    margin-top:.45rem;
+}
+.bloco-prontuario em {
+    margin-top:.6rem;
+    font-style:normal;
+    width:max-content;
+}
+.titulo-subsecao {
+    margin:1.4rem 0 .75rem;
+    color:#111;
+    font-weight:800;
+}
+.cartao-exame.compacto {
+    padding:.8rem;
+    border-radius:16px;
+}
+.lista-mini-pacientes {
+    display:grid;
+    gap:.6rem;
+    margin-top:1rem;
+}
+.grade-lista-pacientes {
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0,1fr));
+    gap:.9rem;
+}
+.cartao-lista-paciente {
+    display:flex;
+    align-items:center;
+    gap:.85rem;
+    border-radius:18px;
+    padding:1rem;
+    background:#faf8f5;
+    border:1px solid rgba(17,17,17,.06);
+    color:#111;
+    transition:transform .2s ease, border-color .2s ease, background .2s ease;
+}
+.cartao-lista-paciente:hover {
+    transform:translateY(-2px);
+    background:#fff;
+    border-color:rgba(214,0,0,.18);
+}
+.cartao-lista-paciente strong {
+    display:block;
+    color:#111;
+    font-weight:800;
+}
+.cartao-lista-paciente span,
+.cartao-lista-paciente small {
+    display:block;
+    color:#667085;
+    font-size:.78rem;
+    margin-top:.12rem;
+}
+.lista-mini-pacientes a {
+    display:grid;
+    grid-template-columns:auto 1fr;
+    column-gap:.7rem;
+    align-items:center;
+    color:#111;
+}
+.lista-mini-pacientes img {
+    grid-row:span 2;
+}
+.lista-mini-pacientes span {
+    font-weight:800;
+    font-size:.86rem;
+}
+.lista-mini-pacientes small {
+    color:#94a3b8;
+    font-size:.72rem;
+}

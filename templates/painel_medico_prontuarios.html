@@ -1,0 +1,320 @@
+{% extends "estrutura_base.html" %}
+{% block title %}Painel do Médico - CardioLab{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/painel.css', v=versao_estatica) }}">{% endblock %}
+{% block conteudo %}
+{% set indice_avatar_medico = ((((medico.id if medico else usuario_atual.id) - 1) % 4) + 1) %}
+{% set foto_medico_padrao = usuario_atual.foto_perfil or url_for('static', filename='assets/avatars/medico-' ~ indice_avatar_medico ~ '.svg') %}
+{% set foto_medico = url_for('static', filename=medico.arquivo_foto_publica) if medico and medico.arquivo_foto_publica else (medico.foto_perfil if medico and medico.foto_perfil else foto_medico_padrao) %}
+{% set abas_permitidas = ['hoje', 'semana', 'pacientes', 'prontuarios', 'metricas'] %}
+{% set aba_padrao = aba_ativa if aba_ativa in abas_permitidas else 'hoje' %}
+<div class="pagina-painel pagina-painel-medico min-h-screen py-8 md:py-12" id="painel-medico" data-painel-raiz data-aba-padrao="{{ aba_padrao }}">
+    <div class="max-w-7xl mx-auto px-4">
+        <section class="estrutura-painel estrutura-medico mb-8">
+            <div class="cabecalho-estrutura-painel">
+                <div class="pessoa-painel">
+                    <img class="foto-cabecalho-medico" src="{{ foto_medico }}" alt="Foto de {{ medico.nome if medico else usuario_atual.nome }}">
+                    <div>
+                        <p class="perfil-painel">Painel do médico</p>
+                        <h1>{{ medico.nome if medico else usuario_atual.nome }}</h1>
+                        <p>{{ medico.especialidade if medico else 'Cardiologia' }}{% if medico and medico.crm %} - {{ medico.crm }}{% endif %}</p>
+                    </div>
+                </div>
+                <div class="acoes-estrutura-painel">
+                    <a href="https://wa.me/{{ numero_whatsapp }}" target="_blank" class="acao-painel secundario">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8.5a6 6 0 018.7 7.8L16 20l-3.8-1.2A6 6 0 116 8.5z"/><path d="M9.5 9.5c.5 2 2 3.5 4 4"/></svg>
+                        WhatsApp
+                    </a>
+                    <button type="button" class="acao-painel primario" data-aba-painel="prontuarios">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+                        Novo registro
+                    </button>
+                </div>
+            </div>
+            <nav class="abas-painel" aria-label="Áreas do painel médico" data-abas-painel>
+                <button type="button" class="ativo" data-aba-painel="hoje"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4M16 3v4M4 10h16"/></svg>Hoje{% if consultas_hoje %}<span>{{ consultas_hoje|length }}</span>{% endif %}</button>
+                <button type="button" data-aba-painel="semana"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h10M8 12h10M8 18h7"/><path d="M4 6h.01M4 12h.01M4 18h.01"/></svg>Semana</button>
+                <button type="button" data-aba-painel="pacientes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 19a4 4 0 00-8 0"/><circle cx="12" cy="8" r="3"/><path d="M20 19a3 3 0 00-3-3M4 19a3 3 0 013-3"/></svg>Pacientes{% if lista_pacientes %}<span>{{ lista_pacientes|length }}</span>{% endif %}</button>
+                <button type="button" data-aba-painel="prontuarios"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10a2 2 0 012 2v14H7a2 2 0 01-2-2V6a2 2 0 012-2z"/><path d="M9 9h6M9 13h6"/></svg>Prontuário</button>
+                <button type="button" data-aba-painel="metricas"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19V9M12 19V5M19 19v-7"/></svg>Métricas</button>
+            </nav>
+        </section>
+        <aside id="painel-deslizante-prontuario" class="painel-deslizante-prontuario hidden">
+            <div class="painel-prontuario">
+                <button type="button" class="fechar-prontuario" data-painel-prontuario-close aria-label="Fechar">&times;</button>
+                <div id="painel-prontuario-conteudo" class="space-y-4"></div>
+            </div>
+        </aside>
+        <div class="pilha-abas-painel">
+            <section class="painel-aba" data-painel-aba="hoje">
+                <div class="grade-painel">
+                    <div class="area-principal-painel">
+                        {% if pacientes_criticos %}
+                        <div class="lista-alerta-critico">
+                            {% for paciente_critico in pacientes_criticos %}
+                            <div class="alerta-critico">
+                                <div>
+                                    <p>Atenção: {{ paciente_critico.nome_paciente }} - risco alto</p>
+                                    <span>{{ paciente_critico.telefone_paciente or 'Telefone não informado' }}</span>
+                                </div>
+                                <a href="{{ url_for('medico.prontuario_paciente', paciente_id=paciente_critico.paciente_id) }}">Ver prontuário</a>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        <section class="cartao-painel">
+                            <div class="cabecalho-cartao compacto">
+                                <div>
+                                    <p class="chamada-cartao">Hoje{% if hoje %} - {{ hoje|data_br }}{% endif %}</p>
+                                    <h2>Agenda</h2>
+                                </div>
+                            </div>
+                            {% if consultas_hoje %}
+                            <div class="lista-consultas-medico">
+                                {% for consulta in consultas_hoje %}
+                                {% set indice_avatar_consulta = ((consulta.paciente_id - 1) % 6) + 1 %}
+                                {% set foto_consulta = consulta.foto_paciente or url_for('static', filename='assets/avatars/paciente-' ~ indice_avatar_consulta ~ '.svg') %}
+                                <article class="linha-consulta-medico linha-situacao-{{ consulta.situacao }}" data-paciente="{{ consulta.paciente_id }}">
+                                    <time>{{ consulta.horario_consulta }}</time>
+                                    <img class="foto-mini-paciente" src="{{ foto_consulta }}" alt="Foto de {{ consulta.nome_paciente }}">
+                                    <div class="principal-consulta-medico">
+                                        <strong>{{ consulta.nome_paciente }}</strong>
+                                        <span>{{ consulta.nome_servico }}{% if consulta.telefone_paciente %} - {{ consulta.telefone_paciente }}{% endif %}</span>
+                                        {% if consulta.nome_plano_carteirinha %}
+                                        <em class="chip-membro {{ consulta.situacao_carteirinha|classe_situacao_carteirinha }}">{{ consulta.situacao_carteirinha == 'ativa' and consulta.nome_plano_carteirinha or 'Care em análise' }}</em>
+                                        {% endif %}
+                                    </div>
+                                    <span class="selo-situacao situacao-{{ consulta.situacao }}">{{ consulta.situacao|rotulo_consulta }}</span>
+                                    {% if consulta.situacao not in ('finalizada', 'cancelada', 'faltou') %}
+                                    <div class="acoes-icones-consulta">
+                                        {% if consulta.situacao == 'agendada' %}
+                                        <form method="POST" action="{{ url_for('medico.atualizar_situacao_consulta', consulta_id=consulta.id) }}">
+                                            <input type="hidden" name="situacao" value="confirmada">
+                                            <button class="acao-icone" title="Confirmar consulta" aria-label="Confirmar consulta">
+                                                <svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg>
+                                            </button>
+                                        </form>
+                                        {% endif %}
+                                        {% if consulta.situacao in ('agendada', 'confirmada') %}
+                                        <form method="POST" action="{{ url_for('medico.atualizar_situacao_consulta', consulta_id=consulta.id) }}">
+                                            <input type="hidden" name="situacao" value="em_atendimento">
+                                            <button class="acao-icone" title="Iniciar atendimento" aria-label="Iniciar atendimento">
+                                                <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                            </button>
+                                        </form>
+                                        {% endif %}
+                                        {% if consulta.situacao == 'em_atendimento' %}
+                                        <form method="POST" action="{{ url_for('medico.atualizar_situacao_consulta', consulta_id=consulta.id) }}">
+                                            <input type="hidden" name="situacao" value="finalizada">
+                                            <button class="acao-icone" title="Finalizar atendimento" aria-label="Finalizar atendimento">
+                                                <svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg>
+                                            </button>
+                                        </form>
+                                        {% endif %}
+                                        <form method="POST" action="{{ url_for('medico.atualizar_situacao_consulta', consulta_id=consulta.id) }}" data-confirmar-envio="O paciente deve ser notificado com até 12h de antecedência. Confirma cancelamento?">
+                                            <input type="hidden" name="situacao" value="cancelada">
+                                            <input type="hidden" name="motivo" value="Cancelado pelo médico">
+                                            <button class="acao-icone perigo" title="Cancelar consulta" aria-label="Cancelar consulta">
+                                                <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+                                            </button>
+                                        </form>
+                                    </div>
+                                    {% endif %}
+                                </article>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            <p class="estado-vazio">Nenhuma consulta hoje.</p>
+                            {% endif %}
+                        </section>
+                    </div>
+                    <aside class="lateral-painel">
+                        <section class="cartao-painel">
+                            <div class="cabecalho-cartao compacto">
+                                <div><p class="chamada-cartao">Fila</p><h2>Resumo de hoje</h2></div>
+                            </div>
+                            <div class="grade-metricas-medico">
+                                <div><strong>{{ consultas_hoje|length }}</strong><span>consultas</span></div>
+                                <div><strong>{{ pacientes_criticos|length }}</strong><span>alertas</span></div>
+                                <div><strong>{{ total_carteirinhas_ativas or 0 }}</strong><span>Care ativo</span></div>
+                                <div><strong>{{ (consultas_hoje|length) - (total_carteirinhas_ativas or 0) }}</strong><span>particular</span></div>
+                            </div>
+                        </section>
+                    </aside>
+                </div>
+            </section>
+            <section class="painel-aba" data-painel-aba="semana">
+                <section class="cartao-painel">
+                    <div class="cabecalho-cartao compacto">
+                        <div>
+                            <p class="chamada-cartao">Próximos 7 dias</p>
+                            <h2>Agenda semanal</h2>
+                        </div>
+                    </div>
+                    {% if consultas_semana %}
+                    <div class="overflow-x-auto rounded-2xl border border-black/5">
+                        <table class="tabela-painel">
+                            <thead><tr><th>Data</th><th>Hora</th><th>Paciente</th><th>Serviço</th><th>Convênio</th><th>Situação</th></tr></thead>
+                            <tbody>
+                            {% for consulta in consultas_semana %}
+                            <tr>
+                                <td>{{ consulta.data_consulta|data_curta if consulta.data_consulta else '' }}</td>
+                                <td>{{ consulta.horario_consulta }}</td>
+                                <td>{{ consulta.nome_paciente }}</td>
+                                <td>{{ consulta.nome_servico }}</td>
+                                <td>{% if consulta.nome_plano_carteirinha %}<span class="chip-membro {{ consulta.situacao_carteirinha|classe_situacao_carteirinha }}">{{ consulta.situacao_carteirinha == 'ativa' and 'Care' or 'Em análise' }}</span>{% else %}-{% endif %}</td>
+                                <td><span class="selo-situacao situacao-{{ consulta.situacao }}">{{ consulta.situacao|rotulo_consulta }}</span></td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p class="estado-vazio">Nenhuma consulta na semana.</p>
+                    {% endif %}
+                </section>
+            </section>
+            <section class="painel-aba" data-painel-aba="pacientes">
+                <section class="cartao-painel">
+                    <div class="cabecalho-cartao compacto">
+                        <div>
+                            <p class="chamada-cartao">Relacionamento</p>
+                            <h2>Meus pacientes</h2>
+                        </div>
+                    </div>
+                    {% if lista_pacientes %}
+                    <div class="grade-lista-pacientes">
+                        {% for paciente_lista in lista_pacientes %}
+                        {% set indice_avatar_paciente = ((paciente_lista.paciente_id - 1) % 6) + 1 %}
+                        {% set foto_paciente = paciente_lista.foto_paciente or url_for('static', filename='assets/avatars/paciente-' ~ indice_avatar_paciente ~ '.svg') %}
+                        <a href="{{ url_for('medico.prontuario_paciente', paciente_id=paciente_lista.paciente_id) }}" class="cartao-lista-paciente">
+                            <img class="foto-mini-paciente" src="{{ foto_paciente }}" alt="Foto de {{ paciente_lista.nome_paciente }}">
+                            <div>
+                                <strong>{{ paciente_lista.nome_paciente }}</strong>
+                                <span>{{ paciente_lista.telefone or 'Telefone não informado' }}</span>
+                                <small>Última visita: {{ paciente_lista.ultima_consulta|data_br if paciente_lista.ultima_consulta else 'Sem visita' }}</small>
+                                {% if paciente_lista.nome_plano_carteirinha %}<em class="chip-membro {{ paciente_lista.situacao_carteirinha|classe_situacao_carteirinha }}">{{ paciente_lista.situacao_carteirinha == 'ativa' and paciente_lista.nome_plano_carteirinha or 'Care em análise' }}</em>{% endif %}
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="estado-vazio">Nenhum paciente vinculado.</p>
+                    {% endif %}
+                </section>
+            </section>
+            <section class="painel-aba" data-painel-aba="prontuarios">
+                {% if mostrar_prontuario and paciente %}
+                <section class="cartao-painel">
+                    <div class="cabecalho-cartao compacto">
+                        <div>
+                            <p class="chamada-cartao">Prontuário</p>
+                            <h2>{{ paciente.nome }}</h2>
+                        </div>
+                    </div>
+                    <div class="resumo-prontuario-paciente">
+                        <div><span>CPF</span><strong>{{ paciente.cpf }}</strong></div>
+                        <div><span>E-mail</span><strong>{{ paciente.email }}</strong></div>
+                        <div><span>Telefone</span><strong>{{ paciente.telefone or '-' }}</strong></div>
+                        <div><span>Nascimento</span><strong>{{ paciente.data_nascimento|data_br if paciente.data_nascimento else '-' }}</strong></div>
+                        <div><span>CardioLab Care</span><strong>{{ paciente.nome_plano_carteirinha or 'Sem carteirinha' }}</strong></div>
+                        <div><span>Carteirinha</span><strong>{{ paciente.numero_carteirinha or '-' }}</strong></div>
+                    </div>
+                    {% if prontuarios_paciente %}
+                    <div class="lista-prontuarios">
+                        {% for prontuario in prontuarios_paciente %}
+                        <div class="bloco-prontuario">
+                            <p>{{ prontuario.criado_em|data_br if prontuario.criado_em else '' }} - {{ prontuario.nome_medico }}</p>
+                            {% if prontuario.observacoes %}<span>{{ prontuario.observacoes }}</span>{% endif %}
+                            {% if prontuario.medicamentos %}<small>Medicamentos: {{ prontuario.medicamentos }}</small>{% endif %}
+                            {% if prontuario.alerta_risco %}<em class="selo-situacao situacao-{{ prontuario.alerta_risco }}">Risco {{ prontuario.alerta_risco|rotulo_risco }}</em>{% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    {% if exames_paciente %}
+                    <h3 class="titulo-subsecao">Exames</h3>
+                    {% for exame in exames_paciente %}
+                    <div class="cartao-exame compacto">
+                        <div class="flex-1">
+                            <p class="font-semibold text-dark">{{ exame.titulo }}</p>
+                            <p class="text-xs text-gray-400">{{ exame.criado_em|data_br if exame.criado_em else '' }}</p>
+                        </div>
+                        <a href="{{ exame.arquivo_url or '#' }}" target="_blank" class="acao-pequena escuro">PDF</a>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                </section>
+                {% else %}
+                <section class="cartao-painel">
+                    <div class="cabecalho-cartao compacto">
+                        <div>
+                            <p class="chamada-cartao">Prontuário</p>
+                            <h2>Selecione um paciente</h2>
+                        </div>
+                    </div>
+                    <p class="text-gray-500 text-sm leading-relaxed mb-4">Abra a aba Pacientes e escolha um nome para ver o prontuário completo nesta área.</p>
+                    <button type="button" class="acao-painel primario" data-aba-painel="pacientes">Ver pacientes</button>
+                </section>
+                {% endif %}
+            </section>
+            <section class="painel-aba" data-painel-aba="metricas">
+                <div class="grade-painel">
+                    <div class="area-principal-painel">
+                        {% if estatisticas %}
+                        <div class="grade-estatisticas-painel estatisticas-gerais">
+                            <div class="cartao-estatistica-medico"><strong>{{ estatisticas.agendadas or 0 }}</strong><span>Agendadas</span></div>
+                            <div class="cartao-estatistica-medico"><strong>{{ estatisticas.confirmadas or 0 }}</strong><span>Confirmadas</span></div>
+                            <div class="cartao-estatistica-medico"><strong>{{ estatisticas.finalizadas or 0 }}</strong><span>Finalizadas</span></div>
+                            <div class="cartao-estatistica-medico perigo"><strong>{{ estatisticas.canceladas or 0 }}</strong><span>Canceladas</span></div>
+                        </div>
+                        {% endif %}
+                        <section class="cartao-painel">
+                            <div class="cabecalho-cartao compacto">
+                                <div>
+                                    <p class="chamada-cartao">Métrica</p>
+                                    <h2>Resumo do médico</h2>
+                                </div>
+                            </div>
+                            <div class="grade-metricas-medico">
+                                <div><strong>{{ metricas_medico.consultas_mes if metricas_medico else 0 }}</strong><span>consultas no mês</span></div>
+                                <div><strong>{{ metricas_medico.taxa_cancelamento if metricas_medico else 0 }}%</strong><span>cancelamento</span></div>
+                                <div><strong>{{ metricas_medico.media_nps if metricas_medico else 0 }}</strong><span>NPS médio</span></div>
+                                <div><strong>{{ metricas_medico.minutos_medios if metricas_medico else 0 }}min</strong><span>tempo médio</span></div>
+                            </div>
+                        </section>
+                    </div>
+                    <aside class="lateral-painel">
+                        {% if notificacoes %}
+                        <section class="cartao-painel">
+                            <div class="cabecalho-cartao compacto">
+                                <div>
+                                    <p class="chamada-cartao">Atualizações</p>
+                                    <h2>Notificações</h2>
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                {% for notificacao in notificacoes %}
+                                <div class="cartao-notificacao compacto {% if notificacao.tipo == 'perigo' %}perigo{% elif notificacao.tipo == 'atencao' %}alerta{% elif notificacao.tipo == 'sucesso' %}sucesso{% else %}informacao{% endif %}">
+                                    <span class="icone-notificacao" aria-hidden="true"></span>
+                                    <div>
+                                        <p class="font-semibold text-xs text-dark">{{ notificacao.titulo }}</p>
+                                        <p class="text-xs text-gray-500">{{ notificacao.mensagem }}</p>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </section>
+                        {% endif %}
+                    </aside>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/abas_painel.js', v=versao_estatica) }}"></script>
+<script src="{{ url_for('static', filename='js/medico_prontuarios.js', v=versao_estatica) }}"></script>
+{% endblock %}
+
+

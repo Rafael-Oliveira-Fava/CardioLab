@@ -1,0 +1,161 @@
+{% extends "estrutura_base.html" %}
+{% block title %}Entrar - CardioLab{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/autenticacao.css', v=versao_estatica) }}">{% endblock %}
+{% block footer %}{% endblock %}
+{% block conteudo %}
+{% set aba_autenticacao = aba_autenticacao|default('entrada') %}
+<div class="autenticacao-premium min-h-screen bg-cream py-10 px-4 relative overflow-hidden">
+    <div class="absolute inset-0 grade-destaque opacity-70"></div>
+    <div class="absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-white to-transparent"></div>
+    <div class="max-w-6xl mx-auto relative z-10 grid lg:grid-cols-[.92fr_1.08fr] gap-8 items-stretch">
+        <aside class="painel-identidade-login hidden lg:flex flex-col justify-between rounded-[2rem] overflow-hidden shadow-premium">
+            <img src="{{ url_for('static', filename='assets/fundo-entrada.png') }}" alt="Clínica CardioLab" class="foto-clinica-login">
+            <div class="sombra-foto-login"></div>
+            <div class="relative z-10 p-10 mt-auto">
+                <p class="text-white/70 font-black uppercase tracking-[0.22em] text-xs mb-4">Portal do paciente</p>
+                <h1 class="font-display text-5xl leading-none text-white mb-5">Cuidado cardiológico com agenda simples.</h1>
+                <p class="text-white/65 text-lg leading-relaxed max-w-md">Marque consultas, acompanhe exames e veja seus indicadores em uma área protegida e fácil de navegar.</p>
+            </div>
+            <div class="relative z-10 p-10 pt-0">
+                <div class="grade-rapida-login">
+                    <div><strong>12</strong><span>especialistas</span></div>
+                    <div><strong>15k</strong><span>exames</span></div>
+                    <div><strong>98%</strong><span>satisfação</span></div>
+                </div>
+                <div class="cartao-monitor-login mt-5">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs uppercase tracking-[0.2em] text-white/60 font-black">CardioLab ID</span>
+                        <span class="text-xs bg-green-400/20 text-green-100 px-3 py-1 rounded-full font-bold">LGPD</span>
+                    </div>
+                    <p class="text-white/80 text-sm leading-relaxed">Dados clínicos, agenda e notificações no mesmo painel.</p>
+                </div>
+            </div>
+            <div class="linha-ecg-login">
+                <svg viewBox="0 0 600 80" preserveAspectRatio="none">
+                    <polyline fill="none" stroke="#D60000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                        points="0,45 100,45 118,45 128,28 138,62 148,15 160,68 175,45 280,45 298,45 308,32 320,56 332,22 345,45 600,45" />
+                </svg>
+            </div>
+        </aside>
+        <div class="flex items-center justify-center">
+            <div class="w-full max-w-xl">
+                <div class="text-center lg:text-left mb-8 lg:hidden">
+                    <a href="{{ url_for('publico.inicio') }}" class="inline-flex items-center gap-3">
+                        <span class="marca-simbolo">CL</span>
+                        <span class="text-3xl font-black"><span class="text-primary">Cardio</span><span class="text-dark">Lab</span></span>
+                    </a>
+                    <p class="text-gray-500 mt-3">Acesse sua conta com segurança</p>
+                </div>
+                <div class="estrutura-autenticacao bg-white rounded-[2rem] shadow-premium border border-black/5 overflow-hidden">
+                    <div class="topo-cartao-login">
+                        <p class="chamada-secao mb-2">Área segura</p>
+                        <h2 class="font-display text-4xl text-dark leading-none">Portal CardioLab</h2>
+                        <p class="text-gray-500 mt-3">Entre para acompanhar consultas, exames e instruções.</p>
+                    </div>
+                    <div class="flex bg-cream/60" id="abas-autenticacao">
+                        <button class="aba-autenticacao flex-1 py-4 text-center font-extrabold transition {% if aba_autenticacao == 'entrada' %}ativo text-primary border-b-2 border-primary{% else %}text-gray-400 hover:text-gray-600 border-b-2 border-transparent{% endif %}" data-aba="entrada">
+                            Já tenho conta
+                        </button>
+                        <button class="aba-autenticacao flex-1 py-4 text-center font-extrabold transition {% if aba_autenticacao == 'cadastro' %}ativo text-primary border-b-2 border-primary{% else %}text-gray-400 hover:text-gray-600 border-b-2 border-transparent{% endif %}" data-aba="cadastro">
+                            Criar conta
+                        </button>
+                    </div>
+                    <div id="formulario-entrada" class="auth-panel p-8 {% if aba_autenticacao != 'entrada' %}hidden{% endif %}">
+                        <form method="POST" action="{{ url_for('autenticacao.entrar', proximo=proximo_endereco) if proximo_endereco else url_for('autenticacao.entrar') }}">
+                            {% if proximo_endereco %}<input type="hidden" name="proximo" value="{{ proximo_endereco }}">{% endif %}
+                            <div class="space-y-5">
+                                <div>
+                                    <label class="rotulo-formulario">E-mail ou CPF</label>
+                                    <input type="text" name="identificador" required placeholder="seu@email.com ou 000.000.000-00" class="campo-formulario">
+                                </div>
+                                <div>
+                                    <label class="rotulo-formulario">Senha</label>
+                                    <div class="relative">
+                                        <input type="password" name="senha" required placeholder="Sua senha" id="senha-entrada" class="campo-formulario pr-12">
+                                        <button type="button" data-alternar-senha="senha-entrada" class="botao-ver-senha" aria-label="Mostrar senha">Ver</button>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between gap-4">
+                                    <label class="flex items-center gap-2 text-sm text-gray-600">
+                                        <input type="checkbox" class="rounded accent-primary w-4 h-4"> Lembrar de mim
+                                    </label>
+                                    <a href="{{ url_for('autenticacao.solicitar_redefinicao_senha') }}" class="text-sm text-primary font-bold hover:underline">Esqueci minha senha</a>
+                                </div>
+                                <button type="submit" class="botao-envio-login w-full py-4 bg-primary text-white rounded-full font-black text-lg hover:bg-primary-dark transition shadow-glow hover:-translate-y-0.5">
+                                    Entrar no portal
+                                </button>
+                            </div>
+                        </form>
+                        <div class="mt-6 grid grid-cols-2 gap-3 text-center">
+                            <div class="selo-seguranca">Dados protegidos</div>
+                            <div class="selo-seguranca">Portal clínico</div>
+                        </div>
+                    </div>
+                    <div id="formulario-cadastro" class="auth-panel p-8 {% if aba_autenticacao != 'cadastro' %}hidden{% endif %}">
+                        <form method="POST" action="{{ url_for('autenticacao.cadastro') }}" id="formulario-cadastro-envio">
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="rotulo-formulario">Nome completo *</label>
+                                    <input type="text" name="nome" required placeholder="Seu nome completo" class="campo-formulario">
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="rotulo-formulario">CPF *</label>
+                                        <input type="text" name="cpf" required placeholder="000.000.000-00" id="campo-cpf" maxlength="14" class="campo-formulario">
+                                        <span id="retorno-cpf" class="text-xs mt-1 hidden"></span>
+                                    </div>
+                                    <div>
+                                        <label class="rotulo-formulario">Nascimento</label>
+                                        <input type="date" name="data_nascimento" class="campo-formulario">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="rotulo-formulario">E-mail *</label>
+                                    <input type="email" name="email" required placeholder="seu@email.com" class="campo-formulario">
+                                </div>
+                                <div>
+                                    <label class="rotulo-formulario">Telefone</label>
+                                    <input type="text" name="telefone" placeholder="(11) 99999-9999" id="campo-telefone" maxlength="15" class="campo-formulario">
+                                </div>
+                                <div class="grid grid-cols-3 gap-4">
+                                    <div>
+                                        <label class="rotulo-formulario">CEP</label>
+                                        <input type="text" name="cep" placeholder="00000-000" id="campo-cep" maxlength="9" class="campo-formulario">
+                                    </div>
+                                    <div class="col-span-2">
+                                        <label class="rotulo-formulario">Endereço</label>
+                                        <input type="text" name="endereco" placeholder="Rua, número - Cidade/UF" id="campo-endereco" class="campo-formulario">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="rotulo-formulario">Senha *</label>
+                                        <input type="password" name="senha" required placeholder="Mín. 6 caracteres" id="senha-cadastro" minlength="6" class="campo-formulario">
+                                    </div>
+                                    <div>
+                                        <label class="rotulo-formulario">Confirmar *</label>
+                                        <input type="password" name="confirmar_senha" required placeholder="Repita a senha" id="confirmar-senha-cadastro" class="campo-formulario">
+                                    </div>
+                                </div>
+                                <label class="flex items-start gap-2 text-sm text-gray-600 leading-relaxed">
+                                    <input type="checkbox" name="aceite" required class="rounded accent-primary w-4 h-4 mt-0.5">
+                                    <span>Li e aceito os <a href="{{ url_for('publico.termos') }}" class="text-primary font-bold hover:underline" target="_blank">Termos de Uso</a> e a <a href="{{ url_for('publico.lgpd') }}" class="text-primary font-bold hover:underline" target="_blank">Política de Privacidade</a>.</span>
+                                </label>
+                                <button type="submit" class="botao-envio-login w-full py-4 bg-primary text-white rounded-full font-black text-lg hover:bg-primary-dark transition shadow-glow">
+                                    Criar conta
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/autenticacao.js', v=versao_estatica) }}"></script>
+{% endblock %}
+
+
+

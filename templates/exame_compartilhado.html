@@ -1,0 +1,23 @@
+{% extends "estrutura_base.html" %}
+{% block title %}Exame Compartilhado - CardioLab{% endblock %}
+{% block conteudo %}
+<section class="pagina-painel min-h-screen py-10">
+    <div class="max-w-5xl mx-auto px-4">
+        <div class="cartao-painel">
+            <div class="cabecalho-cartao">
+                <div>
+                    <p class="chamada-cartao">Link temporário</p>
+                    <h1>{{ exame.titulo }}</h1>
+                </div>
+                <span class="selo-situacao pendente">Expira em {{ exame.expira_em }}</span>
+            </div>
+            {% if exame.tipo_resultado == 'pdf' %}
+            <embed src="{{ exame.arquivo_url }}" type="application/pdf" class="w-full min-h-[72vh] rounded-2xl border border-black/10">
+            {% else %}
+            <img src="{{ exame.arquivo_url }}" alt="{{ exame.titulo }}" class="w-full rounded-2xl border border-black/10">
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+

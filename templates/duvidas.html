@@ -1,0 +1,65 @@
+{% extends "estrutura_base.html" %}
+{% block title %}Dúvidas - CardioLab{% endblock %}
+{% block conteudo %}
+<section class="pagina-duvidas">
+    <div class="estrutura-duvidas">
+        <div class="introducao-duvidas">
+            <span class="etiqueta-duvidas">Central de ajuda</span>
+            <h1>Perguntas Frequentes</h1>
+            <p>Tire suas dúvidas sobre atendimento, exames, teleconsulta e uso do portal CardioLab.</p>
+            <div class="cartao-suporte-duvidas">
+                <span>Atendimento CardioLab</span>
+                <strong>Precisa de ajuda com uma consulta?</strong>
+                <p>Fale com a recepção para confirmar horários, preparo de exames ou acesso ao portal.</p>
+                <div class="acoes-suporte-duvidas">
+                    <a href="tel:+5511999999999">Ligar</a>
+                    <a href="mailto:{{ email_clinica }}">E-mail</a>
+                </div>
+            </div>
+        </div>
+        <div class="lista-duvidas" aria-label="Perguntas frequentes">
+            {% for faq in faqs %}
+            <article class="item-duvida">
+                <button class="alternar-duvida" type="button" data-alternar-duvida aria-expanded="false">
+                    <span>{{ faq.question }}</span>
+                    <svg class="icone-duvida" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <div class="resposta-duvida" hidden>
+                    <p>{{ faq.answer }}</p>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<script>
+function closeFaqItem(item) {
+    const button = item.querySelector('[data-alternar-duvida]');
+    const answer = item.querySelector('.resposta-duvida');
+    item.classList.remove('esta-aberto');
+    button.setAttribute('aria-expanded', 'false');
+    answer.hidden = true;
+}
+function openFaqItem(item) {
+    const button = item.querySelector('[data-alternar-duvida]');
+    const answer = item.querySelector('.resposta-duvida');
+    item.classList.add('esta-aberto');
+    button.setAttribute('aria-expanded', 'true');
+    answer.hidden = false;
+}
+function toggleFaq(button) {
+    const item = button.closest('.item-duvida');
+    const isOpen = button.getAttribute('aria-expanded') === 'true';
+    document.querySelectorAll('.item-duvida').forEach(closeFaqItem);
+    if (!isOpen) {
+        openFaqItem(item);
+    }
+}
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('[data-alternar-duvida]').forEach((button) => {
+        button.addEventListener('click', () => toggleFaq(button));
+    });
+});
+</script>
+{% endblock %}
+

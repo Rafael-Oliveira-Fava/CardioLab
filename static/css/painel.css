@@ -1,0 +1,15 @@
+@import url("painel/01-estrutura.css");
+@import url("painel/02-paciente-inicio.css");
+@import url("painel/03-agendamento.css");
+@import url("painel/04-medico.css");
+@import url("painel/05-cartoes-titulos.css");
+@import url("painel/06-notificacoes.css");
+@import url("painel/07-consultas-exames.css");
+@import url("painel/08-perfil-prontuario.css");
+@import url("painel/09-situacao-legado.css");
+@import url("painel/10-carteirinha.css");
+@import url("painel/11-ajustes-finais.css");
+@import url("painel/12-carteirinha-visual.css");
+@import url("painel/13-notificacoes-remarcacao.css");
+@import url("painel/14-modo-escuro.css");
+@import url("painel/15-responsivo.css");

@@ -1,0 +1,82 @@
+.topo-cartao-login::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(214,0,0,.15), transparent);
+}
+.aba-autenticacao {
+    position: relative;
+    cursor: pointer;
+    transition: color .25s ease;
+}
+.aba-autenticacao.ativo {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+    background: #fff;
+}
+.aba-autenticacao:not(.ativo) {
+    border-bottom-color: transparent;
+}
+.aba-autenticacao:not(.ativo):hover {
+    color: var(--color-ink);
+}
+.rotulo-formulario {
+    display: block;
+    font-size: .82rem;
+    font-weight: 900;
+    color: var(--color-black);
+    margin-bottom: .5rem;
+    letter-spacing: .01em;
+}
+.campo-formulario {
+    width: 100%;
+    padding: 1rem 1.1rem;
+    border: 1.5px solid rgba(17,17,17,.10);
+    border-radius: 1rem;
+    outline: none;
+    transition: border-color .25s ease, box-shadow .25s ease, background .25s ease;
+    background: #fafafa;
+    font-size: .92rem;
+}
+.campo-formulario:hover {
+    border-color: rgba(17,17,17,.20);
+    background: #fff;
+}
+.campo-formulario:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px rgba(214,0,0,.08), 0 8px 24px rgba(214,0,0,.06);
+    background: #fff;
+}
+.campo-formulario::placeholder {
+    color: #b0b0b0;
+}
+.botao-ver-senha {
+    position: absolute;
+    right: .85rem;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 10px;
+    padding: .4rem .65rem;
+    background: rgba(17,17,17,.05);
+    color: #64748b;
+    font-size: .7rem;
+    font-weight: 900;
+    cursor: pointer;
+    transition: background .2s ease, color .2s ease;
+    border: none;
+}
+.botao-ver-senha:hover {
+    background: rgba(214,0,0,.08);
+    color: var(--color-primary);
+}
+.selo-seguranca {
+    border: 1px solid rgba(17,17,17,.06);
+    background: linear-gradient(135deg, #faf8f5, #f5f3ef);
+    border-radius: 14px;
+    padding: .85rem .65rem;
+    font-size: .78rem;
+    font-weight: 800;
+    color: #555;
+    transition: border-color .2s ease, transform .2s ease;
+}
