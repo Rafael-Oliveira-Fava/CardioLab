@@ -146,7 +146,7 @@ def cadastro():
                 (usuario_id, data_nascimento or None, telefone, cep, endereco),
             )
             cursor.execute(
-                "INSERT INTO consentimentos (usuario_id, tipo_consentimento, aceito) VALUES (%s, 'termos_e_privacidade', 1)",
+                "UPDATE usuarios SET consentimento_aceito = 1 WHERE id = %s",
                 (usuario_id,),
             )
             db.commit()

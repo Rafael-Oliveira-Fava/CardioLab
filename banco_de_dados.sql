@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
     foto_perfil VARCHAR(500),
     perfil ENUM('paciente', 'medico', 'administrador') NOT NULL DEFAULT 'paciente',
     dois_fatores_ativo TINYINT(1) DEFAULT 0,
+    consentimento_aceito TINYINT(1) DEFAULT 0,
     ativo TINYINT(1) DEFAULT 1,
     criado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
     INDEX idx_usuarios_email (email),
@@ -132,6 +133,8 @@ CREATE TABLE IF NOT EXISTS consultas (
     posicao_fila INT,
     sala_teleconsulta_url VARCHAR(500),
     motivo_cancelamento TEXT,
+    lembrete_24h_enviado TINYINT(1) DEFAULT 0,
+    lembrete_2h_enviado TINYINT(1) DEFAULT 0,
     criado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (paciente_id) REFERENCES pacientes(id) ON DELETE CASCADE,
     FOREIGN KEY (medico_id) REFERENCES medicos(id) ON DELETE CASCADE,
@@ -214,17 +217,7 @@ CREATE TABLE IF NOT EXISTS notificacoes (
     INDEX idx_notificacoes_lida (lida)
 ) ENGINE=InnoDB;
 
--- ============================================================
--- TABELA: consentimentos
--- ============================================================
-CREATE TABLE IF NOT EXISTS consentimentos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    usuario_id INT NOT NULL,
-    tipo_consentimento VARCHAR(100) NOT NULL,
-    aceito TINYINT(1) DEFAULT 0,
-    criado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
-) ENGINE=InnoDB;
+
 
 -- ============================================================
 -- TABELA: auditoria
@@ -255,25 +248,20 @@ CREATE TABLE IF NOT EXISTS artigos (
 
 -- ============================================================
 -- TABELA: avaliacoes
+-- Unifica depoimentos publicos e respostas NPS em uma unica tabela.
+-- tipo = 'depoimento' para avaliacoes exibidas na home (escala 0-10).
+-- tipo = 'nps' para pesquisa Net Promoter Score (escala 0-10).
 -- ============================================================
 CREATE TABLE IF NOT EXISTS avaliacoes (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nome_paciente VARCHAR(200) NOT NULL,
-    nota INT CHECK (nota >= 1 AND nota <= 5),
-    comentario TEXT,
-    criado_em DATETIME DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB;
-
--- ============================================================
--- TABELA: respostas_nps
--- ============================================================
-CREATE TABLE IF NOT EXISTS respostas_nps (
-    id INT AUTO_INCREMENT PRIMARY KEY,
     paciente_id INT,
+    nome_paciente VARCHAR(200),
+    tipo ENUM('depoimento', 'nps') NOT NULL DEFAULT 'depoimento',
     nota INT CHECK (nota >= 0 AND nota <= 10),
     comentario TEXT,
     criado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (paciente_id) REFERENCES pacientes(id) ON DELETE SET NULL
+    FOREIGN KEY (paciente_id) REFERENCES pacientes(id) ON DELETE SET NULL,
+    INDEX idx_avaliacoes_tipo (tipo)
 ) ENGINE=InnoDB;
 
 -- ============================================================
@@ -319,17 +307,7 @@ CREATE TABLE IF NOT EXISTS calculos_risco (
     INDEX idx_calculos_risco_classe (classe_risco)
 ) ENGINE=InnoDB;
 
--- ============================================================
--- TABELA: lembretes_consulta
--- ============================================================
-CREATE TABLE IF NOT EXISTS lembretes_consulta (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    consulta_id INT NOT NULL,
-    tipo_lembrete ENUM('24h','2h') NOT NULL,
-    enviado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (consulta_id) REFERENCES consultas(id) ON DELETE CASCADE,
-    UNIQUE KEY uk_lembrete_consulta (consulta_id, tipo_lembrete)
-) ENGINE=InnoDB;
+
 
 -- ============================================================
 -- TABELA: lista_espera
@@ -371,21 +349,6 @@ CREATE TABLE IF NOT EXISTS configuracoes_clinica (
     chave VARCHAR(100) NOT NULL UNIQUE,
     valor TEXT,
     atualizado_em DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB;
-
--- ============================================================
--- TABELA: bloqueios_agenda_medico
--- ============================================================
-CREATE TABLE IF NOT EXISTS bloqueios_agenda_medico (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    medico_id INT NOT NULL,
-    data_bloqueio DATE NOT NULL,
-    inicio_horario TIME,
-    fim_horario TIME,
-    motivo VARCHAR(200),
-    criado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (medico_id) REFERENCES medicos(id) ON DELETE CASCADE,
-    INDEX idx_bloqueios_medico_data (medico_id, data_bloqueio)
 ) ENGINE=InnoDB;
 
 
@@ -643,19 +606,19 @@ INSERT INTO artigos (titulo, categoria, conteudo, imagem_url) VALUES
  'Conheça os principais exames cardiológicos e quando cada um é indicado.\n\n**Eletrocardiograma (ECG):**\nRegistra a atividade elétrica do coração. Rápido, indolor e fundamental para detectar arritmias e isquemia.\n\n**Ecocardiograma:**\nUltrassom do coração que mostra sua estrutura e funcionamento em tempo real. Avalia válvulas, câmaras e função cardíaca.\n\n**Holter 24h:**\nMonitoramento contínuo do ritmo cardíaco. Ideal para detectar arritmias intermitentes.\n\n**MAPA:**\nMonitorização da pressão arterial por 24 horas. Importante para diagnóstico preciso de hipertensão.\n\n**Teste Ergométrico:**\nAvalia o coração durante exercício. Detecta isquemia e avalia capacidade funcional.\n\n**Doppler Vascular:**\nAvalia o fluxo sanguíneo em artérias e veias. Importante para detectar obstruções e tromboses.',
  '');
 
--- Depoimentos
-INSERT INTO avaliacoes (nome_paciente, nota, comentario) VALUES
-('João Carlos M.', 5, 'Excelente atendimento! Dr. Ricardo é muito atencioso e explica tudo com clareza. A clínica é moderna e confortável. Recomendo muito.'),
-('Ana Paula S.', 5, 'Fiz meu check-up cardiológico completo e fiquei impressionada com a qualidade dos equipamentos e do atendimento. Equipe muito profissional.'),
-('Roberto F.', 4, 'Ótimo médico e estrutura. Facilidade de agendar online e receber resultados pelo portal. Nota 10 para a praticidade.'),
-('Dona Tereza L.', 5, 'Tenho 78 anos e me sinto muito bem acolhida na CardioLab. Os funcionários são pacientes e carinhosos. O Dr. Ricardo acompanha meu coração há 5 anos.'),
-('Paulo H.', 5, 'O agendamento online mostrou os horários livres e consegui escolher a Dra. Helena pelo perfil. Muito prático.'),
-('Luciana M.', 5, 'Gostei de ver meus exames e orientações em um painel simples. A equipe passa muita segurança.'),
-('Marcos R.', 4, 'Fiz o teste ergometrico com preparo bem explicado e atendimento pontual.');
+-- Depoimentos (tipo = 'depoimento', escala 0-10)
+INSERT INTO avaliacoes (nome_paciente, tipo, nota, comentario) VALUES
+('João Carlos M.', 'depoimento', 10, 'Excelente atendimento! Dr. Ricardo é muito atencioso e explica tudo com clareza. A clínica é moderna e confortável. Recomendo muito.'),
+('Ana Paula S.', 'depoimento', 10, 'Fiz meu check-up cardiológico completo e fiquei impressionada com a qualidade dos equipamentos e do atendimento. Equipe muito profissional.'),
+('Roberto F.', 'depoimento', 8, 'Ótimo médico e estrutura. Facilidade de agendar online e receber resultados pelo portal. Nota 10 para a praticidade.'),
+('Dona Tereza L.', 'depoimento', 10, 'Tenho 78 anos e me sinto muito bem acolhida na CardioLab. Os funcionários são pacientes e carinhosos. O Dr. Ricardo acompanha meu coração há 5 anos.'),
+('Paulo H.', 'depoimento', 10, 'O agendamento online mostrou os horários livres e consegui escolher a Dra. Helena pelo perfil. Muito prático.'),
+('Luciana M.', 'depoimento', 10, 'Gostei de ver meus exames e orientações em um painel simples. A equipe passa muita segurança.'),
+('Marcos R.', 'depoimento', 8, 'Fiz o teste ergometrico com preparo bem explicado e atendimento pontual.');
 
--- NPS
-INSERT INTO respostas_nps (paciente_id, nota, comentario) VALUES
-(1, 9, 'Muito satisfeita com o atendimento e os resultados dos exames.');
+-- NPS (tipo = 'nps', escala 0-10)
+INSERT INTO avaliacoes (paciente_id, tipo, nota, comentario) VALUES
+(1, 'nps', 9, 'Muito satisfeita com o atendimento e os resultados dos exames.');
 
 -- Risco cardiovascular inicial (Framingham)
 INSERT INTO calculos_risco
@@ -673,15 +636,10 @@ INSERT INTO configuracoes_clinica (chave, valor) VALUES
 ON DUPLICATE KEY UPDATE valor = VALUES(valor);
 
 -- Consentimento
-INSERT INTO consentimentos (usuario_id, tipo_consentimento, aceito) VALUES
-(3, 'politica_privacidade', 1),
-(3, 'termos_uso', 1),
-(3, 'cookies', 1);
+UPDATE usuarios SET consentimento_aceito = 1 WHERE email = 'maria@email.com';
 
 -- Log de auditoria
 INSERT INTO auditoria (usuario_id, acao, endereco_ip) VALUES
 (3, 'LOGIN', '127.0.0.1'),
 (3, 'VIEW_DASHBOARD', '127.0.0.1'),
 (2, 'LOGIN', '127.0.0.1');
-
-

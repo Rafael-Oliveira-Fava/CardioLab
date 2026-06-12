@@ -71,7 +71,7 @@ def painel():
         """
     )
     indicadores = cursor.fetchone()
-    cursor.execute("SELECT ROUND(AVG(nota), 1) as media_nps FROM respostas_nps")
+    cursor.execute("SELECT ROUND(AVG(nota), 1) as media_nps FROM avaliacoes WHERE tipo = 'nps'")
     indicadores["media_nps"] = (cursor.fetchone() or {}).get("media_nps") or 0
 
     cursor.execute("SELECT id, nome, email, cpf, perfil, ativo, criado_em FROM usuarios ORDER BY criado_em DESC LIMIT 50")
@@ -342,6 +342,3 @@ def exportar_relatorio(nome_relatorio):
         mimetype="text/csv",
         headers={"Content-Disposition": f"attachment; filename={nome_relatorio}.csv"},
     )
-
-
-

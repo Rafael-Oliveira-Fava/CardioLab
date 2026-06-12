@@ -18,7 +18,7 @@ MESES_ABREVIADOS = (
     "dez",
 )
 
-DIAS_SEMANA_CURTOS = ("seg", "ter", "qua", "qui", "sexo", "sáb", "dom")
+DIAS_SEMANA_CURTOS = ("seg", "ter", "qua", "qui", "sex", "sáb", "dom")
 
 
 def normalizar_data(valor):

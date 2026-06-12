@@ -1,6 +1,7 @@
 """
 CardioLab - rotas do paciente.
-Painel, consultas, exames, saúde, risco cardíaco e notificações.
+Painel, disponibilidade, notificações e teleconsulta.
+Rotas de consultas, exames e saúde ficam em módulos separados.
 """
 
 import json
@@ -8,15 +9,12 @@ import logging
 import time
 from datetime import date, datetime, timedelta
 
-from flask import Blueprint, Response, abort, current_app, flash, jsonify, redirect, render_template, request, send_file, session, stream_with_context, url_for
+from flask import Blueprint, Response, current_app, flash, jsonify, redirect, render_template, request, session, stream_with_context, url_for
 from functools import wraps
 
 from extensoes import obter_banco
 from servicos.agenda import (
     bloquear_horarios_passados,
-    consulta_no_futuro,
-    encontrar_conflito_de_agenda,
-    horario_dentro_do_expediente,
     montar_horarios_disponiveis,
     montar_link_whatsapp_confirmacao,
     normalizar_horario,
@@ -31,15 +29,7 @@ from servicos.carteirinha import (
 from servicos.fotos import salvar_foto_perfil
 from servicos.conteudo_publico import completar_fotos_medicos
 from servicos.risco import calcular_risco_framingham, idade_pela_data_nascimento
-from servicos.exames import (
-    buscar_exame_paciente,
-    criar_token_compartilhamento,
-    gerar_pdf_com_marca_dagua,
-    listar_exames_paciente,
-    montar_visualizacao_exame,
-    nome_download_exame,
-    resolver_caminho_arquivo_exame,
-)
+from servicos.exames import listar_exames_paciente
 
 
 rotas_paciente = Blueprint("paciente", __name__, url_prefix="/paciente")
@@ -436,318 +426,6 @@ def solicitar_plano_carteirinha():
     return redirect(url_for("paciente.painel", aba="carteirinha"))
 
 
-@rotas_paciente.route("/consultas")
-@paciente_obrigatorio
-def consultas():
-    """Redireciona o atalho de consultas para a aba correspondente do painel."""
-
-    return redirect(url_for("paciente.painel"))
-
-
-@rotas_paciente.route("/consultas/nova", methods=["GET", "POST"])
-@paciente_obrigatorio
-def nova_consulta():
-    """Valida agenda, conflito e horário futuro antes de criar uma consulta."""
-
-    if request.method == "GET":
-        return redirect(url_for("paciente.painel"))
-
-    usuario = session["usuario"]
-    db = obter_banco()
-    garantir_schema_carteirinha(db)
-    cursor = db.cursor()
-    paciente_id = obter_paciente_id(usuario["id"])
-
-    medico_id = request.form.get("medico_id")
-    servico_id = request.form.get("servico_id")
-    data_consulta = request.form.get("data_consulta")
-    horario_consulta = request.form.get("horario_consulta")
-    entrar_lista_espera = request.form.get("entrar_lista_espera")
-
-    if not all([medico_id, servico_id, data_consulta, horario_consulta]):
-        flash("Preencha todos os campos.", "perigo")
-        cursor.close()
-        return redirect(url_for("paciente.painel"))
-
-    try:
-        if not consulta_no_futuro(data_consulta, horario_consulta):
-            flash("Escolha uma data e horário futuros para agendar.", "perigo")
-            cursor.close()
-            return redirect(url_for("paciente.painel", aba="consultas"))
-    except ValueError:
-        flash("Data ou horário inválido.", "perigo")
-        cursor.close()
-        return redirect(url_for("paciente.painel", aba="consultas"))
-
-    cursor.execute(
-        """
-        SELECT id, nome, descricao, preparo, duracao_minutos, indicacao
-        FROM servicos
-        WHERE id = %s
-        """,
-        (servico_id,),
-    )
-    servico = cursor.fetchone()
-    duracao = servico["duracao_minutos"] if servico else 30
-
-    cursor.execute("SELECT expediente_inicio, expediente_fim FROM medicos WHERE id = %s", (medico_id,))
-    medico = cursor.fetchone()
-    if not medico or not horario_dentro_do_expediente(horario_consulta, duracao, medico["expediente_inicio"], medico["expediente_fim"]):
-        flash("Horário fora do expediente do médico.", "perigo")
-        cursor.close()
-        return redirect(url_for("paciente.painel"))
-
-    conflito = encontrar_conflito_consulta(cursor, medico_id, paciente_id, data_consulta, horario_consulta, duracao)
-    if conflito:
-        if entrar_lista_espera:
-            cursor.execute(
-                """
-                INSERT INTO lista_espera (paciente_id, medico_id, servico_id, data_desejada, horario_desejado, situacao)
-                VALUES (%s, %s, %s, %s, %s, 'aguardando')
-                """,
-                (paciente_id, medico_id, servico_id, data_consulta, horario_consulta),
-            )
-            db.commit()
-            flash("Horário indisponível. Você entrou na lista de espera.", "informacao")
-        else:
-            flash("Horário indisponível. Escolha outro horário ou entre na lista de espera.", "perigo")
-        cursor.close()
-        return redirect(url_for("paciente.painel", aba="consultas"))
-
-    try:
-        cursor.execute(
-            """
-            INSERT INTO consultas
-                (paciente_id, medico_id, servico_id, data_consulta, horario_consulta, duracao_minutos, situacao)
-            VALUES (%s, %s, %s, %s, %s, %s, 'agendada')
-            """,
-            (paciente_id, medico_id, servico_id, data_consulta, horario_consulta, duracao),
-        )
-        consulta_id = cursor.lastrowid
-        if servico and "teleconsulta" in servico["nome"].lower():
-            cursor.execute(
-                "UPDATE consultas SET sala_teleconsulta_url = %s WHERE id = %s",
-                (f"https://meet.jit.si/cardiolab-{consulta_id}", consulta_id),
-            )
-        carteirinha = buscar_carteirinha_paciente(cursor, paciente_id)
-        observacao_carteirinha = ""
-        if carteirinha and carteirinha.get("situacao") == "ativa":
-            observacao_carteirinha = f" Benefício CardioLab Care aplicado: {carteirinha.get('desconto_consulta_percentual') or 0}% em consultas."
-
-        cursor.execute(
-            """
-            INSERT INTO notificacoes (usuario_id, titulo, mensagem, tipo)
-            VALUES (%s, 'Consulta Agendada', %s, 'sucesso')
-            """,
-            (usuario["id"], f"Sua consulta foi agendada para {formatar_data_br(data_consulta)} às {horario_consulta}.{observacao_carteirinha}"),
-        )
-        db.commit()
-        flash("Consulta agendada com sucesso. Use o botão de WhatsApp no cartão para confirmar.", "sucesso")
-    except Exception:
-        db.rollback()
-        logger.exception("criacao_consulta_falhou", extra={"extra": {"paciente_id": paciente_id}})
-        flash("Erro ao agendar consulta. Tente novamente.", "perigo")
-    finally:
-        cursor.close()
-
-    return redirect(url_for("paciente.painel", aba="consultas"))
-
-
-def encontrar_conflito_consulta(cursor, medico_id, paciente_id, data_consulta, horario_consulta, duracao):
-    """Busca conflitos do médico e do paciente para impedir dupla marcação."""
-
-    cursor.execute(
-        """
-        SELECT id, horario_consulta, duracao_minutos, 'medico' as dono_conflito
-        FROM consultas
-        WHERE medico_id = %s AND data_consulta = %s
-          AND situacao IN ('agendada', 'confirmada', 'em_atendimento')
-        UNION ALL
-        SELECT id, horario_consulta, duracao_minutos, 'paciente' as dono_conflito
-        FROM consultas
-        WHERE paciente_id = %s AND data_consulta = %s
-          AND situacao IN ('agendada', 'confirmada', 'em_atendimento')
-        """,
-        (medico_id, data_consulta, paciente_id, data_consulta),
-    )
-    consultas_existentes = cursor.fetchall()
-    return encontrar_conflito_de_agenda(consultas_existentes, horario_consulta, duracao)
-
-
-@rotas_paciente.route("/consultas/<int:consulta_id>/confirmar", methods=["POST"])
-@paciente_obrigatorio
-def confirmar_consulta(consulta_id):
-    """Confirma presença do paciente em uma consulta ainda agendada."""
-
-    usuario = session["usuario"]
-    db = obter_banco()
-    cursor = db.cursor()
-    paciente_id = obter_paciente_id(usuario["id"])
-    cursor.execute(
-        """
-        UPDATE consultas
-        SET situacao = 'confirmada', confirmada_em = NOW()
-        WHERE id = %s AND paciente_id = %s AND situacao = 'agendada'
-        """,
-        (consulta_id, paciente_id),
-    )
-    db.commit()
-    cursor.close()
-    flash("Presença confirmada.", "sucesso")
-    return redirect(url_for("paciente.painel"))
-
-
-@rotas_paciente.route("/consultas/<int:consulta_id>/remarcar", methods=["POST"])
-@paciente_obrigatorio
-def remarcar_consulta(consulta_id):
-    """Remarca consulta existente apenas para horários futuros e disponíveis."""
-
-    usuario = session["usuario"]
-    db = obter_banco()
-    cursor = db.cursor()
-    paciente_id = obter_paciente_id(usuario["id"])
-    nova_data = request.form.get("data_consulta")
-    novo_horario = request.form.get("horario_consulta")
-
-    if not all([nova_data, novo_horario]):
-        flash("Informe nova data e novo horário.", "perigo")
-        cursor.close()
-        return redirect(url_for("paciente.painel", aba="consultas"))
-
-    try:
-        if not consulta_no_futuro(nova_data, novo_horario):
-            flash("Não é possível remarcar para uma data ou horário que já passou.", "perigo")
-            cursor.close()
-            return redirect(url_for("paciente.painel", aba="consultas"))
-    except ValueError:
-        flash("Data ou horário inválido para remarcação.", "perigo")
-        cursor.close()
-        return redirect(url_for("paciente.painel", aba="consultas"))
-
-    cursor.execute(
-        """
-        SELECT a.*, s.duracao_minutos
-        FROM consultas a
-        JOIN servicos s ON a.servico_id = s.id
-        WHERE a.id = %s AND a.paciente_id = %s AND a.situacao IN ('agendada', 'confirmada')
-        """,
-        (consulta_id, paciente_id),
-    )
-    consulta = cursor.fetchone()
-    if not consulta:
-        flash("Consulta não encontrada.", "perigo")
-        cursor.close()
-        return redirect(url_for("paciente.painel", aba="consultas"))
-
-    cursor.execute("SELECT expediente_inicio, expediente_fim FROM medicos WHERE id = %s", (consulta["medico_id"],))
-    medico = cursor.fetchone()
-    if not medico or not horario_dentro_do_expediente(novo_horario, consulta["duracao_minutos"], medico["expediente_inicio"], medico["expediente_fim"]):
-        flash("Novo horário fora do expediente do médico.", "perigo")
-        cursor.close()
-        return redirect(url_for("paciente.painel", aba="consultas"))
-
-    conflito = encontrar_conflito_consulta(
-        cursor,
-        consulta["medico_id"],
-        paciente_id,
-        nova_data,
-        novo_horario,
-        consulta["duracao_minutos"],
-    )
-    if conflito and conflito["id"] != consulta_id:
-        flash("Novo horário indisponível.", "perigo")
-        cursor.close()
-        return redirect(url_for("paciente.painel", aba="consultas"))
-
-    cursor.execute(
-        """
-        UPDATE consultas
-        SET data_consulta = %s, horario_consulta = %s, situacao = 'agendada'
-        WHERE id = %s
-        """,
-        (nova_data, novo_horario, consulta_id),
-    )
-    cursor.execute(
-        """
-        INSERT INTO notificacoes (usuario_id, titulo, mensagem, tipo)
-        VALUES (%s, 'Consulta Reagendada', %s, 'informacao')
-        """,
-        (usuario["id"], f"Sua consulta foi reagendada para {formatar_data_br(nova_data)} às {novo_horario}."),
-    )
-    db.commit()
-    cursor.close()
-    flash("Consulta reagendada com sucesso.", "sucesso")
-    return redirect(url_for("paciente.painel", aba="consultas"))
-
-
-@rotas_paciente.route("/consultas/<int:consulta_id>/cancelar", methods=["POST"])
-@paciente_obrigatorio
-def cancelar_consulta(consulta_id):
-    """Cancela consulta respeitando antecedência mínima e avisa lista de espera."""
-
-    usuario = session["usuario"]
-    db = obter_banco()
-    cursor = db.cursor()
-    paciente_id = obter_paciente_id(usuario["id"])
-
-    cursor.execute(
-        """
-        SELECT * FROM consultas
-        WHERE id = %s AND paciente_id = %s AND situacao IN ('agendada', 'confirmada')
-        """,
-        (consulta_id, paciente_id),
-    )
-    consulta = cursor.fetchone()
-    if not consulta:
-        flash("Consulta não encontrada ou não pode ser cancelada.", "perigo")
-        cursor.close()
-        return redirect(url_for("paciente.painel"))
-
-    data_hora_consulta = datetime.combine(consulta["data_consulta"], normalizar_horario(consulta["horario_consulta"]))
-    if datetime.now() + timedelta(hours=current_app.config["HORAS_MINIMAS_CANCELAMENTO"]) > data_hora_consulta:
-        flash(f"Cancelamento permitido apenas com {current_app.config['HORAS_MINIMAS_CANCELAMENTO']}h de antecedência.", "perigo")
-        cursor.close()
-        return redirect(url_for("paciente.painel"))
-
-    motivo = request.form.get("motivo", "Cancelado pelo paciente")
-    cursor.execute(
-        "UPDATE consultas SET situacao = 'cancelada', motivo_cancelamento = %s WHERE id = %s",
-        (motivo, consulta_id),
-    )
-    notificar_lista_espera_vaga(cursor, consulta)
-    db.commit()
-    cursor.close()
-    flash("Consulta cancelada com sucesso.", "sucesso")
-    return redirect(url_for("paciente.painel"))
-
-
-def notificar_lista_espera_vaga(cursor, consulta):
-    """Notifica o primeiro paciente da lista quando uma vaga é liberada."""
-
-    cursor.execute(
-        """
-        SELECT w.*, p.usuario_id
-        FROM lista_espera w
-        JOIN pacientes p ON w.paciente_id = p.id
-        WHERE w.medico_id = %s AND w.servico_id = %s
-          AND w.data_desejada = %s AND w.situacao = 'aguardando'
-        ORDER BY w.criado_em
-        LIMIT 1
-        """,
-        (consulta["medico_id"], consulta["servico_id"], consulta["data_consulta"]),
-    )
-    waitlist = cursor.fetchone()
-    if waitlist:
-        cursor.execute(
-            """
-            INSERT INTO notificacoes (usuario_id, titulo, mensagem, tipo)
-            VALUES (%s, 'Horário disponível', 'Uma vaga abriu para o exame desejado. Acesse o portal para agendar.', 'sucesso')
-            """,
-            (waitlist["usuario_id"],),
-        )
-        cursor.execute("UPDATE lista_espera SET situacao = 'notificado' WHERE id = %s", (waitlist["id"],))
-
-
 @rotas_paciente.route("/api/disponibilidade")
 @paciente_obrigatorio
 def api_disponibilidade():
@@ -886,88 +564,6 @@ def api_sugerir_medico():
     return jsonify({"medico": melhor})
 
 
-@rotas_paciente.route("/api/calculos-risco", methods=["POST"])
-@paciente_obrigatorio
-def api_salvar_calculo_risco():
-    """Calcula, salva e retorna o risco cardiovascular informado pelo paciente."""
-
-    usuario = session["usuario"]
-    dados = request.get_json() or {}
-    try:
-        resultado = calcular_risco_framingham(
-            sexo=dados.get("sexo"),
-            idade=int(dados.get("idade")),
-            colesterol_total=float(dados.get("colesterol_total")),
-            hdl=float(dados.get("hdl")),
-            pressao_sistolica=float(dados.get("pressao_sistolica")),
-            trata_pressao=bool(dados.get("trata_pressao")),
-            fumante=bool(dados.get("fumante")),
-            diabetes=bool(dados.get("diabetes")),
-        )
-    except (TypeError, ValueError) as erro:
-        return jsonify({"erro": str(erro)}), 400
-
-    db = obter_banco()
-    cursor = db.cursor()
-    paciente_id = obter_paciente_id(usuario["id"])
-    cursor.execute(
-        """
-        INSERT INTO calculos_risco
-            (paciente_id, sexo, idade, colesterol_total, hdl, pressao_sistolica, trata_pressao, fumante, diabetes,
-             risco_percentual, classe_risco, recomendacoes_json)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-        """,
-        (
-            paciente_id,
-            dados.get("sexo"),
-            dados.get("idade"),
-            dados.get("colesterol_total"),
-            dados.get("hdl"),
-            dados.get("pressao_sistolica"),
-            int(bool(dados.get("trata_pressao"))),
-            int(bool(dados.get("fumante"))),
-            int(bool(dados.get("diabetes"))),
-            resultado["risco_percentual"],
-            resultado["classe_risco"],
-            json.dumps(resultado["recomendacoes"], ensure_ascii=False),
-        ),
-    )
-    cursor.execute(
-        """
-        INSERT INTO prontuarios (paciente_id, medico_id, observacoes, alerta_risco)
-        SELECT %s, d.id, %s, %s FROM medicos d ORDER BY d.id LIMIT 1
-        """,
-        (paciente_id, f"Cálculo Framingham: {resultado['risco_percentual']}% em 10 anos.", resultado["classe_risco"]),
-    )
-    db.commit()
-    cursor.close()
-    return jsonify(resultado)
-
-
-@rotas_paciente.route("/api/metricas-saude")
-@paciente_obrigatorio
-def api_metricas_saude():
-    """Entrega métricas de saúde do paciente em JSON para gráficos do painel."""
-
-    usuario = session["usuario"]
-    db = obter_banco()
-    cursor = db.cursor()
-    paciente_id = obter_paciente_id(usuario["id"])
-    cursor.execute(
-        """
-        SELECT pressao_arterial, frequencia_cardiaca, peso, imc, glicemia, colesterol,
-               DATE_FORMAT(medido_em, '%%Y-%%m-%%d') as data
-        FROM metricas_saude
-        WHERE paciente_id = %s
-        ORDER BY medido_em ASC
-        """,
-        (paciente_id,),
-    )
-    metricas = cursor.fetchall()
-    cursor.close()
-    return jsonify(metricas)
-
-
 @rotas_paciente.route("/notificacoes/<int:notif_id>/ler", methods=["POST"])
 @paciente_obrigatorio
 def marcar_notificacao_lida(notif_id):
@@ -1002,75 +598,6 @@ def marcar_todas_notificacoes_lidas():
     return jsonify({"sucesso": True})
 
 
-@rotas_paciente.route("/exames/<int:exame_id>/compartilhar", methods=["POST"])
-@paciente_obrigatorio
-def compartilhar_exame(exame_id):
-    """Cria link temporário para compartilhar um exame pertencente ao paciente."""
-
-    usuario = session["usuario"]
-    db = obter_banco()
-    cursor = db.cursor()
-    paciente_id = obter_paciente_id(usuario["id"])
-    exame = buscar_exame_paciente(cursor, exame_id, paciente_id)
-    if not exame:
-        cursor.close()
-        return jsonify({"erro": "nao_encontrado"}), 404
-    token = criar_token_compartilhamento(cursor, exame_id)
-    db.commit()
-    cursor.close()
-    return jsonify({"url": url_for("publico.exame_compartilhado", token=token, _external=True), "horas_para_expirar": 48})
-
-
-@rotas_paciente.route("/exames/<int:exame_id>/visualizar")
-@paciente_obrigatorio
-def visualizar_exame(exame_id):
-    """Exibe o exame do paciente autenticado ou a simulação institucional segura."""
-
-    usuario = session["usuario"]
-    db = obter_banco()
-    cursor = db.cursor()
-    paciente_id = obter_paciente_id(usuario["id"])
-    exame = buscar_exame_paciente(cursor, exame_id, paciente_id)
-    cursor.close()
-    if not exame:
-        abort(404)
-
-    caminho_origem = resolver_caminho_arquivo_exame(current_app.root_path, exame.get("arquivo_url"))
-    arquivo_disponivel = bool(caminho_origem and caminho_origem.exists())
-    visualizacao = montar_visualizacao_exame(exame, arquivo_disponivel=arquivo_disponivel)
-    return render_template("visualizador_exame.html", exame=exame, visualizacao=visualizacao)
-
-
-@rotas_paciente.route("/exames/<int:exame_id>/marca-dagua")
-@paciente_obrigatorio
-def baixar_exame_marca_dagua(exame_id):
-    """Gera download de PDF com marca d'água contendo dados do paciente."""
-
-    usuario = session["usuario"]
-    db = obter_banco()
-    cursor = db.cursor()
-    paciente_id = obter_paciente_id(usuario["id"])
-    exame = buscar_exame_paciente(cursor, exame_id, paciente_id)
-    cursor.close()
-    if not exame or exame.get("tipo_resultado") != "pdf" or not exame.get("arquivo_url"):
-        abort(404)
-
-    caminho_origem = resolver_caminho_arquivo_exame(current_app.root_path, exame["arquivo_url"])
-    if not caminho_origem or not caminho_origem.exists():
-        abort(404)
-
-    try:
-        saida_pdf = gerar_pdf_com_marca_dagua(
-            caminho_origem,
-            exame.get("nome_paciente") or "Paciente",
-            exame.get("cpf_paciente") or "-",
-        )
-        return send_file(saida_pdf, mimetype="application/pdf", as_attachment=True, download_name=nome_download_exame(exame_id))
-    except Exception:
-        logger.exception("pdf_com_marca_dagua_falhou", extra={"extra": {"exame_id": exame_id}})
-        abort(500)
-
-
 @rotas_paciente.route("/teleconsulta/<int:consulta_id>")
 @paciente_obrigatorio
 def sala_espera_teleconsulta(consulta_id):
@@ -1094,6 +621,7 @@ def sala_espera_teleconsulta(consulta_id):
     consulta = cursor.fetchone()
     cursor.close()
     if not consulta or "teleconsulta" not in consulta["nome_servico"].lower():
+        from flask import abort
         abort(404)
     consulta["url_sala"] = consulta.get("sala_teleconsulta_url") or f"https://meet.jit.si/cardiolab-{consulta_id}"
     return render_template("sala_espera_teleconsulta.html", consulta=consulta)
@@ -1132,31 +660,9 @@ def fluxo_situacao_teleconsulta(consulta_id):
     return Response(gerar(), mimetype="text/event-stream", headers={"Cache-Control": "no-cache"})
 
 
-@rotas_paciente.route("/exames")
-@paciente_obrigatorio
-def exames():
-    """Redireciona o atalho de exames para a aba correspondente do painel."""
-
-    return redirect(url_for("paciente.painel"))
-
-
-@rotas_paciente.route("/saude")
-@paciente_obrigatorio
-def saude():
-    """Redireciona o atalho de saúde para a aba correspondente do painel."""
-
-    return redirect(url_for("paciente.painel"))
-
-
-@rotas_paciente.route("/calculadora-risco")
-@paciente_obrigatorio
-def calculadora_risco():
-    """Redireciona o atalho da calculadora para a aba de saúde do painel."""
-
-    return redirect(url_for("paciente.painel"))
-
-
-
-
-
-
+# ============================================================
+# Registra rotas de sub-módulos no mesmo blueprint
+# ============================================================
+import rotas.rotas_paciente_consultas  # noqa: E402, F401
+import rotas.rotas_paciente_exames     # noqa: E402, F401
+import rotas.rotas_paciente_saude      # noqa: E402, F401

@@ -64,7 +64,7 @@ def conteudo_da_pagina_inicial():
     """Carrega serviços, avaliações, artigos e números da página inicial."""
     return {
         "servicos": listar_servicos(limite=8),
-        "avaliacoes": buscar_todos("SELECT * FROM avaliacoes ORDER BY criado_em DESC LIMIT 6"),
+        "avaliacoes": buscar_todos("SELECT * FROM avaliacoes WHERE tipo = 'depoimento' ORDER BY criado_em DESC LIMIT 6"),
         "artigos": listar_artigos(3),
         "estatisticas": ESTATISTICAS_HOME,
     }

@@ -1,10 +1,8 @@
 import re
 
-
 def limpar_cpf(cpf):
     """Remove tudo que não é número de um CPF informado."""
     return re.sub(r"[^0-9]", "", cpf or "")
-
 
 def formatar_cpf(cpf):
     """Aplica máscara brasileira quando o CPF possui onze dígitos."""
@@ -12,7 +10,6 @@ def formatar_cpf(cpf):
     if len(digitos) != 11:
         return cpf
     return f"{digitos[:3]}.{digitos[3:6]}.{digitos[6:9]}-{digitos[9:]}"
-
 
 def validar_cpf(cpf):
     """Valida tamanho, repetição e dígitos verificadores de CPF."""

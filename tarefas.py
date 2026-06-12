@@ -10,6 +10,11 @@ JANELAS_LEMBRETE = (
     ("2h", timedelta(hours=2), timedelta(minutes=20)),
 )
 
+CAMPOS_LEMBRETE = {
+    "24h": "lembrete_24h_enviado",
+    "2h": "lembrete_2h_enviado",
+}
+
 
 def registrar_lembretes_consulta(app):
     """Procura consultas próximas e cria lembretes internos para o paciente."""
@@ -22,28 +27,24 @@ def registrar_lembretes_consulta(app):
         for tipo_lembrete, antecedencia, tolerancia in JANELAS_LEMBRETE:
             inicio = agora + antecedencia - tolerancia
             fim = agora + antecedencia + tolerancia
+            campo_lembrete = CAMPOS_LEMBRETE[tipo_lembrete]
             cursor.execute(
-                """
+                f"""
                 SELECT a.*, s.nome as nome_servico
                 FROM consultas a
                 JOIN servicos s ON a.servico_id = s.id
-                LEFT JOIN lembretes_consulta ar
-                  ON ar.consulta_id = a.id AND ar.tipo_lembrete = %s
                 WHERE a.situacao IN ('agendada', 'confirmada')
                   AND TIMESTAMP(a.data_consulta, a.horario_consulta) BETWEEN %s AND %s
-                  AND ar.id IS NULL
+                  AND a.{campo_lembrete} = 0
                 """,
-                (tipo_lembrete, inicio, fim),
+                (inicio, fim),
             )
             consultas = cursor.fetchall()
             for consulta in consultas:
                 try:
                     cursor.execute(
-                        """
-                        INSERT INTO lembretes_consulta (consulta_id, tipo_lembrete, enviado_em)
-                        VALUES (%s, %s, NOW())
-                        """,
-                        (consulta["id"], tipo_lembrete),
+                        f"UPDATE consultas SET {campo_lembrete} = 1 WHERE id = %s",
+                        (consulta["id"],),
                     )
                     cursor.execute(
                         """
@@ -64,5 +65,3 @@ def registrar_lembretes_consulta(app):
                         extra={"extra": {"consulta_id": consulta["id"], "tipo_lembrete": tipo_lembrete}},
                     )
         cursor.close()
-
-
